@@ -3,7 +3,7 @@
 # Setup
 # -----
 # Author: Henrik Noerfjand Stengaard
-# Date: 2019-12-20
+# Date: 2019-12-22
 #
 # bash script to show setup menu.
 
@@ -26,19 +26,19 @@ while true; do
 	for choice in $choices; do
 		case $choice in
 		1)
-			pushd amibian
+			pushd amibian >/dev/null
 			./amibian.sh
-			popd
+			popd >/dev/null
 			;;
 		2)
-			pushd emulators
+			pushd emulators >/dev/null
 			./emulators.sh
-			popd
+			popd >/dev/null
 			;;
 		3)
-			pushd hstwb-installer
+			pushd hstwb-installer >/dev/null
 			./hstwb-installer.sh
-			popd
+			popd >/dev/null
 			;;
 		4)
 			exit
