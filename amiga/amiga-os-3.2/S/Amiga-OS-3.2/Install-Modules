@@ -16,7 +16,7 @@ set modulesdisk `Type T:_modulesdisk3`
 MakePath >NIL: "SYSTEMDIR:Modules/$modulesdisk"
 
 ; copy modules disk
-Copy >NIL: "$amigaosdisk:#?" "SYSTEMDIR:Modules/$modulesdisk" ALL CLONE
+Copy >NIL: "$amigaosdisk:~(CLI|Disk.info|ReadMe.txt|ReadMe.txt.info|Shell.info|SYStoInstallDisk|SYStoInstallDisk.info)" "SYSTEMDIR:Modules/$modulesdisk" ALL CLONE
 
 ; set install modules 0
 set installmodules "0"
