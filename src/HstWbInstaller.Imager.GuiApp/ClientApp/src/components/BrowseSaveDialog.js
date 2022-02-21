@@ -8,6 +8,8 @@ import {HubConnectionBuilder} from "@microsoft/signalr";
 export default function BrowseSaveDialog(props) {
     const {
         id,
+        title = 'Save file',
+        fileFilters = [],
         onChange
     } = props
     
@@ -58,14 +60,8 @@ export default function BrowseSaveDialog(props) {
             },
             body: JSON.stringify({
                 id,
-                title: 'Select destination image',
-                fileFilters: [{
-                    name: 'Image file',
-                    extensions: ['img', 'hdf']
-                },{
-                    name: 'Virtual hard disk',
-                    extensions: ['vhd']
-                }]
+                title,
+                fileFilters
             })
         });
         if (!response.ok) {
@@ -74,10 +70,8 @@ export default function BrowseSaveDialog(props) {
     }
     
     return (
-        <React.Fragment>
-            <IconButton aria-label="browse" disableRipple onClick={async () => await handleBrowseClick()}>
-                <FontAwesomeIcon icon="ellipsis-h"/>
-            </IconButton>
-        </React.Fragment>
+        <IconButton aria-label="browse" disableRipple onClick={async () => await handleBrowseClick()}>
+            <FontAwesomeIcon icon="ellipsis-h"/>
+        </IconButton>
     )
 }
