@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using HstWbInstaller.Core.Extensions;
+    using Extensions;
 
     public static class EntryBlockReader
     {
