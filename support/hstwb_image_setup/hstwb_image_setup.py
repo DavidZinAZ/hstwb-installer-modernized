@@ -30,6 +30,66 @@ import sys
 import subprocess
 
 
+# AmigaOS 3.2.x release manifest (HSTWB-10)
+# -----------------------------------------
+# The release manifest (data/release-manifest.json) is the source of truth for
+# 3.2.x release identity and AcceptedSource rules. It is loaded opportunistically:
+# when present, its release facts are cross-checked against the built-in kickstart
+# ROM entries below, and 3.2.x .lha release packages found in the workbench dir are
+# recognized by their (authoritative) MD5 metadata. When absent (typical image-dir
+# deployment), the built-in entries alone remain fully in force and nothing changes.
+# An HSTWB_RELEASE_MANIFEST env var (or a manifest next to this script / repo root)
+# overrides the default lookup. Metadata (MD5) is always authoritative; filenames
+# are a discovery hint only.
+_release_manifest_data = None
+_release_manifest_errors = []
+_release_manifest_source = None
+_release_manifest_host = None
+try:
+    _script_dir = os.path.dirname(os.path.abspath(__file__))
+    _repo_root = os.path.abspath(os.path.join(_script_dir, '..', '..'))
+    for _candidate in (
+        os.environ.get('HSTWB_RELEASE_MANIFEST', '').strip(),
+        os.path.join(_script_dir, 'release-manifest.json'),
+        os.path.join(_repo_root, 'data', 'release-manifest.json'),
+    ):
+        if _candidate and os.path.isfile(_candidate):
+            _tools_dir = os.path.join(_repo_root, 'tools')
+            if _tools_dir not in sys.path:
+                sys.path.insert(0, _tools_dir)
+            import release_manifest_host as _release_manifest_host
+            _release_manifest_data, _release_manifest_errors = (
+                _release_manifest_host.load_release_manifest(_candidate)
+            )
+            if _release_manifest_errors or _release_manifest_data is None:
+                _release_manifest_data = None
+            else:
+                _release_manifest_source = _candidate
+            break
+except Exception:
+    _release_manifest_data = None
+    _release_manifest_errors = []
+    _release_manifest_source = None
+
+# cross-check manifest release facts against the built-in kickstart ROM entries
+# (47.96/47.102/47.111/47.115). Only meaningful when a manifest was loaded.
+_release_manifest_rom_errors = []
+if _release_manifest_data is not None and _release_manifest_host is not None:
+    try:
+        _release_manifest_rom_errors = _release_manifest_host.check_manifest_consistency(
+            _release_manifest_data,
+            [
+                { 'KickstartVersion': '47.115', 'ReleaseVersion': '3.2.3' },
+                { 'KickstartVersion': '47.111', 'ReleaseVersion': '3.2.2' },
+                { 'KickstartVersion': '47.111', 'ReleaseVersion': '3.2.2.1' },
+                { 'KickstartVersion': '47.102', 'ReleaseVersion': '3.2.1' },
+                { 'KickstartVersion': '47.96', 'ReleaseVersion': '3.2' },
+            ],
+        )
+    except Exception:
+        _release_manifest_rom_errors = []
+
+
 # md5 file
 class Md5File:
     md5_hash = ""
@@ -569,6 +629,10 @@ valid_amiga_os_32_md5_entries = [
 
 # valid kickstart md5 entries
 valid_kickstart_md5_entries = [
+    { 'Md5': '63b9a74484faf5dc74469dbbfa0ade5b', 'Filename': 'A1200.47.115.rom', 'Encrypted': False, 'Name': 'Kickstart 3.2.3 47.115 A1200 Rom, Hyperion Entertainment', 'Model': 'A1200', 'ConfigSupported': True },
+
+    { 'Md5': '93b2a0f1af4a6ac373d6da2cd4f76c3b', 'Filename': 'A1200.47.111.rom', 'Encrypted': False, 'Name': 'Kickstart 3.2.2 47.111 A1200 Rom, Hyperion Entertainment', 'Model': 'A1200', 'ConfigSupported': True },
+
     { 'Md5': '1c76a282cfca1565ad0d46089742ef20', 'Filename': 'kick.a1200.47.102', 'Encrypted': False, 'Name': 'Kickstart 3.2.1 47.102 A1200 Rom, Hyperion Entertainment', 'Model': 'A1200', 'ConfigSupported': True },
     { 'Md5': 'c6b6010db581ad9f77a89622d6d9cd29', 'Filename': 'kick.a500.47.102', 'Encrypted': False, 'Name': 'Kickstart 3.2.1 47.102 A500 Rom, Hyperion Entertainment', 'Model': 'A500', 'ConfigSupported': True },
 
@@ -961,6 +1025,19 @@ else:
     print('- No Amiga OS 3.1 adf files detected')
 
 
+# print release manifest status (HSTWB-10)
+if _release_manifest_source is not None:
+    print('')
+    print('Release manifest')
+    print('----------------')
+    print('- Using release manifest \'{0}\''.format(_release_manifest_source))
+    if len(_release_manifest_rom_errors) > 0:
+        for _error in _release_manifest_rom_errors:
+            print('  WARNING: {0}'.format(_error))
+    else:
+        print('- Release manifest is consistent with the built-in kickstart ROM entries')
+
+
 # print detecting kickstart roms
 print('Detecting Kickstart roms...')
 print('- Kickstart dir \'{0}\''.format(kickstart_dir))
@@ -990,6 +1067,30 @@ if len(detected_kickstart_filenames) > 0:
         ', '.join(detected_kickstart_filenames)))
 else:
     print('- No Kickstart rom files detected')
+
+
+# detected 3.2.x release states from the release manifest (HSTWB-10)
+# Manifest metadata (MD5) is authoritative: .lha release packages found in the
+# workbench dir are recognized by their md5 hash; filenames are a hint only.
+# When no manifest is available (typical image-dir deployment), this block is a
+# no-op and the adf-based detection above remains in force.
+detected_release_states = {}
+if _release_manifest_data is not None and _release_manifest_host is not None:
+    try:
+        detected_release_states = _release_manifest_host.detect_release_states(
+            _release_manifest_data,
+            [md5_file.md5_hash for md5_file in amiga_os_md5_files],
+        )
+    except Exception:
+        detected_release_states = {}
+
+# print detected 3.2.x release states
+if len(detected_release_states) > 0:
+    detected_release_state_names = sorted(detected_release_states.keys())
+    print('- 3.2.x release states detected from manifest metadata: {0}'.format(
+        ', '.join(detected_release_state_names)))
+else:
+    print('- No 3.2.x release states detected from manifest metadata')
 
 
 # print detecting user packages
