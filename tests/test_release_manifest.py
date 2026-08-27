@@ -171,6 +171,18 @@ def test_malformed_json_fails_clearly(tmp_path):
     assert any("not valid JSON" in e for e in errors), errors
 
 
+def test_malformed_json_cli_exits_one(tmp_path):
+    bad = tmp_path / "bad.json"
+    bad.write_text("{ this is not json", encoding="utf-8")
+    completed = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "tools" / "release_manifest.py"), str(bad)],
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 1
+    assert "not valid JSON" in completed.stderr
+
+
 def test_missing_file_fails_clearly(tmp_path):
     data, errors = load_release_manifest(tmp_path / "nope.json")
     assert data is None
