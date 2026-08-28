@@ -52,6 +52,8 @@ from release_manifest_host import (  # noqa: E402
     is_accepted_source,
     load_release_manifest,
     release_index,
+    build_release_state,
+    release_media_sequence,
 )
 
 
@@ -226,6 +228,41 @@ def test_322_to_3221_accepted(manifest):
 def test_3221_to_323_not_accepted(manifest):
     # the unverified onward edge must never be inferred
     assert is_accepted_source(manifest, "3.2.2.1", "3.2.3") is False
+
+
+@pytest.mark.parametrize(
+    "target,source,sequence",
+    [
+        ("3.2", None, ["3.2"]),
+        ("3.2.1", "3.2", ["3.2", "3.2.1"]),
+        ("3.2.2", "3.2", ["3.2", "3.2.2"]),
+        ("3.2.2", "3.2.1", ["3.2.1", "3.2.2"]),
+        ("3.2.2.1", "3.2.2", ["3.2.2", "3.2.2.1"]),
+        ("3.2.3", "3.2", ["3.2", "3.2.3"]),
+        ("3.2.3", "3.2.1", ["3.2.1", "3.2.3"]),
+        ("3.2.3", "3.2.2", ["3.2.2", "3.2.3"]),
+    ],
+)
+def test_release_media_sequence_uses_only_declared_edges(manifest, target, source, sequence):
+    assert release_media_sequence(manifest, target, source) == sequence
+
+
+def test_release_media_sequence_rejects_unresolved_edge(manifest):
+    with pytest.raises(ValueError, match="not an accepted source"):
+        release_media_sequence(manifest, "3.2.3", "3.2.2.1")
+
+
+def test_release_state_contains_entry_point_rom_and_sequence(manifest):
+    state = build_release_state(manifest, "3.2.2.1", "3.2.2")
+    assert state == {
+        "FormatVersion": "1.0",
+        "Family": "AmigaOS 3.2.x",
+        "TargetVersion": "3.2.2.1",
+        "SourceVersion": "3.2.2",
+        "MediaSequence": ["3.2.2", "3.2.2.1"],
+        "InstallEntryPoint": "Install-Update-3.2.x",
+        "KickstartVersion": "47.111",
+    }
 
 
 @pytest.mark.parametrize(

@@ -97,6 +97,51 @@ function UpdateVersionAmigaTextFile($amigaTextFile, $version)
 }
 
 
+# manifest-driven AmigaOS 3.2.x release orchestration
+function GetAmigaOs32ReleaseManifest($manifestPath)
+{
+    if (!(Test-Path -LiteralPath $manifestPath -PathType Leaf))
+    {
+        return $null
+    }
+    return (Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json -ErrorAction Stop)
+}
+
+function GetAmigaOs32ReleaseState($manifest, $targetVersion, $sourceVersion)
+{
+    $target = @($manifest.Releases | Where-Object { $_.Version -eq $targetVersion }) | Select-Object -First 1
+    if ($null -eq $target)
+    {
+        throw "Unknown AmigaOS 3.2.x release '$targetVersion'"
+    }
+    $accepted = @($target.AcceptedSources)
+    if ($target.ReleaseType -eq 'base')
+    {
+        if ($null -ne $sourceVersion -and $sourceVersion -ne '')
+        {
+            throw "Base release '$targetVersion' cannot have a source release"
+        }
+        $sequence = @($targetVersion)
+    }
+    else
+    {
+        if (!$sourceVersion -or $accepted -notcontains $sourceVersion)
+        {
+            throw "'$sourceVersion' is not an accepted source of '$targetVersion'"
+        }
+        $sequence = @($sourceVersion, $targetVersion)
+    }
+    return [ordered]@{
+        FormatVersion = '1.0'
+        Family = 'AmigaOS 3.2.x'
+        TargetVersion = [string]$targetVersion
+        SourceVersion = $(if ($sourceVersion) { [string]$sourceVersion } else { $null })
+        MediaSequence = $sequence
+        InstallEntryPoint = [string]$target.InstallEntryPoint
+        KickstartVersion = [string]$target.RomSet.KickstartVersion
+    }
+}
+
 # start process
 function StartProcess($fileName, $arguments, $workingDirectory)
 {
@@ -2208,6 +2253,41 @@ function RunInstall($hstwb)
             {
                 $installBoingBagPrefsFile = Join-Path $prefsDir -ChildPath ('Install-Amiga-OS-390-BB' -f $installBoingBags)
                 Set-Content $installBoingBagPrefsFile -Value $installBoingBags    
+            }
+        }
+
+        # write manifest-driven release state for recognized release archives.
+        # The AmigaDOS execution layer consumes this state; this slice does not copy it.
+        $releaseManifestPath = Join-Path $PSScriptRoot -ChildPath 'data/release-manifest.json'
+        if (Test-Path -LiteralPath $releaseManifestPath -PathType Leaf)
+        {
+            $releaseManifest = GetAmigaOs32ReleaseManifest $releaseManifestPath
+            $detectedReleaseVersions = @{}
+            foreach ($releaseEntry in @($amigaOsSetEntries | Where-Object { $_.File -and (Test-Path -LiteralPath $_.File -PathType Leaf) }))
+            {
+                $releaseHash = (Get-FileHash -LiteralPath $releaseEntry.File -Algorithm MD5).Hash.ToLower()
+                foreach ($release in @($releaseManifest.Releases))
+                {
+                    if ($release.ArchiveIdentity -and ([string]$release.ArchiveIdentity.Md5Hash).ToLower() -eq $releaseHash)
+                    {
+                        $detectedReleaseVersions[[string]$release.Version] = $true
+                    }
+                }
+            }
+            foreach ($target in @($releaseManifest.Releases | Sort-Object { [version]$_.Version } -Descending))
+            {
+                if (!$detectedReleaseVersions.ContainsKey([string]$target.Version))
+                {
+                    continue
+                }
+                $source = @($target.AcceptedSources | Where-Object { $detectedReleaseVersions.ContainsKey([string]$_) }) | Select-Object -First 1
+                if ($target.ReleaseType -eq 'base' -or $source)
+                {
+                    $releaseState = GetAmigaOs32ReleaseState $releaseManifest $target.Version $source
+                    $releaseStateFile = Join-Path $prefsDir -ChildPath 'AmigaOS-3.2.x-State.json'
+                    $releaseState | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $releaseStateFile -Encoding utf8
+                    break
+                }
             }
         }
 

@@ -215,6 +215,43 @@ def is_accepted_source(manifest_data, installed_version, target_version):
     return installed_version in accepted
 
 
+def release_media_sequence(manifest_data, target_version, source_version=None):
+    """Return the deterministic host-to-Amiga release sequence.
+
+    The sequence names release states, not copy commands. A base target is
+    represented by itself. An update is represented by its eligible installed
+    source followed by the target; the manifest's Includes list is not used to
+    invent an unaccepted edge. This keeps 3.2.2.1 -> 3.2.3 rejected.
+    """
+    target = get_release(manifest_data, target_version)
+    if target is None:
+        raise ValueError("unknown target release '{}'".format(target_version))
+    if target.get("ReleaseType") == "base":
+        if source_version is not None:
+            raise ValueError("base release '{}' cannot have a source".format(target_version))
+        return [target_version]
+    if not is_accepted_source(manifest_data, source_version, target_version):
+        raise ValueError(
+            "'{}' is not an accepted source of '{}'".format(source_version, target_version)
+        )
+    return [source_version, target_version]
+
+
+def build_release_state(manifest_data, target_version, source_version=None):
+    """Build JSON-serializable host state for the later AmigaDOS layer."""
+    sequence = release_media_sequence(manifest_data, target_version, source_version)
+    target = get_release(manifest_data, target_version)
+    return {
+        "FormatVersion": "1.0",
+        "Family": "AmigaOS 3.2.x",
+        "TargetVersion": target_version,
+        "SourceVersion": source_version,
+        "MediaSequence": sequence,
+        "InstallEntryPoint": target["InstallEntryPoint"],
+        "KickstartVersion": target["RomSet"]["KickstartVersion"],
+    }
+
+
 def check_manifest_consistency(manifest_data, host_rom_entries):
     """Cross-check manifest release facts against host-side ROM entries.
 
