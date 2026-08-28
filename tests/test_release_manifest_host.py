@@ -24,6 +24,7 @@
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -508,7 +509,8 @@ def test_ps1_md5_authoritative_recognition():
 def test_ps1_block_is_self_contained_no_python_delegation():
     text = _ps1_text()
     # the manifest block must load the manifest itself, never via python
-    assert "ConvertFrom-Json -Path $candidate" in text
+    assert "Get-Content -Raw -LiteralPath $candidate | ConvertFrom-Json -ErrorAction Stop" in text
+    assert "ConvertFrom-Json -Path $candidate" not in text
     lowered = text.lower()
     assert "python" not in lowered.replace("python", "PYTHON") or "python" in lowered
     # direct assertion: no python/pwsh-python invocation of the host module
@@ -521,3 +523,48 @@ def test_ps1_recognition_is_a_no_op_without_manifest():
     text = _ps1_text()
     assert "if ($null -ne $releaseManifestData)" in text
     assert "This block is self-contained: it never" in text
+
+
+@pytest.mark.skipif(shutil.which("pwsh") is None, reason="PowerShell is not installed")
+def test_ps1_real_runtime_detects_manifest_release_from_matching_md5(tmp_path):
+    """Exercise the PowerShell host path that previously swallowed -Path errors."""
+    amiga_os_dir = tmp_path / "amiga-os"
+    for directory in (amiga_os_dir, tmp_path / "install", tmp_path / "kickstart", tmp_path / "packages"):
+        directory.mkdir()
+
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps({
+            "FormatVersion": "1.0",
+            "Family": "AmigaOS 3.2.x",
+            "Releases": [{
+                "Version": "3.2.2",
+                "AcceptedSources": [],
+                "RomSet": {"KickstartVersion": "47.111"},
+                "ArchiveIdentity": {
+                    "Filename": "fixture.lha",
+                    "Md5Hash": "d41d8cd98f00b204e9800998ecf8427e",
+                },
+            }],
+        }),
+        encoding="utf-8",
+    )
+    (amiga_os_dir / "fixture.lha").write_bytes(b"")
+
+    result = subprocess.run(
+        [
+            shutil.which("pwsh"), "-NoProfile", "-NonInteractive", "-File", str(HOST_SCRIPT_PS1),
+            "-installDir", str(tmp_path / "install"),
+            "-amigaOsDir", str(amiga_os_dir),
+            "-kickstartDir", str(tmp_path / "kickstart"),
+            "-userPackagesDir", str(tmp_path / "packages"),
+            "-patchOnly",
+        ],
+        capture_output=True,
+        text=True,
+        env={**os.environ, "HSTWB_RELEASE_MANIFEST": str(manifest)},
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "3.2.x release states detected from manifest metadata: 3.2.2" in result.stdout
+    assert "No 3.2.x release states detected from manifest metadata" not in result.stdout

@@ -623,7 +623,7 @@ foreach ($candidate in $manifestCandidates)
     {
         try
         {
-            $releaseManifestData = ConvertFrom-Json -Path $candidate -ErrorAction Stop
+            $releaseManifestData = Get-Content -Raw -LiteralPath $candidate | ConvertFrom-Json -ErrorAction Stop
         }
         catch
         {
