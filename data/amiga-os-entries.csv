@@ -65,6 +65,15 @@ Amiga OS 3.2.1 Modules A500 Disk;False;Amiga OS 3.2;3.2;3.1;A500;20e20012d273280
 Amiga OS 3.2.1 Modules A600 Disk;False;Amiga OS 3.2;3.2;3.1;A600;5656e5e117aac67a06b0289a20988915;ModulesA600_3.2.1;amiga-os-321-modules-a600.adf;True;Amiga-OS-321-ADF;Hyperion Entertainment
 Amiga OS 3.2.1 Modules CD32 Disk;False;Amiga OS 3.2;3.2;3.1;CD32;274b9d7a0c6ef4c6032a1c4325714e56;ModulesCD32_3.2.1;amiga-os-321-modules-cd32.adf;True;Amiga-OS-321-ADF;Hyperion Entertainment
 Amiga OS 3.2.1 Update Disk;False;Amiga OS 3.2;3.2;3.1;;13ccf7096a9ca66af0d8bdf0a1c4e500;Update3.2.1;amiga-os-321-update.adf;True;Amiga-OS-321-ADF;Hyperion Entertainment
+Amiga OS 3.2 Release File;False;Amiga OS 3.2;3.2;3.1;;89ebf1b01a970cc88e114fa21ea388a6;;AmigaOS-3.2-full.lha;False;;Hyperion Entertainment
+Amiga OS 3.2.1 Release File;False;Amiga OS 3.2;3.2;3.1;;0f69c17125c9dfba37e2901835abbe33;;AmigaOS-3.2.1.lha;False;;Hyperion Entertainment
+Amiga OS 3.2.2 Release File;False;Amiga OS 3.2;3.2;3.1;;fa6fc2c7ff94d42b307f13cc7db36717;;AmigaOS-3.2.2.lha;False;;Hyperion Entertainment
+Amiga OS 3.2.2.1 Release File;False;Amiga OS 3.2;3.2;3.1;;18e144ddfbc409980ea306885a12afd2;;AmigaOS-3.2.2.1-Hotfix.lha;False;;Hyperion Entertainment
+Amiga OS 3.2.3 Release File;False;Amiga OS 3.2;3.2;3.1;;f5bf7b0cbcf84d30204ab9182a003c63;;AmigaOS-3.2.3.lha;False;;Hyperion Entertainment
+Amiga OS 3.2.2 Update Disk;False;Amiga OS 3.2;3.2;3.1;;b83e74d6fc87c40eebc102355bcf1382;Update3.2.2;amiga-os-322-update.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.2 Update Disk;False;Amiga OS 3.2;3.2;3.1;;17257b34ff0047df27263a5a9104e190;Update3.2.2;amiga-os-322-update.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.2.1 Update Disk;False;Amiga OS 3.2;3.2;3.1;;9ee0f110645413020d6d18b1e4302122;Update3.2.2.1;amiga-os-3221-update.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 Update Disk;False;Amiga OS 3.2;3.2;3.1;;58aff9a5c27d8bb0c5d7c43ceeeadd6b;Update3.2.3;amiga-os-323-update.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
 
 Amiga OS 3.1.4 Extras Disk;True;Amiga OS 3.1.4;3.1.4;3.1;;988ddad5106d5b846be57b711d878b4c;Extras3.1.4;amiga-os-314-extras.adf;True;Amiga-OS-314-ADF;Hyperion Entertainment
 Amiga OS 3.1.4 Fonts Disk;True;Amiga OS 3.1.4;3.1.4;3.1;;27a7af42777a43a06f8d9d8e74226e56;Fonts;amiga-os-314-fonts.adf;True;Amiga-OS-314-ADF;Hyperion Entertainment
