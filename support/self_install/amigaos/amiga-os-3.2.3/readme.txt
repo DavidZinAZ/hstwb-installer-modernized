@@ -4,5 +4,6 @@ Note Amiga OS 3.2.3 requires Amiga OS 3.2, Amiga OS 3.2.1 or Amiga OS 3.2.2 file
 
 List of Hyperion Entertainment Amiga OS 3.2.3 files to copy:
 - Update3.2.3.adf
-- Classes3.2.3.adf (*)
-- Modules<model>_3.2.3.adf (*)
+
+Note Classes and Modules media for Amiga OS 3.2.3 are not installed by this
+release. Support for them is deferred until independently verified.

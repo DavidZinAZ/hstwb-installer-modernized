@@ -328,13 +328,21 @@ def test_expected_media_sequence_shape():
 # 6. adf runner and detect/install dispatch
 # ---------------------------------------------------------------------------
 
+# Only the required update adfs are dispatched; Classes/Modules media
+# support is deferred (QA remediation 2026-08-29), so the optional lists
+# are intentionally empty and any dispatch to them is a defect.
 ADF_DISPATCH = [
-    ("3.2.2", "Update3.2.2", "amiga-os-322-update.adf",
-     ["amiga-os-322-classes.adf", "amiga-os-322-modules.adf"]),
+    ("3.2.2", "Update3.2.2", "amiga-os-322-update.adf", []),
     ("3.2.2.1", "Update3.2.2.1", "amiga-os-3221-update.adf", []),
-    ("3.2.3", "Update3.2.3", "amiga-os-323-update.adf",
-     ["amiga-os-323-classes.adf", "amiga-os-323-modules.adf"]),
+    ("3.2.3", "Update3.2.3", "amiga-os-323-update.adf", []),
 ]
+
+# disks whose Detect-/Install- script pairs do not exist yet; Adf-Template
+# quits 20 on them, so dispatching them can abort the install chain.
+DEFERRED_DISKS = ["Classes3.2.2", "Modules3.2.2", "Classes3.2.3",
+                  "Modules3.2.3"]
+DEFERRED_ADFS = ["amiga-os-322-classes.adf", "amiga-os-322-modules.adf",
+                 "amiga-os-323-classes.adf", "amiga-os-323-modules.adf"]
 
 
 @pytest.mark.parametrize("target,disk,required,optional", ADF_DISPATCH)
@@ -352,10 +360,25 @@ def test_adf_runner_dispatch(target, disk, required, optional):
     assert '"INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "{}"'.format(disk) \
         in block
     assert '"INSTALLDIR:Temp/Amiga-OS/{}"'.format(required) in block
+    # exactly one Adf-Template dispatch per target (update only)
+    assert block.count("Adf-Template") == 1
     # optional disks are guarded by IF EXISTS
     for opt in optional:
         assert 'IF EXISTS "INSTALLDIR:Temp/Amiga-OS/{}"'.format(opt) \
             in block
+
+
+def test_no_deferred_classes_or_modules_dispatch_remains():
+    # every Adf-Template disk token must have an existing Detect-/Install-
+    # pair, so the four deferred disks must not be dispatched at all.
+    runner = read(ADF_RUNNER)
+    import re
+    disks = re.findall(r'Adf-Template" "([^"]+)"', runner)
+    assert sorted(disks) == ["Update3.2.2", "Update3.2.2.1", "Update3.2.3"]
+    for disk in DEFERRED_DISKS:
+        assert '"{}"'.format(disk) not in runner
+    for adf in DEFERRED_ADFS:
+        assert adf not in runner
 
 
 def test_detect_and_install_pairs_exist_for_template_dispatch():
@@ -473,6 +496,23 @@ def test_readmes_match_self_install_convention_crlf():
         assert data.endswith(b"\r\n")
         assert b"\n" not in data.replace(b"\r\n", b"")
         data.decode("ascii")
+
+
+def test_readmes_do_not_solicit_deferred_classes_or_modules():
+    # Classes/Modules support is deferred; the readmes must list only the
+    # required update adf and may document the deferral, but must not
+    # claim those disks are currently installed.
+    for rel, ver in (
+            ("support/self_install/amigaos/amiga-os-3.2.2/readme.txt",
+             "3.2.2"),
+            ("support/self_install/amigaos/amiga-os-3.2.3/readme.txt",
+             "3.2.3")):
+        text = (REPO_ROOT / rel).read_text(encoding="ascii")
+        assert "- Update{}.adf".format(ver) in text
+        assert "- Classes{}.adf".format(ver) not in text
+        assert "Modules<model>_{}.adf".format(ver) not in text
+        assert "not installed by this" in text
+        assert "deferred" in text
 
 
 def test_no_copyrighted_payload_references_in_new_files():

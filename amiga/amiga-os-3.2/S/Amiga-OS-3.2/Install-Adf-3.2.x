@@ -9,7 +9,9 @@
 ;
 ; Invoked by Install-Update-3.2.x after the host-generated 3.2.x state
 ; file has been validated. The required update adf depends on the state
-; target version. Classes and modules adf files are optional.
+; target version. Classes and modules adf files are not installed by
+; this release: support for them is deferred until their media behavior
+; and installers are independently verified.
 
 
 ; install amiga os 3.2.x update from adf files message
@@ -34,16 +36,6 @@ IF "$target" EQ "3.2.2"
 
   ; run adf template for amiga os 3.2.2 update adf file
   Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Update3.2.2" "AmigaOS 3.2.2 Update" "INSTALLDIR:Temp/Amiga-OS/amiga-os-322-update.adf"
-
-  ; run adf template for amiga os 3.2.2 classes adf file, if file is present
-  IF EXISTS "INSTALLDIR:Temp/Amiga-OS/amiga-os-322-classes.adf"
-    Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Classes3.2.2" "AmigaOS 3.2.2 Classes" "INSTALLDIR:Temp/Amiga-OS/amiga-os-322-classes.adf"
-  ENDIF
-
-  ; run adf template for amiga os 3.2.2 modules adf file, if file is present
-  IF EXISTS "INSTALLDIR:Temp/Amiga-OS/amiga-os-322-modules.adf"
-    Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Modules3.2.2" "AmigaOS 3.2.2 Modules" "INSTALLDIR:Temp/Amiga-OS/amiga-os-322-modules.adf"
-  ENDIF
 
   SKIP adfdone
 ENDIF
@@ -76,16 +68,6 @@ IF "$target" EQ "3.2.3"
 
   ; run adf template for amiga os 3.2.3 update adf file
   Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Update3.2.3" "AmigaOS 3.2.3 Update" "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-update.adf"
-
-  ; run adf template for amiga os 3.2.3 classes adf file, if file is present
-  IF EXISTS "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-classes.adf"
-    Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Classes3.2.3" "AmigaOS 3.2.3 Classes" "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-classes.adf"
-  ENDIF
-
-  ; run adf template for amiga os 3.2.3 modules adf file, if file is present
-  IF EXISTS "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules.adf"
-    Execute "INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "Modules3.2.3" "AmigaOS 3.2.3 Modules" "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules.adf"
-  ENDIF
 
   SKIP adfdone
 ENDIF
