@@ -186,6 +186,13 @@ IF "$selfinstall" EQ 1 VAL
     echo "Amiga OS 3.2.1 Update detected" >>"T:_amigaosmenu"
   ENDIF
 
+  ; 3.2.x update option
+  IF EXISTS "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json"
+    set splitter "1"
+    set menuoption `eval $menuoption + 1`
+    echo "Amiga OS 3.2.x Update detected" >>"T:_amigaosmenu"
+  ENDIF
+
   ; add splitter if support files are present
   IF "$splitter" EQ 1 VAL
     set menuoption `eval $menuoption + 1`
