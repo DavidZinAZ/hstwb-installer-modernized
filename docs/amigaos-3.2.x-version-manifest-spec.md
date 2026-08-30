@@ -245,3 +245,41 @@ This specification intentionally stops at task recommendations. No child tasks a
 - `3.2.2.1 -> 3.2.3` is not established as a directly documented accepted-source edge from the current verified evidence.
 - Exact file format/location/name of the first-class release-manifest layer.
 - Whether additional CSV columns are needed for media/discovery before the release-manifest layer is implemented.
+
+## 12. Qualification snapshot — 2026-08-29
+
+Baseline: `a7d46a8fed441aa4b9328368df7bc8e10a45df0e`
+
+Status: AmigaOS 3.2.x implementation is qualified through all currently executable layers using real licensed media.
+
+Qualified layers:
+- host media recognition: PASS
+- run.ps1 State.json generation: PASS
+- self-install loose-ADF recognition: PASS
+- staging contract: PASS
+- AmigaDOS dispatch/source/prerequisite/rejection logic: PASS
+- full test suite: 166 passed
+- no code change was required during end-to-end qualification
+
+Remaining qualification gap:
+- True booted Amiga/UAE runtime execution has not yet been performed.
+
+Missing prerequisites in the current environment:
+1. A legally acquired Kickstart 47.x ROM suitable for AmigaOS 3.2.x.
+2. A UAE-compatible emulator runtime such as FS-UAE or Amiberry.
+3. A display-attached, remotely controllable, or otherwise automatable emulator execution environment.
+
+Important findings:
+- The licensed Hyperion AmigaOS 3.2.x archives currently available do not contain a usable Kickstart ROM image.
+- This is not a known code defect.
+- No 3.2.2.1 -> 3.2.3 upgrade edge should be inferred or added at this time.
+
+Residual risk until true runtime qualification:
+- emulator-specific floppy/media handling
+- diskcopy/timing behavior
+- interactive Workbench/AmigaDOS execution quirks
+
+Evidence:
+- PRIVATE_MEDIA_LOCATION
+
+Resume true runtime qualification only when the legal ROM and emulator prerequisites are available.
