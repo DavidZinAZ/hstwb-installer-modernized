@@ -4,6 +4,11 @@
 # unix forced line-endings
 /amiga/* text eol=lf
 
+# self-install host media readmes must land as CRLF on checkout (AmigaOS tooling
+# convention); their LF blobs are converted by explicit rule, not by text=auto
+support/self_install/amigaos/amiga-os-3.2.2/readme.txt text eol=crlf
+support/self_install/amigaos/amiga-os-3.2.3/readme.txt text eol=crlf
+
 # archives
 *.lha binary
 *.lzx binary
