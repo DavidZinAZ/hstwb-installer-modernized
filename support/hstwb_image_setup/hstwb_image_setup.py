@@ -624,7 +624,11 @@ valid_amiga_os_32_md5_entries = [
     { 'Md5': 'f8eddbca10560582b99a2f4555ad0620', 'Filename': 'amiga-os-32-modules-a4000t.adf', 'Name': 'Amiga OS 3.2 Modules A4000T Disk, Hyperion Entertainment' },
     { 'Md5': '2af6b84449996440211e9547660b10b6', 'Filename': 'amiga-os-32-modules-a500.adf', 'Name': 'Amiga OS 3.2 Modules A500 Disk, Hyperion Entertainment' },
     { 'Md5': 'c6474df1d52300a4993f13a394701697', 'Filename': 'amiga-os-32-modules-a600.adf', 'Name': 'Amiga OS 3.2 Modules A600 Disk, Hyperion Entertainment' },
-    { 'Md5': '00b2c4d420c933894151c43dc3a24155', 'Filename': 'amiga-os-32-modules-cd32.adf', 'Name': 'Amiga OS 3.2 Modules CD32 Disk, Hyperion Entertainment' }
+    { 'Md5': '00b2c4d420c933894151c43dc3a24155', 'Filename': 'amiga-os-32-modules-cd32.adf', 'Name': 'Amiga OS 3.2 Modules CD32 Disk, Hyperion Entertainment' },
+    { 'Md5': 'b83e74d6fc87c40eebc102355bcf1382', 'Filename': 'amiga-os-322-update.adf', 'Name': 'Amiga OS 3.2.2 Update Disk, Hyperion Entertainment' },
+    { 'Md5': '17257b34ff0047df27263a5a9104e190', 'Filename': 'amiga-os-322-update.adf', 'Name': 'Amiga OS 3.2.2 Update Disk, Hyperion Entertainment' },
+    { 'Md5': '9ee0f110645413020d6d18b1e4302122', 'Filename': 'amiga-os-3221-update.adf', 'Name': 'Amiga OS 3.2.2.1 Update Disk, Hyperion Entertainment' },
+    { 'Md5': '58aff9a5c27d8bb0c5d7c43ceeeadd6b', 'Filename': 'amiga-os-323-update.adf', 'Name': 'Amiga OS 3.2.3 Update Disk, Hyperion Entertainment' }
 ]
 
 # valid kickstart md5 entries
