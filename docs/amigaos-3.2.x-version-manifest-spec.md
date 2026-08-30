@@ -265,12 +265,11 @@ Remaining qualification gap:
 - True booted Amiga/UAE runtime execution has not yet been performed.
 
 Missing prerequisites in the current environment:
-1. A legally acquired Kickstart 47.x ROM suitable for AmigaOS 3.2.x.
-2. A UAE-compatible emulator runtime such as FS-UAE or Amiberry.
-3. A display-attached, remotely controllable, or otherwise automatable emulator execution environment.
+1. A UAE-compatible emulator runtime such as FS-UAE or Amiberry.
+2. A display-attached, remotely controllable, or otherwise automatable emulator execution environment.
 
 Important findings:
-- The licensed Hyperion AmigaOS 3.2.x archives currently available do not contain a usable Kickstart ROM image.
+- Legal AmigaOS 3.2.x Kickstart ROM media are available from the licensed Hyperion packages; see `docs/amigaos-3.2.x-media-reference.md`.
 - This is not a known code defect.
 - No 3.2.2.1 -> 3.2.3 upgrade edge should be inferred or added at this time.
 
