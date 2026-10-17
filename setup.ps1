@@ -18,6 +18,7 @@ Import-Module (Resolve-Path('modules\version.psm1')) -Force
 Import-Module (Resolve-Path('modules\config.psm1')) -Force
 Import-Module (Resolve-Path('modules\local-settings.psm1')) -Force
 Import-Module (Resolve-Path('modules\user-package-updates.psm1')) -Force
+Import-Module (Resolve-Path('modules\package-catalog.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
 Import-Module (Resolve-Path('modules\data.psm1')) -Force
 Import-Module (Resolve-Path('modules\amigaos-release.psm1')) -Force
@@ -1354,12 +1355,9 @@ function UpdatePackagesList($hstwb)
 
     try
     {
-        Write-Host $packagesList.Url -ForegroundColor 'Yellow'
-        $newPackagesList = Invoke-WebRequest $packagesList.Url -UseBasicParsing -ErrorAction Stop
-        $parsedList = $newPackagesList.Content | ConvertFrom-Json -ErrorAction Stop
-        if (!$parsedList.Packages) { throw 'Downloaded package list contains no packages.' }
-        [IO.File]::WriteAllText($hstwb.Paths.PackagesListFile, $newPackagesList.Content, (New-Object Text.UTF8Encoding($false)))
-        Write-Host 'Done' -ForegroundColor 'Yellow'
+        $newPackagesList = UpdateOfficialPackageCatalog $packagesList
+        [IO.File]::WriteAllText($hstwb.Paths.PackagesListFile, ($newPackagesList | ConvertTo-Json -Depth 12), (New-Object Text.UTF8Encoding($false)))
+        Write-Host ('Done: checked {0} official package repositories.' -f $newPackagesList.Packages.Count) -ForegroundColor 'Yellow'
     }
     catch
     {
@@ -1388,7 +1386,18 @@ function DownloadLatestPackages($hstwb, $prerelease)
 
     # download packages
     $packageManager = [PackageManager]::new($hstwb.Paths.PackagesPath)
-    try { $packageManager.DownloadPackages($packagesList.Packages, $prerelease) }
+    try {
+        $recent=$false
+        if($packagesList.Source -eq 'GitHubReleases' -and $packagesList.CheckedAt) {
+            $recent=([datetime]$packagesList.CheckedAt).ToUniversalTime() -gt (Get-Date).ToUniversalTime().AddHours(-1)
+        }
+        if(!$recent) {
+            Write-Host 'Checking current official releases before downloading...'
+            $packagesList=UpdateOfficialPackageCatalog $packagesList
+            [IO.File]::WriteAllText($hstwb.Paths.PackagesListFile, ($packagesList | ConvertTo-Json -Depth 12), (New-Object Text.UTF8Encoding($false)))
+        }
+        $packageManager.DownloadPackages($packagesList.Packages, $prerelease)
+    }
     catch {
         Write-Host ('Package download failed: ' + $_.Exception.Message) -ForegroundColor Red
         $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath
@@ -1400,7 +1409,7 @@ function DownloadLatestPackages($hstwb, $prerelease)
     # read packages
     $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath;
 
-    Write-Host ('Done: {0} packages available in {1}' -f $hstwb.Packages.Count,$hstwb.Paths.PackagesPath) -ForegroundColor 'Yellow'
+    Write-Host ('Done: {0} downloaded, {1} already current. {2} packages available in {3}' -f $packageManager.DownloadedCount,$packageManager.SkippedCount,$hstwb.Packages.Count,$hstwb.Paths.PackagesPath) -ForegroundColor 'Yellow'
     Write-Host ''
     Write-Host "Press enter to continue"
     Read-Host

@@ -36,6 +36,8 @@ $manager=[PackageManager]::new($dest)
 $releases=@([pscustomobject]@{Prerelease='False';Version='1.0';Url=([uri]$one).AbsoluteUri;FileName='Synthetic.zip'},[pscustomobject]@{Prerelease='False';Version='2.0';Url=([uri]$two).AbsoluteUri;FileName='Synthetic.zip'})
 $manager.DownloadPackages(@([pscustomobject]@{Name='Synthetic';Releases=$releases}),$false)
 Assert ((ReadPackages $dest)['synthetic'].Version -eq '2.0') 'Latest release not downloaded into newly created folder'
+$manager.DownloadPackages(@([pscustomobject]@{Name='Synthetic';Releases=$releases}),$false)
+Assert ($manager.DownloadedCount -eq 0 -and $manager.SkippedCount -eq 1) 'Current package was downloaded again'
 $hash=(Get-FileHash (Join-Path $dest 'Synthetic.zip')).Hash
 $client=[WebClient]::new()
 $rejected=$false;try{$client.DownloadFile('Missing file',([uri](Join-Path $root 'missing.zip')).AbsoluteUri,(Join-Path $dest 'Synthetic.zip'))}catch{$rejected=$true}
@@ -57,7 +59,7 @@ Invoke-Expression $fn.Extent.Text
 function ConfirmDialog { return $true }
 function Read-Host { return '' }
 $list=Join-Path $root 'packages.json'
-@{Packages=@(@{Name='Synthetic';Releases=@(@{Version='3.0';Prerelease='False';FileName='Synthetic.zip';Url=([uri](Join-Path $root 'missing.zip')).AbsoluteUri})})}|ConvertTo-Json -Depth 6|Set-Content $list
+@{Source='GitHubReleases';CheckedAt=(Get-Date).ToUniversalTime().ToString('o');Packages=@(@{Name='Synthetic';Releases=@(@{Version='3.0';Prerelease='False';FileName='Synthetic.zip';Url=([uri](Join-Path $root 'missing.zip')).AbsoluteUri})})}|ConvertTo-Json -Depth 6|Set-Content $list
 $hstwb=@{Paths=@{PackagesListFile=$list;PackagesPath=$dest};Packages=@{}}
 $screen=(& {DownloadLatestPackages $hstwb $false} 6>&1 | Out-String)
 Assert ($screen -match 'Package download failed:' -and $screen -notmatch '(?m)^Done\s*$') 'Download screen reported Done after failure'
