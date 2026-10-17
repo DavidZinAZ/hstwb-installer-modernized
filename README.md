@@ -6,6 +6,8 @@ This continuation is maintained by **[DavidZinAZ](https://github.com/DavidZinAZ)
 
 The existing setup, media and ROM selection, bundled image templates, and installation process remain the foundation. See [changes and validation](CHANGELOG.md), [acknowledgments](ACKNOWLEDGMENTS.md), and [current test status](docs/validation-status.md). Internal `hstwb-installer` filenames are retained for compatibility.
 
+See the [publication privacy review](docs/privacy-review.md) before changing repository visibility. Current documentation has been sanitized; older development commits still require a publication decision.
+
 HstWB Installer is an application, which can automate installation of Amiga OS, Kickstarts roms and packages with additional content. 
 
 Creating new harddrive images for Amiga and installing Amiga OS, Kickstart roms, ClassicWB, WHDLoad games and demos properly can be a cumbersome task unless you spend a lot of time figuring out how this is done step by step.

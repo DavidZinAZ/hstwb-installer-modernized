@@ -25,6 +25,7 @@
 
 import csv
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -40,7 +41,7 @@ ADF_RUNNER = (
 )
 
 # licensed media + extracted trees, if present on this host (never committed)
-LICENSED_MEDIA_DIR = Path("PRIVATE_MEDIA_LOCATION")
+LICENSED_MEDIA_DIR = Path(os.environ.get("HSTWB_TEST_MEDIA_DIR", str(REPO_ROOT / "test-media")))
 
 SET_32 = "Amiga OS 3.2"
 

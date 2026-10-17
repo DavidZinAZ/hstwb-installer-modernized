@@ -1,10 +1,7 @@
 # HSTWB-03 MEDIA REFERENCE — AmigaOS 3.2.x Licensed Media Layout
 
 Date: 2026-08-29
-Evidence sources:
-- PRIVATE_MEDIA_LOCATION
-- PRIVATE_MEDIA_LOCATION
-- Licensed source media: PRIVATE_MEDIA_LOCATION
+Evidence sources: privately retained media inventories, archive listings, and vendor instructions. Licensed source media are supplied by the maintainer; machine names and local storage paths are intentionally omitted.
 
 This reference summarizes repository-safe facts about the operator's licensed
 Hyperion AmigaOS 3.2.x media set. It does not reproduce Hyperion documentation
@@ -12,13 +9,13 @@ wholesale and does not include copyrighted payloads.
 
 ## Archive identities
 
-| Release archive | Version role | Archive path | SHA256 | MD5 |
-|-----------------|--------------|-------------|--------|-----|
-| AmigaOS-3.2-full.lha | base | PRIVATE_MEDIA_LOCATION | 67f531e86ed27e79f645d8fd746199ec5b28bc40a4f197e9197c4eb1a2dd8479 | 89ebf1b01a970cc88e114fa21ea388a6 |
-| AmigaOS-3.2.1.lha | update | PRIVATE_MEDIA_LOCATION | 7913e148373c83f1117e4077b840d4ae69bdc04ca78e2692c937458c2a4367c8 | 0f69c17125c9dfba37e2901835abbe33 |
-| AmigaOS-3.2.2.lha | update | PRIVATE_MEDIA_LOCATION | 2dc19a27190e49f51bbf66bd67310e722474161978c151541386ba2b397df281 | fa6fc2c7ff94d42b307f13cc7db36717 |
-| AmigaOS-3.2.2.1-Hotfix.lha | update | PRIVATE_MEDIA_LOCATION | 5e27885fbbceb306d0dfe5364027e736e5dfbbc9f1ac72b07c4da4546968c0c0 | 18e144ddfbc409980ea306885a12afd2 |
-| AmigaOS-3.2.3.lha | update | PRIVATE_MEDIA_LOCATION | 41fadb27d74536fbd10b4fac2996c0841881167d4db8ba1083e4f950a3910cfc | f5bf7b0cbcf84d30204ab9182a003c63 |
+| Release archive | Version role | SHA256 | MD5 |
+|-----------------|--------------|--------|-----|
+| AmigaOS-3.2-full.lha | base | 67f531e86ed27e79f645d8fd746199ec5b28bc40a4f197e9197c4eb1a2dd8479 | 89ebf1b01a970cc88e114fa21ea388a6 |
+| AmigaOS-3.2.1.lha | update | 7913e148373c83f1117e4077b840d4ae69bdc04ca78e2692c937458c2a4367c8 | 0f69c17125c9dfba37e2901835abbe33 |
+| AmigaOS-3.2.2.lha | update | 2dc19a27190e49f51bbf66bd67310e722474161978c151541386ba2b397df281 | fa6fc2c7ff94d42b307f13cc7db36717 |
+| AmigaOS-3.2.2.1-Hotfix.lha | update | 5e27885fbbceb306d0dfe5364027e736e5dfbbc9f1ac72b07c4da4546968c0c0 | 18e144ddfbc409980ea306885a12afd2 |
+| AmigaOS-3.2.3.lha | update | 41fadb27d74536fbd10b4fac2996c0841881167d4db8ba1083e4f950a3910cfc | f5bf7b0cbcf84d30204ab9182a003c63 |
 
 ## Where install/update content lives
 

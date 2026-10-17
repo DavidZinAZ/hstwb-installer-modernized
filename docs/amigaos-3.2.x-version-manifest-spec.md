@@ -248,6 +248,8 @@ This specification intentionally stops at task recommendations. No child tasks a
 
 ## 12. Qualification snapshot — 2026-08-29
 
+This is a historical snapshot. See [current validation status](validation-status.md) for subsequent native WinUAE results and remaining qualification work.
+
 Baseline: `a7d46a8fed441aa4b9328368df7bc8e10a45df0e`
 
 Status: AmigaOS 3.2.x implementation is qualified through all currently executable layers using real licensed media.
@@ -278,7 +280,6 @@ Residual risk until true runtime qualification:
 - diskcopy/timing behavior
 - interactive Workbench/AmigaDOS execution quirks
 
-Evidence:
-- PRIVATE_MEDIA_LOCATION
+Evidence is retained privately outside this repository. Machine-specific archive locations are omitted.
 
 Resume true runtime qualification only when the legal ROM and emulator prerequisites are available.

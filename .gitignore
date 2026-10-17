@@ -19,5 +19,15 @@ hstwb-installer*.zip
 /SESSION-HANDOFF.md
 /RECOVERY-STATUS.md
 /settings/
+/.aws/
+/.ssh/
+/private-notes/
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+id_rsa
+id_ed25519
 /user-packages/.updates/
 /user-packages/**/_update-state.json
