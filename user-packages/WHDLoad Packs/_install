@@ -8,11 +8,15 @@
 
 
 ; create script to run whdload packs
-List USERPACKAGEDIR: DIRS LFORMAT "Echo *"WHDLoad Pack '%n'...*"*NIf Exists *"%p%n/_install*"*N  Execute *"%p%n/_install*"*NElse*N  Echo *"_[1]_*"*NEndIf" >T:_whdloadpacks
+Stack 65536
+set stopinstallation "0"
+Delete >NIL: T:_whdloadpack-stop
+List USERPACKAGEDIR: DIRS LFORMAT "Echo *"WHDLoad Pack '%n'...*"*NIf Exists *"%p%n/_install*"*N  Execute *"%p%n/_install*"*N  IF EXISTS T:_whdloadpack-stop*N    SKIP end*N  ENDIF*NElse*N  Echo *"_[1]_*"*NEndIf" >T:_whdloadpacks
 rep T:_whdloadpacks "_[1]_" "Warning: No entries or install entries not build!**N*"_[2]_"
 rep T:_whdloadpacks "_[2]_" "*N  Ask *"Press ENTER to continue"
 
 ; run whdload packs
+Echo "LAB end" >>T:_whdloadpacks
 Execute T:_whdloadpacks
 Delete >NIL: T:_whdloadpacks 
 

@@ -30,7 +30,7 @@ Resident >NIL: "INSTALLDIR:C/MakePath" PURE
 Resident >NIL: "INSTALLDIR:C/Reboot" PURE 
 Resident >NIL: "INSTALLDIR:C/TotalReset" PURE
 Resident >NIL: "INSTALLDIR:C/UAEquit" PURE
-Resident >NIL: "INSTALLDIR:C/LhA" PURE
+; Load LhA per invocation; forced PURE residency stalled archive operations.
 Resident >NIL: "INSTALLDIR:C/UNLZX" PURE
 Resident >NIL: "INSTALLDIR:C/UnZip" PURE
 
