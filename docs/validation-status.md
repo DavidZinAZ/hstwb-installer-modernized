@@ -1,7 +1,10 @@
-# Validation status — October 16, 2026
+# Validation status — October 17, 2026
 
 ## Observed results
 
+- Installer version: 1.6.6. Standard-package catalog discovery checks official GitHub releases; all 17 current packages downloaded and were recognized, followed by a repeat pass with zero downloads. Prerelease-to-stable fallback was reported explicitly.
+- All 31 user packages are detected, including the eight additions in 1.6.5. Their payload/layout and source-update tests passed; native qualification is still pending below.
+- EAB assign compatibility tests passed for Games/Demos AGA/OCS versions 3.1.2 and 3.2.0, including the new Beta-folder assigns.
 - Regression suite: 171 passed, one skipped, using an isolated Linux snapshot of the changed source.
 - Windows PowerShell: actual setup selector and saved-settings round trip passed, including rejection of missing or unverified selected update media.
 - Native WinUAE 6.0.3: base AmigaOS 3.2 installation completed and booted to Workbench.
