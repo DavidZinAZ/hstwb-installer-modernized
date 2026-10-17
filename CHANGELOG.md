@@ -4,6 +4,7 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 16, 2026
 
+- Set an explicit 64 KiB stack in the package-installation shell and WHDLoad user package. Show WHDLoad/SKick extraction progress for diagnosis. The reported WHDLoad 18.7 stall is awaiting a fresh-image user retest; this change does not establish its cause or resolution.
 - Keep settings, assigns, and logs in each installation's own `settings` folder. Update Windows launchers and preserve explicit settings-directory overrides. Offer a one-time, non-overwriting import of previous shared settings.
 - Repair standard package download-directory creation, newest-version selection, and empty-folder handling. Validate downloads and package-list JSON, retain previous ZIPs, and report failures accurately.
 - Add source-based user-package app checking and selective updates, catalog metadata for all bundled packages, numeric package revisions distinct from author software labels, full-package backups, source/local-identity rechecks, archive-layout validation, and explicit compatibility/manual-review statuses. Verify five real app updates in disposable copies; native app-installation qualification remains outstanding.
