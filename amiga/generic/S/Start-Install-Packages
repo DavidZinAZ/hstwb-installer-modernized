@@ -5,6 +5,10 @@
 ; Author: Henrik Noerfjand Stengaard
 
 
+; Set the stack in this shell: startup launches it with NewShell.
+; Archive tools must not depend on the parent shell's stack setting.
+Stack 65536
+
 ; set failat to 21
 failat 21
 

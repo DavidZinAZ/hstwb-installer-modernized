@@ -9,6 +9,9 @@
 ; Files in S: "WHDLoad.prefs", "WHDLoad-Cleanup" and "WHDLoad-Startup" are only installed, if they don't exist.
 
 
+; Explicit stack also covers running this package outside the main installer.
+Stack 65536
+
 ; paths
 set whdloadcdir "`execute INSTALLDIR:S/CombinePath "$INSTALLDIR" "C"`"
 set whdloadsdir "`execute INSTALLDIR:S/CombinePath "$INSTALLDIR" "S"`"
@@ -48,7 +51,8 @@ LAB installwhdload
 echo "WHDLoad..."
 
 ; extract whdload to temp systemdir
-lha -m1 -q x "USERPACKAGEDIR:WHDLoad_usr.lha" "SYSTEMDIR:Temp/"
+echo "Extracting WHDLoad archive..."
+lha -m1 x "USERPACKAGEDIR:WHDLoad_usr.lha" "SYSTEMDIR:Temp/"
 
 ; install whdload c files
 Copy >NIL: "SYSTEMDIR:Temp/WHDLoad/C/#?" "$whdloadcdir" ALL
@@ -87,7 +91,8 @@ echo "SKick..."
 
 ; extract whdload to temp systemdir
 MakeDir >NIL: "SYSTEMDIR:Temp/SKick"
-lha -m1 -q x "USERPACKAGEDIR:skick346.lha" "SYSTEMDIR:Temp/SKick/"
+echo "Extracting SKick archive..."
+lha -m1 x "USERPACKAGEDIR:skick346.lha" "SYSTEMDIR:Temp/SKick/"
 
 ; create devs kickstarts directory, if it doesn't exist
 IF NOT EXISTS "$whdloaddevsdir/Kickstarts"
