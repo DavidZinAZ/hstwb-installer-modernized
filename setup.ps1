@@ -16,6 +16,8 @@ Param(
 
 Import-Module (Resolve-Path('modules\version.psm1')) -Force
 Import-Module (Resolve-Path('modules\config.psm1')) -Force
+Import-Module (Resolve-Path('modules\local-settings.psm1')) -Force
+Import-Module (Resolve-Path('modules\user-package-updates.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
 Import-Module (Resolve-Path('modules\data.psm1')) -Force
 Import-Module (Resolve-Path('modules\amigaos-release.psm1')) -Force
@@ -1348,8 +1350,10 @@ function UpdatePackagesList($hstwb)
     try
     {
         Write-Host $packagesList.Url -ForegroundColor 'Yellow'
-        $newPackagesList = Invoke-WebRequest $packagesList.Url
-        Set-Content $hstwb.Paths.PackagesListFile -Value $newPackagesList
+        $newPackagesList = Invoke-WebRequest $packagesList.Url -UseBasicParsing -ErrorAction Stop
+        $parsedList = $newPackagesList.Content | ConvertFrom-Json -ErrorAction Stop
+        if (!$parsedList.Packages) { throw 'Downloaded package list contains no packages.' }
+        [IO.File]::WriteAllText($hstwb.Paths.PackagesListFile, $newPackagesList.Content, (New-Object Text.UTF8Encoding($false)))
         Write-Host 'Done' -ForegroundColor 'Yellow'
     }
     catch
@@ -1379,7 +1383,12 @@ function DownloadLatestPackages($hstwb, $prerelease)
 
     # download packages
     $packageManager = [PackageManager]::new($hstwb.Paths.PackagesPath)
-    $packageManager.DownloadPackages($packagesList.Packages, $prerelease)
+    try { $packageManager.DownloadPackages($packagesList.Packages, $prerelease) }
+    catch {
+        Write-Host ('Package download failed: ' + $_.Exception.Message) -ForegroundColor Red
+        Read-Host 'Press enter to continue'
+        return
+    }
 
     # read packages
     $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath;
@@ -1395,11 +1404,12 @@ function ConfigureUserPackages($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Configure user packages" @("Change user packages dir", "Select user packages", "Back") 
+        $choice = Menu $hstwb "Configure user packages" @("Change user packages dir", "Select user packages", "Update apps from sources", "Back")
         switch ($choice)
         {
             "Change user packages dir" { ChangeUserPackagesDir $hstwb }
             "Select user packages" { SelectUserPackages $hstwb }
+            "Update apps from sources" { UpdateUserPackageApps $hstwb }
         }
     }
     until ($choice -eq 'Back')
@@ -1407,6 +1417,69 @@ function ConfigureUserPackages($hstwb)
 
 
 # change user packages dir
+function CheckUserPackageAppUpdates($hstwb)
+{
+    if (!(Test-Path -LiteralPath $hstwb.Settings.UserPackages.UserPackagesDir -PathType Container)) {
+        Write-Host 'Choose an existing user packages folder first.' -ForegroundColor Yellow
+        $hstwb.UserPackageUpdates=@()
+        return
+    }
+    $catalogFile=if($hstwb.Paths.UserPackageUpdatesFile){$hstwb.Paths.UserPackageUpdatesFile}else{Join-Path $PSScriptRoot 'data/user-package-updates.json'}
+    $catalog = GetUserPackageCatalog $catalogFile
+    $hstwb.UserPackageUpdates = @(GetUserPackageUpdateResults $hstwb.Settings.UserPackages.UserPackagesDir $catalog)
+}
+
+function ShowUserPackageAppUpdates($hstwb)
+{
+    foreach ($item in $hstwb.UserPackageUpdates) {
+        $local = if ($item.LocalVersion) { $item.LocalVersion } else { 'not versioned by author' }
+        $available = if ($item.Release.Version) { $item.Release.Version } else { 'not verified' }
+        Write-Host ('{0} / {1}: {2} -> {3} [{4}]' -f $item.Package.Directory,$item.Component.Name,$local,$available,$item.Status)
+        if ($item.Release.MetadataUrl) { Write-Host ('  Source: ' + $item.Release.MetadataUrl) }
+        if ($item.Message) { Write-Host ('  ' + $item.Message) }
+    }
+    Write-Host 'Package revisions use numeric versions; upstream software labels and date-only releases remain distinct.'
+    Read-Host 'Press enter to continue'
+}
+
+function UpdateUserPackageApps($hstwb)
+{
+    do {
+        $choice = Menu $hstwb 'Update user-package apps' @('Check for updates', 'View app versions and sources', 'Update selected apps', 'Back')
+        switch ($choice) {
+            'Check for updates' { CheckUserPackageAppUpdates $hstwb; ShowUserPackageAppUpdates $hstwb }
+            'View app versions and sources' {
+                if (!$hstwb.UserPackageUpdates) { CheckUserPackageAppUpdates $hstwb }
+                ShowUserPackageAppUpdates $hstwb
+            }
+            'Update selected apps' {
+                if (!$hstwb.UserPackageUpdates) { CheckUserPackageAppUpdates $hstwb }
+                $available = @($hstwb.UserPackageUpdates | Where-Object { $_.Status -eq 'Update available' })
+                if (!$available.Count) { Write-Host 'No verified newer releases are available. Check the source results for details.'; Read-Host 'Press enter to continue'; continue }
+                $options = @(@{Text='Update all verified newer releases';Value='all'})
+                for($i=0;$i -lt $available.Count;$i++) {
+                    $item=$available[$i]
+                    $options+=@{Text=('{0} / {1}: {2} -> {3}' -f $item.Package.Directory,$item.Component.Name,$item.LocalVersion,$item.Release.Version);Value=[string]$i}
+                }
+                $options+=@{Text='Back';Value='back'}
+                $selected=Menu $hstwb 'Select apps to update' $options
+                if ($selected.Value -eq 'back') { continue }
+                $updates=if($selected.Value -eq 'all'){$available}else{@($available[[int]$selected.Value])}
+                if (!(ConfirmDialog 'Update local app packages' 'Download and verify these newer releases? Previous packages will be retained in .updates/backups. Installed Amiga images are not changed.')) { continue }
+                foreach ($item in $updates) {
+                    try {
+                        $backup=InstallUserPackageSourceUpdate $item
+                        Write-Host ('Updated {0} to {1}. Backup: {2}' -f $item.Component.Name,$item.Release.Version,$backup) -ForegroundColor Green
+                        $item.Status='Updated'
+                    } catch { Write-Host ('Could not update {0}: {1}' -f $item.Component.Name,$_.Exception.Message) -ForegroundColor Red }
+                }
+                $hstwb.UserPackages=DetectUserPackages $hstwb
+                Read-Host 'Press enter to continue'
+            }
+        }
+    } until ($choice -eq 'Back')
+}
+
 function ChangeUserPackagesDir($hstwb)
 {
     $path = if (!$hstwb.Settings.UserPackages.UserPackagesDir) { ${Env:USERPROFILE} } else { $hstwb.Settings.UserPackages.UserPackagesDir }
@@ -1415,6 +1488,7 @@ function ChangeUserPackagesDir($hstwb)
     if ($newPath -and $newPath -ne '')
     {
         $hstwb.Settings.UserPackages.UserPackagesDir = $newPath
+        $hstwb.Remove('UserPackageUpdates')
 
         foreach($installUserPackageKey in ($hstwb.Settings.UserPackages.Keys | Where-Object { $_ -match 'InstallUserPackage\d+' }))
         {
@@ -1451,7 +1525,7 @@ function SelectUserPackages($hstwb)
             $installUserPackage = $userPackageNamesInstallIndex.ContainsKey($userPackageName)
 
             $userPackageOptions += @{
-                'Text' = if ($installUserPackage) { ("Install : {0}" -f $userPackage.Name) } else { ("Skip    : " + $userPackage.Name) };
+                'Text' = if ($installUserPackage) { ("Install : {0}" -f $userPackage.DisplayName) } else { ("Skip    : " + $userPackage.DisplayName) };
                 'Value' = $userPackageName;
                 'Color' = if ($installUserPackage) { 'Green' } else { $null }
             }
@@ -1731,9 +1805,10 @@ $packagesPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFro
 $runFile = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("run.ps1")
 $userPackagesPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("user-packages")
 
+$usingLocalDefaultSettings = !$settingsDir
 if (!$settingsDir)
 {
-    $settingsDir = Join-Path $env:LOCALAPPDATA -ChildPath 'HstWB Installer'
+    $settingsDir = Join-Path $PSScriptRoot -ChildPath 'settings'
 }
 $settingsDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($settingsDir)
 $settingsFile = Join-Path $settingsDir -ChildPath "hstwb-installer-settings.ini"
@@ -1750,6 +1825,15 @@ try
     if(!(test-path -path $settingsDir))
     {
         mkdir $settingsDir | Out-Null
+    }
+
+    $legacyDir = Join-Path $env:LOCALAPPDATA 'HstWB Installer'
+    if ($usingLocalDefaultSettings -and !(Test-Path -LiteralPath $settingsFile) -and !(Test-Path -LiteralPath $assignsFile) -and
+        (Test-Path -LiteralPath (Join-Path $legacyDir 'hstwb-installer-settings.ini')) -and
+        (Test-Path -LiteralPath (Join-Path $legacyDir 'hstwb-installer-assigns.ini'))) {
+        if (ConfirmDialog 'Import previous settings' 'Copy the previous shared settings into this installation? Future changes will stay local to this copy.') {
+            ImportLegacyInstallerSettings $settingsDir $legacyDir
+        }
     }
     
     
@@ -1772,6 +1856,7 @@ try
             'KickstartEntriesFile' = $kickstartEntriesFile;
             'AmigaOsEntriesFile' = $amigaOsEntriesFile;
             'PackagesListFile' = $hstwbPackagesListFile
+            'UserPackageUpdatesFile' = (Join-Path $PSScriptRoot 'data/user-package-updates.json');
             'ImagesPath' = $imagesPath;
             'PackagesPath' = $packagesPath;
             'SettingsFile' = $settingsFile;

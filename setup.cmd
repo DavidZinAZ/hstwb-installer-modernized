@@ -1,1 +1,3 @@
-powershell -ExecutionPolicy Bypass -File setup.ps1 -settingsDir "%LOCALAPPDATA%\HstWB Installer"
+@echo off
+cd /d "%~dp0"
+powershell -ExecutionPolicy Bypass -File "%~dp0setup.ps1" %*

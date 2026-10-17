@@ -16,6 +16,8 @@ This is where HstWB Installer come to aid and can help simplifying installations
 
 Use **Configure media library** in setup to select one parent folder for AmigaOS media and Kickstart ROMs. All subfolders are scanned; existing set/version selection and file views remain available. See [media library setup](docs/media-library.md).
 
+Each installation now keeps its own files in `settings`. **Configure user packages → Update apps from sources** checks Aminet and original software sources for supported newer releases and retains backups. See [local settings and package updates](docs/settings-and-package-updates.md) for migration, version labels, supported behavior, and validation limits.
+
 HstWB Installer comes with prepared image templates partitioned, formatted and ready to use for creating a new installation of Amiga OS. It supports automated installation of Amiga OS 3.2, 3.1.4 and 3.1 from floppy disks or adf files and Amiga OS 3.9 from cd-rom or iso file. 
 
 Kickstart roms for WHDLoad are detected by checking rom file MD5 checksums and installed on Amiga system device along with Cloanto Amiga Forever rom key depending on rom files are encrypted or not. Afterwards additional content can be installed with packages and user packages. 

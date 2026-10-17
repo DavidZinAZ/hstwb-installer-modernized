@@ -4,6 +4,10 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 16, 2026
 
+- Keep settings, assigns, and logs in each installation's own `settings` folder. Update Windows launchers and preserve explicit settings-directory overrides. Offer a one-time, non-overwriting import of previous shared settings.
+- Repair standard package download-directory creation, newest-version selection, and empty-folder handling. Validate downloads and package-list JSON, retain previous ZIPs, and report failures accurately.
+- Add source-based user-package app checking and selective updates, catalog metadata for all bundled packages, numeric package revisions distinct from author software labels, full-package backups, source/local-identity rechecks, archive-layout validation, and explicit compatibility/manual-review statuses. Verify five real app updates in disposable copies; native app-installation qualification remains outstanding.
+
 - Add a shared media library folder, recursive OS/ROM discovery, rescan and scan summary. Preserve explicit set/version choices and existing installation switches and file views. Keep optional separate folder overrides and support nested encrypted ROMs with their key paths. Unwanted media belongs outside the scanned tree; there is no exclusion list.
 
 - Identify the continuation as hstwb-updated, with prominent original-project attribution and links. Preserve the MIT license, original notices, and compatible internal filenames.

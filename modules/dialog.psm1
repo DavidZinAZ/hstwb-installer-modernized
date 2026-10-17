@@ -160,7 +160,7 @@ function PrintSettings($hstwb)
         {
             $userPackageName = $hstwb.Settings.UserPackages.Get_Item($installUserPackageKey.ToLower())
             $userPackage = $hstwb.UserPackages.Get_Item($userPackageName)
-            $installUserPackageNames += $userPackage.Name
+            $installUserPackageNames += if ($userPackage.DisplayName) { $userPackage.DisplayName } else { $userPackage.Name }
         }
         
         Write-Host "  Install User Packages : " -NoNewline -foregroundcolor "Gray"
