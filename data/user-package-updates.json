@@ -1,0 +1,629 @@
+{
+  "FormatVersion": 1,
+  "Description": "Versioned local package revisions and upstream application metadata; no commercial media URLs.",
+  "Packages": [
+    {
+      "Id": "amiga-boot-selector",
+      "Directory": "Amiga Boot Selector",
+      "Name": "Amiga Boot Selector",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "Amiga Boot Selector",
+          "LocalFile": "",
+          "Version": null,
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Custom installation bundle; no verified versioned upstream source is configured."
+        }
+      ]
+    },
+    {
+      "Id": "amiga-test-kit-v1-18",
+      "Directory": "Amiga Test Kit v1.18",
+      "Name": "Amiga Test Kit",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "testkit",
+          "Name": "Amiga Test Kit",
+          "LocalFile": "AmigaTestKit",
+          "Version": "1.18",
+          "BaselineSha256": "b28f7ef11e6a18b9e5a284a71ce9f8eef8f96843fdae3c80c1e9ddf6ca97962d",
+          "Provider": "GitHub",
+          "Mode": "ZipFiles",
+          "RequiredMembers": [],
+          "Repository": "keirf/amiga-stuff",
+          "TagPattern": "^testkit-v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^AmigaTestKit-[0-9.]+\\.zip$",
+          "Files": [
+            {
+              "MemberName": "AmigaTestKit",
+              "Target": "AmigaTestKit"
+            },
+            {
+              "MemberName": "AmigaTestKit.info",
+              "Target": "AmigaTestKit.info"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "archivers-and-unarchivers",
+      "Directory": "Archivers and unarchivers",
+      "Name": "Archivers and unarchivers",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "xad000",
+          "Name": "XAD 000",
+          "LocalFile": "xadmaster000.lha",
+          "Version": "12.1",
+          "BaselineSha256": "045ccc5f163d44b42fcc0a6950c0269895e268c2ec437b4a01c07a10df81e7ee",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "xad/Libs/xadmaster.library"
+          ],
+          "AminetPath": "util/arc/xadmaster000",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "xad020",
+          "Name": "XAD 020",
+          "LocalFile": "xadmaster020.lha",
+          "Version": "12.1a",
+          "BaselineSha256": "23a4e6829e2ed5477b84e4bd36a4e69a8eedce821063c4e7b31056c3eae54c90",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "xad/Libs/xadmaster.library"
+          ],
+          "AminetPath": "util/arc/xadmaster020",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "xad060",
+          "Name": "XAD 060",
+          "LocalFile": "xadmaster060.lha",
+          "Version": "12.1a",
+          "BaselineSha256": "bcc89f1d09c65431101fc9d907008dc471b48647b27300fc1be9ec2aaea70fb7",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "xad/Libs/xadmaster.library"
+          ],
+          "AminetPath": "util/arc/xadmaster060",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "xfd",
+          "Name": "XFD",
+          "LocalFile": "xfdmaster.lha",
+          "Version": "1.38 / 39.15",
+          "BaselineSha256": "4147a2b29a7d007ab5b5a5f855c2a8095c6a9d9cadcb4f238d86cd8ca1424d62",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "xfd/Libs/xfdmaster.library"
+          ],
+          "AminetPath": "util/pack/xfdmaster",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "lha",
+          "Name": "LhA",
+          "LocalFile": "lha.run",
+          "Version": "2.15",
+          "BaselineSha256": "76bae515264fcc3e1c69058ff03a4bcb096152a732cf19fdb03cceee18932497",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "lha_68k"
+          ],
+          "AminetPath": "util/arc/lha",
+          "Extension": ".run"
+        }
+      ]
+    },
+    {
+      "Id": "birdie-num-nums-rtg-themes",
+      "Directory": "Birdie Num Nums RTG Themes",
+      "Name": "Birdie Num Nums RTG Themes",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "Birdie Num Nums RTG Themes",
+          "LocalFile": "",
+          "Version": null,
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Date-based theme bundle with local presets. No verified versioned source adapter is available."
+        }
+      ]
+    },
+    {
+      "Id": "compactflash-and-fat95",
+      "Directory": "CompactFlash and FAT95",
+      "Name": "CompactFlash and FAT95",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "cfd",
+          "Name": "CompactFlash driver",
+          "LocalFile": "CFD133.lha",
+          "Version": "1.33",
+          "BaselineSha256": "36361a0b333c63bace4e88bce3fa50f604dc91ca44649bc0bd0e981ab9f87402",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "CFD133/DEVS/compactflash.device"
+          ],
+          "AminetPath": "driver/media/CFD133",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "fat95",
+          "Name": "FAT95",
+          "LocalFile": "fat95.lha",
+          "Version": "3.18",
+          "BaselineSha256": "2fc476ada2ee8f1bc231d49c751bc59acb8de638dede6dc07f64924497431788",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "fat95/l/fat95"
+          ],
+          "AminetPath": "disk/misc/fat95",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "diropus-v4-12-4-17pre21",
+      "Directory": "DirOpus v4.12-4.17pre21",
+      "Name": "DirOpus",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "DirOpus",
+          "LocalFile": "",
+          "Version": "4.12-4.17pre21",
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Contains several CPU/OS compatibility versions and customized configuration; a replacement needs a dedicated layout adapter."
+        }
+      ]
+    },
+    {
+      "Id": "fastfilesystem-v45-16",
+      "Directory": "FastFileSystem v45.16",
+      "Name": "FastFileSystem",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "FastFileSystem",
+          "LocalFile": "",
+          "Version": "45.16",
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Operating-system component: update from your licensed OS media and verify compatibility."
+        }
+      ]
+    },
+    {
+      "Id": "full-palette-v40-22",
+      "Directory": "Full Palette v40.22",
+      "Name": "Full Palette",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "fullpalette",
+          "Name": "FullPalette",
+          "LocalFile": "FullPalette22.lha",
+          "Version": "40.22",
+          "BaselineSha256": "4543eda6aca9e1a10ec986bc987c6e56c105ec26184254137d484b00ad358f32",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "FullPalette/FullPalette",
+            "FullPalette/FPPrefs"
+          ],
+          "AminetPath": "util/wb/FullPalette22",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "iconlib-v46-4-555",
+      "Directory": "IconLib v46.4.555",
+      "Name": "IconLib",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "iconlib",
+          "Name": "IconLib",
+          "LocalFile": "IconLib_46.4.lha",
+          "Version": "46.4.555",
+          "BaselineSha256": "7ee71d9081faadfbfc5789d06a9eec2cc620a087a3ba10e6d491cbb416088331",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "IconLib_46.4/Libs/68000/icon.library",
+            "IconLib_46.4/Libs/icon.library",
+            "IconLib_46.4/ThirdParty/LoadResident/LoadResident",
+            "IconLib_46.4/ThirdParty/RemLib/RemLib"
+          ],
+          "AminetPath": "util/libs/IconLib_46.4",
+          "Extension": ".lha",
+          "InstallerReplacements": [
+            {
+              "Old": "IconLib_46.4/Libs/68020/icon.library",
+              "New": "IconLib_46.4/Libs/icon.library"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "igame-v1-6a",
+      "Directory": "iGame v1.6a",
+      "Name": "iGame",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "iGame",
+          "LocalFile": "",
+          "Version": "1.6a",
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Pinned legacy compatibility variant. Use the separately maintained iGame 2 package for current releases."
+        }
+      ]
+    },
+    {
+      "Id": "igame-v2-0",
+      "Directory": "iGame v2.0",
+      "Name": "iGame",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "igame",
+          "Name": "iGame",
+          "LocalFile": "iGame-v2.0-20201016.lha",
+          "Version": "2.0",
+          "BaselineSha256": "930eedd2747bfa58abb22b0551bf02b0406f10b54b41f1990d1db413b9994e53",
+          "Provider": "GitHub",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "{root}/iGame",
+            "{root}/iGame.030",
+            "{root}/iGame.040",
+            "{root}/iGame.060",
+            "{root}.info"
+          ],
+          "Repository": "MrZammler/iGame",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^iGame-v[0-9.]+-[0-9]+\\.lha$",
+          "RootTemplate": "iGame-v{version}",
+          "InstalledRoot": "iGame-v2.0"
+        }
+      ]
+    },
+    {
+      "Id": "kickstart-roms-for-whdload",
+      "Directory": "Kickstart roms for WHDLoad",
+      "Name": "Kickstart roms for WHDLoad",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "Kickstart roms for WHDLoad",
+          "LocalFile": "",
+          "Version": null,
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Licensed, user-supplied ROMs are never downloaded by the application updater."
+        }
+      ]
+    },
+    {
+      "Id": "kingcon-v1-3",
+      "Directory": "KingCON v1.3",
+      "Name": "KingCON",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "kingcon",
+          "Name": "KingCON",
+          "LocalFile": "KingCON_1.3.lha",
+          "Version": "1.3",
+          "BaselineSha256": "7d9e23b35c22a4f87b589ecbe546523eea2ff43162d33c30de62cd0e0bc67d11",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "KingCON/KingCON-handler"
+          ],
+          "AminetPath": "util/shell/KingCON_1.3",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "magic-menu-v2-30-2-35",
+      "Directory": "Magic Menu v2.30-2.35",
+      "Name": "Magic Menu",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "magicmenu",
+          "Name": "MagicMenu",
+          "LocalFile": "MagicMenu_II.lha",
+          "Version": "2.30",
+          "BaselineSha256": "14529f18dd185462bd25bbcb8b76c4225365f087e6f36c30c02c58178ebf6eda",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MagicMenu/020/MagicMenu"
+          ],
+          "AminetPath": "util/wb/MagicMenu_II",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "magicmenu235",
+          "Name": "MagicMenu 2.35 beta compatibility component",
+          "LocalFile": "MagicMenu_2.35.lha",
+          "Version": "2.35",
+          "BaselineSha256": "9f2649d6e651f306ff3fe9984ca5bba4411b34f22de3931da8b9a90ce2da1f0b",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MagicMenu"
+          ],
+          "AminetPath": "util/wb/MagicMenu_2.35",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "mmu-libs-v47-1",
+      "Directory": "MMU Libs v47.1",
+      "Name": "MMU Libs",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "mmulib",
+          "Name": "MMU Libs",
+          "LocalFile": "MMULib.lha",
+          "Version": "47.1",
+          "BaselineSha256": "68c110d2f5bf54ad1ee8eb889afa681e0b78755c40f951ecc7286d3a6b5b0a3d",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MMULib/Libs/mmu.library",
+            "MMULib/Libs/68020.library",
+            "MMULib/Libs/68030.library",
+            "MMULib/Libs/68040.library",
+            "MMULib/Libs/68060.library"
+          ],
+          "AminetPath": "util/libs/MMULib",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "mui-v3-8",
+      "Directory": "MUI v3.8",
+      "Name": "MUI",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "mui38",
+          "Name": "MUI 3.8 compatibility release",
+          "LocalFile": "mui38usr.lha",
+          "Version": "3.8",
+          "BaselineSha256": "f3acb2fe98f74c025daf10ae7df92d08abe787332124963771e2c21a869cca5b",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MUI/Libs/muimaster.library"
+          ],
+          "AminetPath": "util/libs/mui38usr",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "mui-v3-8-igame-dependencies",
+      "Directory": "MUI v3.8 iGame dependencies",
+      "Name": "MUI iGame dependencies",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "texteditor",
+          "Name": "TextEditor MCC",
+          "LocalFile": "MCC_TextEditor_68k.lha",
+          "Version": "15.28",
+          "BaselineSha256": "eadf34bb2384c7c8cbfd7ef873d98cb9f8d595419711996a00d5c54ec91dd4eb",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MCC_TextEditor/Libs/MUI/68000/TextEditor.mcc"
+          ],
+          "AminetPath": "dev/mui/MCC_TextEditor-15.56",
+          "Extension": ".lha",
+          "AutoUpdate": false,
+          "Reason": "The newer author release requires a 68020+ and changes the MUI archive layout. Keep the legacy dependency until a CPU-specific migration is selected."
+        },
+        {
+          "Id": "guigfxmcc",
+          "Name": "Guigfx MCC",
+          "LocalFile": "MCC_Guigfx.lha",
+          "Version": "19.2",
+          "BaselineSha256": "dcc3e277cbceee70e4f9f22b6d67fbb0120ff09f173e01e5918b67cd7bd0ba24",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "MCC_Guigfx/Libs/MUI/Guigfx.mcc"
+          ],
+          "AminetPath": "dev/mui/MCC_Guigfx",
+          "Extension": ".lha"
+        },
+        {
+          "Id": "renderlib",
+          "Name": "Render library",
+          "LocalFile": "guigfx_render_nofpu.lha",
+          "Version": "40.8",
+          "BaselineSha256": "355b9957f51a82c79befa24d3249449defe8ea081b7c68d8d3d7fb1ea117bbf3",
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "This is a combined no-FPU compatibility bundle. Upstream archives must be adapted and validated before replacing it."
+        }
+      ]
+    },
+    {
+      "Id": "scsi-device-v43-45",
+      "Directory": "Scsi.device v43.45",
+      "Name": "Scsi.device",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "Scsi.device",
+          "LocalFile": "",
+          "Version": "43.45",
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "ROM-derived patched component; update requires model-specific licensed media and patch verification."
+        }
+      ]
+    },
+    {
+      "Id": "sysinfo-v4-4",
+      "Directory": "SysInfo v4.4",
+      "Name": "SysInfo",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "sysinfo",
+          "Name": "SysInfo",
+          "LocalFile": "SysInfo.lha",
+          "Version": "4.4",
+          "BaselineSha256": "9b86be2368b1b0f62977fba9341f8c0c17267a01ffd1ce9acb22707f6908272b",
+          "Provider": "Aminet",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "SysInfo/SysInfo"
+          ],
+          "AminetPath": "util/moni/SysInfo",
+          "Extension": ".lha"
+        }
+      ]
+    },
+    {
+      "Id": "visualprefs-v1-5n",
+      "Directory": "VisualPrefs v1.5n",
+      "Name": "VisualPrefs",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "VisualPrefs",
+          "LocalFile": "",
+          "Version": "1.5n",
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "Contains CPU-specific quick fixes and customized themes; the older Aminet base cannot replace this patched bundle."
+        }
+      ]
+    },
+    {
+      "Id": "wbdock-v2-560",
+      "Directory": "WBDock v2.560",
+      "Name": "WBDock",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "wbdock",
+          "Name": "WBDock 2",
+          "LocalFile": "wbdock2.lha",
+          "Version": "2.560",
+          "BaselineSha256": "0c3a122ba938638aa4cb5432ebce8168d983c7278816b31b28e63fa75afda5fc",
+          "Provider": "Web",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "WBDock2/WBDock"
+          ],
+          "MetadataUrl": "https://thomas-rapp.homepage.t-online.de/amiga/wbdock.html",
+          "VersionPattern": "Version\\s*(?:</?[^>]+>|[Vv: ])*([0-9]+\\.[0-9]+)",
+          "DownloadUrl": "https://thomas-rapp.homepage.t-online.de/amiga/wbdock2.lha"
+        }
+      ]
+    },
+    {
+      "Id": "whdload-packs",
+      "Directory": "WHDLoad Packs",
+      "Name": "WHDLoad Packs",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "bundle",
+          "Name": "WHDLoad Packs",
+          "LocalFile": "",
+          "Version": null,
+          "BaselineSha256": null,
+          "Provider": "Manual",
+          "Mode": "Archive",
+          "RequiredMembers": [],
+          "Reason": "User-supplied game/demo collection, not a single versioned application."
+        }
+      ]
+    },
+    {
+      "Id": "whdload-v18-8",
+      "Directory": "WHDLoad v18.8",
+      "Name": "WHDLoad",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "whdload",
+          "Name": "WHDLoad",
+          "LocalFile": "WHDLoad_usr.lha",
+          "Version": "18.8",
+          "BaselineSha256": "288f41b73fc87df6c4702002a721a3b5e6d4aace91df504ee74ff19ef286d059",
+          "Provider": "Web",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "WHDLoad/C/WHDLoad",
+            "WHDLoad/S/WHDLoad.prefs"
+          ],
+          "MetadataUrl": "https://www.whdload.de/",
+          "VersionPattern": "New WHDLoad V([0-9]+\\.[0-9]+)(?:</font>)? released",
+          "DownloadUrl": "https://www.whdload.de/whdload/WHDLoad_usr.lha"
+        }
+      ]
+    }
+  ]
+}

@@ -3794,7 +3794,7 @@ $userPackagesPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPat
 
 if (!$settingsDir)
 {
-    $settingsDir = Join-Path $env:LOCALAPPDATA -ChildPath 'HstWB Installer'
+    $settingsDir = Join-Path $PSScriptRoot -ChildPath 'settings'
 }
 $settingsDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($settingsDir)
 $settingsFile = Join-Path $settingsDir -ChildPath "hstwb-installer-settings.ini"

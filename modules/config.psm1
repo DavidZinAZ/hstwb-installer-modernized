@@ -400,6 +400,7 @@ function ReadImages($imagesPath)
 function ReadPackages($packagesPath)
 {
     $packages = @{}
+    if (!(Test-Path -LiteralPath $packagesPath -PathType Container)) { return $packages }
 
     # get package files
     $packageFiles = Get-ChildItem -Path $packagesPath -Filter '*.zip' | Where-Object { !$_.PSIsContainer }
@@ -435,7 +436,7 @@ function ReadPackages($packagesPath)
         $package | Add-Member -MemberType NoteProperty -Name 'PackageFile' -Value $packageFile.FullName
 
         # add package, if it's not added or version is newer
-        if (!$packages[$package.Id] -or [version]$package.Version -gt $packages[$package.Id].Version)
+        if (!$packages[$package.Name.ToLower()] -or [version]$package.Version -gt [version]$packages[$package.Name.ToLower()].Version)
         {
             $packages[$package.Name.ToLower()] = $package
         }
@@ -457,6 +458,8 @@ function DetectUserPackages($hstwb)
 
     # get user packages dirs
     $userPackageDirs += Get-ChildItem -Path $hstwb.Settings.UserPackages.UserPackagesDir | Where-Object { $_.PSIsContainer }
+    $catalogFile = Join-Path (Split-Path $PSScriptRoot -Parent) 'data/user-package-updates.json'
+    $catalog = if (Test-Path -LiteralPath $catalogFile) { (Get-Content -LiteralPath $catalogFile -Raw | ConvertFrom-Json).Packages } else { @() }
 
     foreach($userPackageDir in $userPackageDirs)
     {
@@ -467,6 +470,21 @@ function DetectUserPackages($hstwb)
         }
 
         $userPackage = @{ 'Name' = $userPackageDir.Name }
+        $entry = $catalog | Where-Object { $_.Directory -eq $userPackageDir.Name } | Select-Object -First 1
+        $stateFile = Join-Path $userPackageDir.FullName '_update-state.json'
+        $state = $null
+        if (Test-Path -LiteralPath $stateFile) {
+            try { $state = Get-Content -LiteralPath $stateFile -Raw | ConvertFrom-Json -ErrorAction Stop } catch { Write-Warning ('Unreadable update metadata: ' + $stateFile) }
+        }
+        $revision = if ($state.PackageVersion) { $state.PackageVersion } elseif ($entry) { $entry.PackageVersion } else { $null }
+        $label = if ($entry) { $entry.Name } else { $userPackageDir.Name }
+        if ($entry.Components.Count -eq 1) {
+            $saved = $state.Components | Where-Object { $_.Id -eq $entry.Components[0].Id } | Select-Object -First 1
+            $version = if ($saved) { $saved.Version } else { $entry.Components[0].Version }
+            if ($version) { $label += ' v' + $version }
+        }
+        $userPackage.DisplayName = if ($revision) { '{0} (package v{1})' -f $label,$revision } else { $label + ' (unmanaged)' }
+        $userPackage.PackageVersion = $revision
         
         # get user package dir name
         $userPackageDirName = $userPackageDir.Name.ToLower()

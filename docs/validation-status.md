@@ -11,6 +11,8 @@ Native tests used an A1200, the original bundled 2GB DOS7 image template, the se
 
 ## Remaining qualification
 
+- The source-based application updater passed local update/layout checks for five real releases in disposable package copies. Native installation and execution of those updated applications are not yet qualified; see [settings and package update validation](settings-and-package-updates.md).
+
 - Native acceptance for 3.2.1 and 3.2.2, other models and ROM combinations, and package/self-install paths.
 - Independent verification of every installed 3.2.3 module and locale file; a successful desktop boot alone does not establish complete module coverage.
 - Investigation of intermittent Windows sharing locks that can cause WinUAE to open an image read-only. Exclusive-write preflight reduces failed launches but does not establish the competing process or eliminate the underlying issue.

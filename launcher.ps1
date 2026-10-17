@@ -41,14 +41,14 @@ function ConfirmDialog($title, $message)
     return $false
 }
 
-function Run($runFile)
+function Run($runFile, $settingsDir)
 {
-    Start-Process $runFile -Wait -WindowStyle Maximized
+    Start-Process $runFile -ArgumentList ('-settingsDir "{0}"' -f $settingsDir) -Wait -WindowStyle Maximized
 }
 
-function Setup($setupFile)
+function Setup($setupFile, $settingsDir)
 {
-    Start-Process $setupFile -Wait -WindowStyle Maximized
+    Start-Process $setupFile -ArgumentList ('-settingsDir "{0}"' -f $settingsDir) -Wait -WindowStyle Maximized
 }
 
 function Settings($settingsFile)
@@ -197,7 +197,7 @@ function LauncherMenu($hstwb)
         $option = GuiMenu "Launcher" @('Setup', 'Advanced', 'Extra', 'Help', 'Exit')
         switch ($option)
         {
-            "Setup" { Setup $hstwb.Paths.SetupFile }
+            "Setup" { Setup $hstwb.Paths.SetupFile $hstwb.Paths.SettingsDir }
             "Advanced" { AdvancedMenu $hstwb }
             "Extra" { ExtraMenu $hstwb }
             "Help" { HelpMenu $hstwb }
@@ -212,7 +212,7 @@ function AdvancedMenu($hstwb)
         $option = GuiMenu "Advanced" @('Run', 'Settings', 'Assigns', 'Back')
         switch ($option)
         {
-            "Run" { Run $hstwb.Paths.RunFile }
+            "Run" { Run $hstwb.Paths.RunFile $hstwb.Paths.SettingsDir }
             "Settings" { Settings $hstwb.Paths.SettingsFile }
             "Assigns" { Assigns $hstwb.Paths.AssignsFile }
         }
@@ -248,7 +248,7 @@ function HelpMenu($hstwb)
 
 if (!$settingsDir)
 {
-    $settingsDir = Join-Path $env:LOCALAPPDATA -ChildPath 'HstWB Installer'
+    $settingsDir = Join-Path $PSScriptRoot -ChildPath 'settings'
 }
 
 $runFile = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath('run.cmd')
