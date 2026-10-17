@@ -1,0 +1,99 @@
+{
+    "FormatVersion": "1.0",
+    "Family": "AmigaOS 3.2.x",
+    "Description": "First-class release manifest for the AmigaOS 3.2.x version family (HSTWB-02 spec, HSTWB-08 slice). Authoritative source for release-level facts. data/amiga-os-entries.csv remains the media/disk catalog and data/kickstart-entries.csv remains the Kickstart ROM catalog.",
+    "SourceSpec": "docs/amigaos-3.2.x-version-manifest-spec.md",
+    "Releases": [
+        {
+            "Version": "3.2",
+            "ReleaseType": "base",
+            "AcceptedSources": [],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": {
+                "KickstartVersion": "47.96"
+            },
+            "ValidationProfile": ["adf", "rom"],
+            "InstallEntryPoint": "Amiga-OS-32-ADF",
+            "ArchiveIdentity": {
+                "Filename": "AmigaOS-3.2-full.lha",
+                "Md5Hash": "89ebf1b01a970cc88e114fa21ea388a6"
+            }
+        },
+        {
+            "Version": "3.2.1",
+            "ReleaseType": "update",
+            "AcceptedSources": ["3.2"],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": {
+                "KickstartVersion": "47.102"
+            },
+            "ValidationProfile": ["adf"],
+            "InstallEntryPoint": "Amiga-OS-321-ADF",
+            "ArchiveIdentity": {
+                "Filename": "AmigaOS-3.2.1.lha",
+                "Md5Hash": "0f69c17125c9dfba37e2901835abbe33"
+            }
+        },
+        {
+            "Version": "3.2.2",
+            "ReleaseType": "update",
+            "AcceptedSources": ["3.2", "3.2.1"],
+            "Includes": ["3.2.1"],
+            "Supersedes": ["3.2.1"],
+            "RomSet": {
+                "KickstartVersion": "47.111"
+            },
+            "ValidationProfile": ["adf", "rom"],
+            "InstallEntryPoint": "Install-Update-3.2.x",
+            "ArchiveIdentity": {
+                "Filename": "AmigaOS-3.2.2.lha",
+                "Md5Hash": "fa6fc2c7ff94d42b307f13cc7db36717"
+            }
+        },
+        {
+            "Version": "3.2.2.1",
+            "ReleaseType": "update",
+            "AcceptedSources": ["3.2.2"],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": {
+                "KickstartVersion": "47.111"
+            },
+            "ValidationProfile": ["adf"],
+            "InstallEntryPoint": "Install-Update-3.2.x",
+            "Semantics": {
+                "StandaloneBase": false,
+                "HotfixCandidate": false,
+                "RequiredInstalledVersion": "3.2.2",
+                "RequiredVersionLibrary": "47.4",
+                "WorkbenchReplacement": true,
+                "EnvArchiveVersionMarker": "Prefs/Env-Archive/Versions",
+                "RebootRequired": true,
+                "ModelSelectionBehavior": "hardware/model selection used for choosing the appropriate system updates",
+                "Notes": "Installer-driven update requiring an installed 3.2.2; not a standalone base. The onward edge 3.2.2.1 -> 3.2.3 is unverified and intentionally not represented as accepted."
+            },
+            "ArchiveIdentity": {
+                "Filename": "AmigaOS-3.2.2.1-Hotfix.lha",
+                "Md5Hash": "18e144ddfbc409980ea306885a12afd2"
+            }
+        },
+        {
+            "Version": "3.2.3",
+            "ReleaseType": "update",
+            "AcceptedSources": ["3.2", "3.2.1", "3.2.2"],
+            "Includes": ["3.2.1", "3.2.2"],
+            "Supersedes": ["3.2.1", "3.2.2"],
+            "RomSet": {
+                "KickstartVersion": "47.115"
+            },
+            "ValidationProfile": ["adf", "rom", "installed-files", "modules", "mutools"],
+            "InstallEntryPoint": "Install-Update-3.2.x",
+            "ArchiveIdentity": {
+                "Filename": "AmigaOS-3.2.3.lha",
+                "Md5Hash": "f5bf7b0cbcf84d30204ab9182a003c63"
+            }
+        }
+    ]
+}

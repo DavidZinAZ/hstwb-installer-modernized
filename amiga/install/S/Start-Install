@@ -36,16 +36,32 @@ Resident >NIL: "INSTALLDIR:C/MakePath" PURE
 Resident >NIL: "INSTALLDIR:C/Reboot" PURE 
 Resident >NIL: "INSTALLDIR:C/TotalReset" PURE
 Resident >NIL: "INSTALLDIR:C/UAEquit" PURE
-Resident >NIL: "INSTALLDIR:C/LhA" PURE
+; Load LhA from C: for each invocation. Do not force shared PURE residency:
+; native 3.2 testing found successive resident archive operations failed to return.
 Resident >NIL: "INSTALLDIR:C/UNLZX" PURE
 Resident >NIL: "INSTALLDIR:C/UnZip" PURE
 
 
 ; run prepare install
+IF EXISTS INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json
+  Search INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json "FormatVersion" NONUM >T:_32x_line
+  sed "s/ //g;s/*"//g;s/,//g;s/FormatVersion://" T:_32x_line >INSTALLDIR:Temp/State-Preflight.txt
+  set stateformat `Type INSTALLDIR:Temp/State-Preflight.txt`
+  IF NOT "$stateformat" EQ "1.0"
+    echo "Update state reader failed before installation."
+    echo "State reader failed" >INSTALLDIR:Prefs/Install-Failed
+    quit 20
+  ENDIF
+ENDIF
 execute "INSTALLDIR:S/Prepare-Install"
 
 ; run install start
 execute "INSTALLDIR:S/Install-Start"
+
+IF EXISTS INSTALLDIR:Prefs/Install-Failed
+  echo "Installation failed. See the update error above."
+  quit 20
+ENDIF
 
 ; run install complete
 execute "INSTALLDIR:S/Install-Complete"

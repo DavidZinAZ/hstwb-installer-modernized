@@ -1,0 +1,47 @@
+; Detect AmigaOS 3.2.2.1 Update
+; -----------------------------
+;
+; Date: 2026-08-28
+; Author: HstWB
+;
+; AmigaDOS script to detect valid amiga os 3.2.2.1 update floppy disk or adf file.
+;
+; AmigaOS 3.2.2.1 is an installer-driven update requiring installed AmigaOS
+; 3.2.2 (version.library 47.4). it is not standalone base media.
+
+
+; end, if volume name is not "Update3.2.2.1:"
+IF NOT "`Which $amigaosdisk:`" EQ "Update3.2.2.1:"
+  SKIP notvalid
+ENDIF
+
+; end, if update release doesn't exist
+IF NOT EXISTS "$amigaosdisk:Update/Release"
+  SKIP notvalid
+ENDIF
+
+; end, if installed version.library doesn't exist
+IF NOT EXISTS "SYSTEMDIR:Libs/version.library"
+  SKIP notvalid
+ENDIF
+
+; end, if installed version.library is less than v47.4
+Version >NIL: "SYSTEMDIR:Libs/version.library" 47 4
+IF NOT $RC EQ 0 VAL
+  SKIP notvalid
+ENDIF
+
+SKIP end
+
+
+; not valid
+; ---------
+LAB notvalid
+
+echo "AmigaOS 3.2.2.1 Update is not valid"
+
+
+; end
+; ---
+
+LAB end

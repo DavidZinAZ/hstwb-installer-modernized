@@ -527,11 +527,19 @@ $validAmigaOs32Md5Entries = @(
     @{ 'Md5' = 'f8eddbca10560582b99a2f4555ad0620'; 'Filename' = 'amiga-os-32-modules-a4000t.adf'; 'Name' = 'Amiga OS 3.2 Modules A4000T Disk, Hyperion Entertainment' },
     @{ 'Md5' = '2af6b84449996440211e9547660b10b6'; 'Filename' = 'amiga-os-32-modules-a500.adf'; 'Name' = 'Amiga OS 3.2 Modules A500 Disk, Hyperion Entertainment' },
     @{ 'Md5' = 'c6474df1d52300a4993f13a394701697'; 'Filename' = 'amiga-os-32-modules-a600.adf'; 'Name' = 'Amiga OS 3.2 Modules A600 Disk, Hyperion Entertainment' },
-    @{ 'Md5' = '00b2c4d420c933894151c43dc3a24155'; 'Filename' = 'amiga-os-32-modules-cd32.adf'; 'Name' = 'Amiga OS 3.2 Modules CD32 Disk, Hyperion Entertainment' }
+    @{ 'Md5' = '00b2c4d420c933894151c43dc3a24155'; 'Filename' = 'amiga-os-32-modules-cd32.adf'; 'Name' = 'Amiga OS 3.2 Modules CD32 Disk, Hyperion Entertainment' },
+    @{ 'Md5' = 'b83e74d6fc87c40eebc102355bcf1382'; 'Filename' = 'amiga-os-322-update.adf'; 'Name' = 'Amiga OS 3.2.2 Update Disk, Hyperion Entertainment' },
+    @{ 'Md5' = '17257b34ff0047df27263a5a9104e190'; 'Filename' = 'amiga-os-322-update.adf'; 'Name' = 'Amiga OS 3.2.2 Update Disk, Hyperion Entertainment' },
+    @{ 'Md5' = '9ee0f110645413020d6d18b1e4302122'; 'Filename' = 'amiga-os-3221-update.adf'; 'Name' = 'Amiga OS 3.2.2.1 Update Disk, Hyperion Entertainment' },
+    @{ 'Md5' = '58aff9a5c27d8bb0c5d7c43ceeeadd6b'; 'Filename' = 'amiga-os-323-update.adf'; 'Name' = 'Amiga OS 3.2.3 Update Disk, Hyperion Entertainment' }
 )
 
 # valid kickstart rom md5 entries
 $validKickstartMd5Entries = @(
+    @{ 'Md5' = '63b9a74484faf5dc74469dbbfa0ade5b'; 'Filename' = 'A1200.47.115.rom'; 'Encrypted' = $false; 'Name' = 'Kickstart 3.2.3 47.115 A1200 Rom, Hyperion Entertainment'; 'Model' = 'A1200'; 'ConfigSupported' = $true },
+
+    @{ 'Md5' = '93b2a0f1af4a6ac373d6da2cd4f76c3b'; 'Filename' = 'A1200.47.111.rom'; 'Encrypted' = $false; 'Name' = 'Kickstart 3.2.2 47.111 A1200 Rom, Hyperion Entertainment'; 'Model' = 'A1200'; 'ConfigSupported' = $true },
+
     @{ 'Md5' = '1c76a282cfca1565ad0d46089742ef20'; 'Filename' = 'kick.a1200.47.102'; 'Encrypted' = $false; 'Name' = 'Kickstart 3.2.1 47.102 A1200 Rom, Hyperion Entertainment'; 'Model' = 'A1200'; 'ConfigSupported' = $true },
     @{ 'Md5' = 'c6b6010db581ad9f77a89622d6d9cd29'; 'Filename' = 'kick.a500.47.102'; 'Encrypted' = $false; 'Name' = 'Kickstart 3.2.1 47.102 A500 Rom, Hyperion Entertainment'; 'Model' = 'A500'; 'ConfigSupported' = $true },
 
@@ -591,6 +599,67 @@ $validAmigaOs39Md5Entries | ForEach-Object { $_.Priority = $validAmigaOs39Md5Ind
 # index valid kickstart rom md5 entries
 $validKickstartMd5Index = @{}
 $validKickstartMd5Entries | ForEach-Object { $_.Priority = $validKickstartMd5Index.Count + 1; $validKickstartMd5Index[$_['Md5'].ToLower()] = $_ }
+
+# release manifest (HSTWB-10)
+# ----------------------------------
+# The release manifest (data/release-manifest.json) is the source of truth for
+# 3.2.x release identity and AcceptedSource rules. It is loaded opportunistically:
+# when present, its ArchiveIdentity MD5 blocks are indexed and 3.2.x release
+# packages (.lha) found in the amiga os dir are recognized by their (authoritative)
+# MD5 metadata; filenames are a discovery hint only. When absent (typical
+# image-dir deployment), nothing below runs and the built-in entries remain fully
+# in force. An HSTWB_RELEASE_MANIFEST env var (or a manifest next to this script /
+# repo root) overrides the default lookup. This block is self-contained: it never
+# invokes python, so the Windows host path stays independent.
+$releaseManifestData = $null
+$releaseManifestSource = $null
+$releaseManifestErrors = @()
+$releaseManifestArchiveByMd5 = @{}
+$releaseManifestArchiveByFilename = @{}
+$manifestCandidates = @(
+    $env:HSTWB_RELEASE_MANIFEST,
+    (Join-Path $PSScriptRoot -ChildPath 'release-manifest.json'),
+    (Join-Path $PSScriptRoot -ChildPath '../../data/release-manifest.json')
+)
+foreach ($candidate in $manifestCandidates)
+{
+    if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf))
+    {
+        try
+        {
+            $releaseManifestData = Get-Content -Raw -LiteralPath $candidate | ConvertFrom-Json -ErrorAction Stop
+        }
+        catch
+        {
+            $releaseManifestData = $null
+            $releaseManifestErrors = @($_.Exception.Message)
+        }
+        if ($null -ne $releaseManifestData)
+        {
+            $releaseManifestSource = $candidate
+        }
+        break
+    }
+}
+if ($null -ne $releaseManifestData)
+{
+    foreach ($release in @($releaseManifestData.Releases))
+    {
+        $identity = $release.ArchiveIdentity
+        if ($null -eq $identity)
+        {
+            continue
+        }
+        if ($identity.Md5Hash -and $identity.Md5Hash -match '^[0-9a-fA-F]{32}$')
+        {
+            $releaseManifestArchiveByMd5[$identity.Md5Hash.ToLower()] = $release
+        }
+        if ($identity.Filename)
+        {
+            $releaseManifestArchiveByFilename[$identity.Filename.ToLower()] = $release
+        }
+    }
+}
 
 # set install directory to current directory, if it's not defined
 if (!$installDir)
@@ -922,6 +991,40 @@ else
 }
 
 
+# detected 3.2.x release states from the release manifest (HSTWB-10)
+# Manifest metadata (MD5) is authoritative: .lha release packages found in the
+# amiga os dir are recognized by their md5 hash; filenames are a hint only.
+# When no manifest is available (typical image-dir deployment), this block is a
+# no-op and the adf-based detection above remains in force.
+$detectedReleaseStates = @{}
+if ($null -ne $releaseManifestData)
+{
+    foreach ($md5File in $amigaOsMd5Files)
+    {
+        if (!$releaseManifestArchiveByMd5.ContainsKey($md5File.Md5))
+        {
+            continue
+        }
+        $releaseVersion = $releaseManifestArchiveByMd5[$md5File.Md5].Version
+        if ($releaseVersion)
+        {
+            $detectedReleaseStates[$releaseVersion] = $true
+        }
+    }
+}
+
+# print detected 3.2.x release states
+if ($detectedReleaseStates.Count -gt 0)
+{
+    $detectedReleaseStateNames = $detectedReleaseStates.Keys | Sort-Object | Get-Unique
+    Write-Output ('- 3.2.x release states detected from manifest metadata: {0}' -f ($detectedReleaseStateNames -join ', '))
+}
+else
+{
+    Write-Output '- No 3.2.x release states detected from manifest metadata'
+}
+
+
 # detected amiga os 3.1.4 md5 index and filenames from amiga os dir that matches valid amiga os 3.1.4 md5
 $detectedAmigaOs314Md5Index = @{}
 $detectedAmigaOs314Filenames = New-Object System.Collections.Generic.List[System.Object]
@@ -975,6 +1078,24 @@ if ($detectedAmigaOs31Filenames.Count -gt 0)
 else
 {
     Write-Output '- No Amiga OS 3.1 adf files detected'
+}
+
+
+# print release manifest status (HSTWB-10)
+if ($null -ne $releaseManifestSource)
+{
+    Write-Output ''
+    Write-Output 'Release manifest'
+    Write-Output '----------------'
+    Write-Output ('- Using release manifest ''{0}''' -f $releaseManifestSource)
+    if ($releaseManifestArchiveByMd5.Count -gt 0)
+    {
+        Write-Output ('- {0} 3.2.x release archive identities recognized' -f $releaseManifestArchiveByMd5.Count)
+    }
+    else
+    {
+        Write-Output '- No 3.2.x release archive identities recognized'
+    }
 }
 
 

@@ -18,6 +18,7 @@ Import-Module (Resolve-Path('modules\version.psm1')) -Force
 Import-Module (Resolve-Path('modules\config.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
 Import-Module (Resolve-Path('modules\data.psm1')) -Force
+Import-Module (Resolve-Path('modules\amigaos-release.psm1')) -Force
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.Windows.Forms
@@ -455,16 +456,47 @@ function ConfigureAmigaOs($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Configure Amiga OS" @("Switch install Amiga OS", "Change Amiga OS dir", "Select Amiga OS set", "View Amiga Os set files", "Back") 
+        $choice = Menu $hstwb "Configure Amiga OS" @("Switch install Amiga OS", "Change Amiga OS dir", "Select Amiga OS set", "Select Amiga OS 3.2 version", "View Amiga Os set files", "Back")
         switch ($choice)
         {
             "Switch install Amiga OS" { SwitchInstallAmigaOs $hstwb }
             "Change Amiga OS dir" { ChangeAmigaOsDir $hstwb }
             "Select Amiga OS set" { SelectAmigaOsSet $hstwb }
+            "Select Amiga OS 3.2 version" { SelectAmigaOs32Version $hstwb }
             "View Amiga Os set files" { ViewAmigaOsSetFiles $hstwb }
         }
     }
     until ($choice -eq 'Back')
+}
+
+
+# switch install amiga os
+function SelectAmigaOs32Version($hstwb)
+{
+    if ($hstwb.Settings.AmigaOs.AmigaOsSet -ne 'Amiga OS 3.2')
+    {
+        Write-Host 'Select the Amiga OS 3.2 set first.' -ForegroundColor Yellow
+        return
+    }
+    FindAmigaOsFiles $hstwb
+    $manifest = Get-Content (Join-Path (Split-Path $hstwb.Paths.AmigaOsEntriesFile -Parent) 'release-manifest.json') -Raw | ConvertFrom-Json
+    $options = @()
+    foreach ($release in $manifest.Releases)
+    {
+        try
+        {
+            $null = GetAmigaOs32InstallPlan $hstwb.AmigaOsEntries $release.Version $manifest
+            $options += @{ Text = "Amiga OS $($release.Version)"; Value = $release.Version }
+        }
+        catch { Write-Host $_.Exception.Message -ForegroundColor Yellow }
+    }
+    $options += @{ Text = 'Back'; Value = 'Back' }
+    $choice = EnterChoiceColor 'Select Amiga OS version to install' $options
+    if ($choice -and $choice.Value -ne 'Back')
+    {
+        $hstwb.Settings.AmigaOs.TargetVersion = $choice.Value
+        Save $hstwb
+    }
 }
 
 
@@ -512,6 +544,11 @@ function ChangeAmigaOsDir($hstwb)
 
         # find best matching amiga os set
         $hstwb.Settings.AmigaOs.AmigaOsSet = FindBestMatchingAmigaOsSet $hstwb
+        $hstwb.Settings.AmigaOs.Remove('TargetVersion')
+        if ($hstwb.Settings.AmigaOs.AmigaOsSet -eq 'Amiga OS 3.2')
+        {
+            $hstwb.Settings.AmigaOs.TargetVersion = '3.2'
+        }
 
         # update package filtering and install packages, if install mode is used
         if ($hstwb.Settings.Installer.Mode -eq "Install")
@@ -565,6 +602,11 @@ function SelectAmigaOsSet($hstwb)
         $hstwb.UI.AmigaOs.AmigaOsSetInfo = $choise
 
         $hstwb.Settings.AmigaOs.AmigaOsSet = $choise.Value
+        $hstwb.Settings.AmigaOs.Remove('TargetVersion')
+        if ($choise.Value -eq 'Amiga OS 3.2')
+        {
+            $hstwb.Settings.AmigaOs.TargetVersion = '3.2'
+        }
 
         # build amiga os versions
         $amigaOsVersionsIndex = @{}

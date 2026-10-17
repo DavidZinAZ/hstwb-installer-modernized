@@ -1,0 +1,37 @@
+{
+    "FormatVersion": "1.0",
+    "Family": "Synthetic Test Family",
+    "Description": "Synthetic fixture for HSTWB-08 loader tests. All data is invented and non-copyrighted.",
+    "Releases": [
+        {
+            "Version": "1.0",
+            "ReleaseType": "base",
+            "AcceptedSources": [],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": { "KickstartVersion": "100.100" },
+            "ValidationProfile": ["adf"],
+            "InstallEntryPoint": "Install-Test-1.0"
+        },
+        {
+            "Version": "1.1",
+            "ReleaseType": "update",
+            "AcceptedSources": ["1.0"],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": { "KickstartVersion": "100.101" },
+            "ValidationProfile": ["adf"],
+            "InstallEntryPoint": "Install-Test-1.1"
+        },
+        {
+            "Version": "1.1",
+            "ReleaseType": "update",
+            "AcceptedSources": ["1.0"],
+            "Includes": [],
+            "Supersedes": [],
+            "RomSet": { "KickstartVersion": "100.102" },
+            "ValidationProfile": ["adf"],
+            "InstallEntryPoint": "Install-Test-1.1-dup"
+        }
+    ]
+}

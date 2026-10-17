@@ -173,7 +173,18 @@ IF "$updateinstall" EQ 1 VAL
 
   ; create amiga os 3.2.1 prefs
   echo "" NOLINE >INSTALLDIR:Prefs/Amiga-OS-3.2.1
-ENDIF 
+ENDIF
+
+; run amiga os 3.2.x update, if host-generated 3.2.x state file exists.
+; the 3.2 base and 3.2.1 paths are already handled above and the executor
+; treats them as no-ops. the 3.2.2, 3.2.2.1 and 3.2.3 paths are executed.
+IF EXISTS "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json"
+  execute "INSTALLDIR:S/Amiga-OS-3.2/Install-Update-3.2.x"
+  IF EXISTS INSTALLDIR:Prefs/Install-Failed
+    echo "AmigaOS update failed. Installation is incomplete."
+    quit 20
+  ENDIF
+ENDIF
 
 echo ""
 echo "Amiga OS 3.2 installation is complete."

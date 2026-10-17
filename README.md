@@ -1,4 +1,10 @@
-# HstWB Installer
+# hstwb-updated
+
+An independently maintained continuation of **[HstWB Installer](https://github.com/henrikstengaard/hstwb-installer)**, created by **Henrik Nørfjand Stengaard**. Henrik built the original installer, AmigaDOS workflow, prepared image system, package framework, and documentation on which this project depends. Thank you, Henrik, and everyone who contributed to the original project.
+
+This continuation is maintained by **[DavidZinAZ](https://github.com/DavidZinAZ)**. The new modernization work was developed by David with AI assistance, including **Scout (OpenAI Codex)** for code changes, investigation, documentation, and testing. These additions are our responsibility; they do not imply Henrik's involvement in or endorsement of this continuation.
+
+The existing setup, media and ROM selection, bundled image templates, and installation process remain the foundation. See [changes and validation](CHANGELOG.md), [acknowledgments](ACKNOWLEDGMENTS.md), and [current test status](docs/validation-status.md). Internal `hstwb-installer` filenames are retained for compatibility.
 
 HstWB Installer is an application, which can automate installation of Amiga OS, Kickstarts roms and packages with additional content. 
 
@@ -40,7 +46,7 @@ Within short time this turned into a configurable way of automating installation
 
 To give users the choice of installing additional content on a freshly installed Amiga OS, the packages concept was introduced. Then WHDLoad demo and game launcher packages with screenshot was added together with various versions of the very popular ClassicWB and BetterWB Workbench enhancements.
 
-The name of the project "HstWB" is short for Henrik Nørfjand Stengaard who is currently developing and maintaining HstWB Installer.
+The original name "HstWB" comes from Henrik Nørfjand Stengaard. The original project's history and authorship are preserved in this continuation; visit [Henrik's original project](https://github.com/henrikstengaard/hstwb-installer) for his work.
 
 # License
 

@@ -11,21 +11,35 @@
 ;	(if (= askForGlowIcons TRUE) 
 
 ; clean up icons
+Echo "Glow Icons: cleaning up icon positions..."
+Echo "Starting icon cleanup" >INSTALLDIR:Temp/GlowIcons-Progress.log
 Execute "INSTALLDIR:S/Amiga-OS-3.2/Clean-Up"
+Echo "Icon cleanup returned" >>INSTALLDIR:Temp/GlowIcons-Progress.log
 
 ; create classic and glow icons directories
 MakePath >NIL: "SYSTEMDIR:Icons/ClassicIcons"
 MakePath >NIL: "SYSTEMDIR:Icons/GlowIcons"
 
 ; archive classic icons
-Lha -q -e -r -x a "SYSTEMDIR:Icons/ClassicIcons/ClassicIcons.lha" "SYSTEMDIR:" #?.info
+Echo "Glow Icons: archiving classic icons..."
+Echo "Starting classic icon archive" >>INSTALLDIR:Temp/GlowIcons-Progress.log
+Lha -e -r -x a "SYSTEMDIR:Icons/ClassicIcons/ClassicIcons.lha" "SYSTEMDIR:" #?.info >INSTALLDIR:Temp/ClassicIcons-Archive.log
+Echo "Classic icon archive return code: $RC" >>INSTALLDIR:Temp/GlowIcons-Progress.log
+Echo "Classic icon archive returned" >>INSTALLDIR:Temp/GlowIcons-Progress.log
 
 ; archive glow icons
-Lha -q -e -r -x a "SYSTEMDIR:Icons/GlowIcons/GlowIcons.lha" "$amigaosdisk:" #?.info
+Echo "Glow Icons: archiving Glow Icons..."
+Echo "Starting Glow Icons archive" >>INSTALLDIR:Temp/GlowIcons-Progress.log
+Lha -e -r -x a "SYSTEMDIR:Icons/GlowIcons/GlowIcons.lha" "$amigaosdisk:" #?.info >INSTALLDIR:Temp/GlowIcons-Archive.log
+Echo "Glow Icons archive return code: $RC" >>INSTALLDIR:Temp/GlowIcons-Progress.log
+Echo "Glow Icons archive returned" >>INSTALLDIR:Temp/GlowIcons-Progress.log
 
 ; install glowicons to system directory, if glow icons prefs exists
 IF EXISTS "INSTALLDIR:Prefs/Amiga-OS-3.2-GlowIcons"
+  Echo "Glow Icons: installing selected icons..."
+  Echo "Starting selected icon installation" >>INSTALLDIR:Temp/GlowIcons-Progress.log
   Lha -q -m1 x "SYSTEMDIR:Icons/GlowIcons/GlowIcons.lha" "SYSTEMDIR:"
+  Echo "Selected icon installation returned" >>INSTALLDIR:Temp/GlowIcons-Progress.log
 ENDIF
 
 ; create classic and glow icons

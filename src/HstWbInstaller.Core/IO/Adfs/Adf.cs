@@ -3,6 +3,7 @@
     using System.IO;
     using System.Threading.Tasks;
     using Extensions;
+    using FastFileSystem;
 
     public static class Adf
     {
@@ -24,14 +25,14 @@
             var rootBlockBytes = await RootBlockWriter.BuildBlock(new RootBlock
             {
                 DiskName = diskName
-            });
-            var rootBlockOffset = 880 * 512;
+            }, FloppyDiskConstants.BlockSize);
+            var rootBlockOffset = 880 * FloppyDiskConstants.BlockSize;
             adfStream.Seek(rootBlockOffset, SeekOrigin.Begin);
             await adfStream.WriteBytes(rootBlockBytes);
             
             // write bitmap block
             var bitmapBlockBytes = await BitmapBlockWriter.BuildBlock(new BitmapBlock());
-            var bitmapBlockOffset = 881 * 512;
+            var bitmapBlockOffset = 881 * FloppyDiskConstants.BlockSize;
             adfStream.Seek(bitmapBlockOffset, SeekOrigin.Begin);
             await adfStream.WriteBytes(bitmapBlockBytes);
 
