@@ -61,4 +61,25 @@ $list=Join-Path $root 'packages.json'
 $hstwb=@{Paths=@{PackagesListFile=$list;PackagesPath=$dest};Packages=@{}}
 $screen=(& {DownloadLatestPackages $hstwb $false} 6>&1 | Out-String)
 Assert ($screen -match 'Package download failed:' -and $screen -notmatch '(?m)^Done\s*$') 'Download screen reported Done after failure'
+Assert ($hstwb.Packages.Count -eq 1) 'Failed batch left existing downloads hidden from setup'
+$fn=$ast.Find({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq 'SelectPackages'},$true)
+Invoke-Expression $fn.Extent.Text
+function Menu($hstwb,$title,$options) {
+ Assert (@($options | Where-Object {$_.Value -eq 'synthetic'}).Count -eq 1) 'Downloaded package absent from selection menu'
+ return @{Value='back'}
+}
+$hstwb.Settings=@{Packages=@{PackageFiltering='All'}}
+$hstwb.Packages=@{}
+SelectPackages $hstwb
+Assert ($hstwb.Packages.Count -eq 1) 'Selection did not refresh packages from disk'
+Import-Module (Join-Path $repo 'modules/dialog.psm1') -Force
+$hstwb.Settings.Installer=@{Mode='Install'}
+$hstwb.Settings.Image=@{}
+$hstwb.Settings.AmigaOs=@{AmigaOsSet='Amiga OS 3.2';TargetVersion='3.2.3'}
+$hstwb.Settings.Kickstart=@{}
+$hstwb.Settings.UserPackages=@{}
+$hstwb.Settings.Emulator=@{}
+$hstwb.UI=@{AmigaOs=@{AmigaOsSetInfo=@{Text="'Amiga OS 3.2' (77/96)"}};Kickstart=@{}}
+$screen=(& {PrintSettings $hstwb} 6>&1 | Out-String)
+Assert ($screen -match "Target Amiga OS\s+: 'Amiga OS 3.2.3'" -and $screen -match 'Amiga OS media set') 'Selected OS target is not clearly distinguished from base media'
 Write-Host 'PASS: local settings isolation/import, missing package directory, newest release selection, download failure/invalid ZIP preservation, and backup'
