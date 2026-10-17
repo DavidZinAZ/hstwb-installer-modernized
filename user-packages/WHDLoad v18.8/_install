@@ -52,7 +52,8 @@ echo "WHDLoad..."
 
 ; extract whdload to temp systemdir
 echo "Extracting WHDLoad archive..."
-lha -m1 x "USERPACKAGEDIR:WHDLoad_usr.lha" "SYSTEMDIR:Temp/"
+Version "INSTALLDIR:C/LhA" FILE
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:WHDLoad_usr.lha" "SYSTEMDIR:Temp/"
 
 ; install whdload c files
 Copy >NIL: "SYSTEMDIR:Temp/WHDLoad/C/#?" "$whdloadcdir" ALL
@@ -92,7 +93,7 @@ echo "SKick..."
 ; extract whdload to temp systemdir
 MakeDir >NIL: "SYSTEMDIR:Temp/SKick"
 echo "Extracting SKick archive..."
-lha -m1 x "USERPACKAGEDIR:skick346.lha" "SYSTEMDIR:Temp/SKick/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:skick346.lha" "SYSTEMDIR:Temp/SKick/"
 
 ; create devs kickstarts directory, if it doesn't exist
 IF NOT EXISTS "$whdloaddevsdir/Kickstarts"
