@@ -9,6 +9,11 @@
 ; Author: Henrik Noerfjand Stengaard
 
 
+; Keep archive tools on an explicit stack, including direct Execute callers.
+Stack 65536
+FailAt 21
+echo "Checking archive: {entryfile}"
+
 set lhaentry "0"
 set lzxentry "0"
 set zipentry "0"
@@ -19,7 +24,6 @@ echo "{entryfile}" >T:_entryfile
 ; goto lha entry, if entry file contains '.lha'
 search >NIL: "T:_entryfile" ".lha"
 IF $RC EQ 0 VAL
-  set islha
   SKIP lhaentry
 ENDIF
 
@@ -46,7 +50,10 @@ SKIP end
 
 LAB lhaentry
 set lhaentry "1"
-lha l "{entryfile}" >T:_lhalist
+INSTALLDIR:C/LhA l "{entryfile}" >T:_lhalist
+IF WARN
+  SKIP archiveerror
+ENDIF
 set lhalines `wc -l <T:_lhalist`
 
 Search >NIL: T:_lhalist "LhA Freeware Version 2.2" quiet
@@ -65,6 +72,9 @@ SKIP devicefreespace
 LAB lzxentry
 set lzxentry "1"
 unlzx l "{entryfile}" >T:_lzxlist
+IF WARN
+  SKIP archiveerror
+ENDIF
 set lzxlines `wc -l <T:_lzxlist`
 sed "`eval "$lzxlines-3"`q;d" T:_lzxlist >T:_lzxsize
 trim "`type T:_lzxsize`" >T:_lzxsize2
@@ -76,6 +86,9 @@ SKIP devicefreespace
 LAB zipentry
 set zipentry "1"
 unzip -l "{entryfile}" >T:_ziplist
+IF WARN
+  SKIP archiveerror
+ENDIF
 set ziplines `wc -l <T:_ziplist`
 sed "`eval "$ziplines"`q;d" T:_ziplist >T:_zipsize
 trim "`type T:_zipsize`" >T:_zipsize2
@@ -88,6 +101,7 @@ delete >NIL: T:_zipsize#?
 ; -----------------
 LAB devicefreespace
 
+echo "Checking free space: $INSTALLDIR"
 set entrysizeb `sed "1d;q" T:_entrysize`
 delete >NIL: T:_entrysize
 set entrysizemb `eval "$entrysizeb / 1048576"`
@@ -156,15 +170,34 @@ SKIP BACK continue
 ; -------------
 LAB installentry
 
+echo "Extracting: {entryfile}"
+echo "Destination: $entrydir"
 IF $lhaentry EQ 1 VAL
-  lha -N -m1 -q x "{entryfile}" "$entrydir/"
+  INSTALLDIR:C/LhA -N -m1 x "{entryfile}" "$entrydir/"
+  IF WARN
+    SKIP archiveerror
+  ENDIF
 ENDIF
 IF $lzxentry EQ 1 VAL
-  unlzx -m -q x "{entryfile}" "$entrydir/"
+  unlzx -m x "{entryfile}" "$entrydir/"
+  IF WARN
+    SKIP archiveerror
+  ENDIF
 ENDIF
 IF $zipentry EQ 1 VAL
-  unzip -o -x "{entryfile}" -d "$entrydir/"
+  unzip -o "{entryfile}" -d "$entrydir/"
+  IF WARN
+    SKIP archiveerror
+  ENDIF
 ENDIF
+echo "Completed: {entryfile}"
+SKIP end
+
+LAB archiveerror
+echo "Archive command failed: {entryfile}"
+echo "Pack installation stopped. Check the archive and messages above."
+set stopinstallation "1"
+echo "{entryfile}" >T:_whdloadpack-stop
 
 ; end
 LAB end

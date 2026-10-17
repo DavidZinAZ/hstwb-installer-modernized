@@ -2,7 +2,9 @@
 
 This records modernization work by DavidZinAZ with AI assistance, including Scout (OpenAI Codex). The underlying installer and earlier history come from [Henrik Nørfjand Stengaard's HstWB Installer](https://github.com/henrikstengaard/hstwb-installer).
 
-## Unreleased — October 16, 2026
+## Unreleased — October 17, 2026
+
+- Version 1.6.7 removes remaining forced LhA PURE residency in package, self-install and OS 3.9 paths, matching the earlier OS-install correction. Show per-archive WHDLoad Packs progress and stop on archive errors; correct ZIP extraction/discovery. First magazine archive integrity and three-format builder checks passed. Native stall resolution awaits a fresh-image retest.
 
 - Update validation notes through 1.6.6, remove identified local machine paths from documentation/tests, make optional licensed-media test paths configurable, and add a current-content privacy check. Review GitHub notes and historical content; keep the history/publication limitation explicit.
 - Version 1.6.6 replaces the stale 2019 standard-package feed with direct official GitHub release discovery. Refresh stale catalogs before downloading, show byte progress/timeouts, skip matching current ZIPs, and explain stable fallback when no prerelease exists. Live-tested all 17 current packages and a repeat pass with zero downloads. Extend EAB assign compatibility to the newer Beta-menu assigns.

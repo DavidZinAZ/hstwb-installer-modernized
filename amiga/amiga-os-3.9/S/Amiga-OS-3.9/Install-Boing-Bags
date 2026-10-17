@@ -54,7 +54,7 @@ Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/MakePath" PURE
 Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/Reboot" PURE 
 Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/TotalReset" PURE
 Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/UAEquit" PURE
-Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/LhA" PURE
+; Load LhA per invocation; forced PURE residency stalled archive operations.
 Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/UNLZX" PURE
 Resident >>SYS:hstwb-installer.log "INSTALLDIR:C/UnZip" PURE
 

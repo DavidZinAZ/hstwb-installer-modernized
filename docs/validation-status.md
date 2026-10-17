@@ -2,6 +2,7 @@
 
 ## Observed results
 
+- Installer 1.6.7 adds WHDLoad Packs archive progress/error handling and corrects ZIP discovery in the Windows pack builder. The first magazine archive passed a host integrity check; a three-format builder fixture passed. The reported native stall remains unresolved pending a fresh-image retest; see [WHDLoad Packs troubleshooting](whdload-pack-troubleshooting.md).
 - Installer version: 1.6.6. Standard-package catalog discovery checks official GitHub releases; all 17 current packages downloaded and were recognized, followed by a repeat pass with zero downloads. Prerelease-to-stable fallback was reported explicitly.
 - All 31 user packages are detected, including the eight additions in 1.6.5. Their payload/layout and source-update tests passed; native qualification is still pending below.
 - EAB assign compatibility tests passed for Games/Demos AGA/OCS versions 3.1.2 and 3.2.0, including the new Beta-folder assigns.

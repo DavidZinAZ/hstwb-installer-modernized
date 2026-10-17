@@ -69,7 +69,7 @@ function ParseEntry()
 	$unsupportedList = New-Object System.Collections.Generic.List[System.Object]
 
     # set entry name with filename extension
-    $entryName = $entryName -replace '\.(lha|lzx)$', ''
+    $entryName = $entryName -replace '\.(lha|lzx|zip)$', ''
 
     # parse id, hardware, language, memory, demo, publisher/developer, other and version and unsupported from entry name
     do
@@ -276,7 +276,7 @@ function FindEntries()
     )
     
     $files = @()
-    $files += Get-ChildItem -Path $userPackageDir -Recurse -Include *.lha, *.lzx, .zip | Sort-Object @{expression={$_.FullName};Ascending=$true}
+    $files += Get-ChildItem -Path $userPackageDir -Recurse -File -Include *.lha, *.lzx, *.zip | Sort-Object @{expression={$_.FullName};Ascending=$true}
     
     $entries = New-Object System.Collections.Generic.List[System.Object]
     
