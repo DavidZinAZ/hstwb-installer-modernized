@@ -1,572 +1,746 @@
 {
-    "Date":  "2019-10-20 21:37:27",
-    "Description":  "HstWB packages",
-    "Url":  "https://hstwb.firstrealize.com/data/hstwb-packages.json",
+    "Date":  "2026-10-17T10:39:49.0835386Z",
+    "CheckedAt":  "2026-10-17T10:39:49.0885381Z",
+    "Description":  "HstWB packages checked against official GitHub release repositories",
+    "Source":  "GitHubReleases",
     "Packages":  [
                      {
-                         "Name":  "bestwb-package",
                          "Releases":  [
                                           {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.2.1",
+                                              "FileName":  "BestWB.1.3.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.3.1/BestWB.1.3.1.zip",
+                                              "Version":  "1.3.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BestWB.1.3.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.3.0/BestWB.1.3.0.zip",
+                                              "Version":  "1.3.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BestWB.1.2.1.zip",
                                               "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.2.1/BestWB.1.2.1.zip",
-                                              "FileName":  "BestWB.1.2.1.zip"
+                                              "Version":  "1.2.1",
+                                              "Prerelease":  "False"
                                           },
                                           {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.2.0",
+                                              "FileName":  "BestWB.1.2.0.zip",
                                               "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.2.0/BestWB.1.2.0.zip",
-                                              "FileName":  "BestWB.1.2.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.1.1/BestWB.1.1.1.zip",
-                                              "FileName":  "BestWB.1.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.1.0/BestWB.1.1.0.zip",
-                                              "FileName":  "BestWB.1.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.0.0/BestWB.1.0.0.zip",
-                                              "FileName":  "BestWB.1.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "betterwb-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.1.0/BetterWB.4.1.0.zip",
-                                              "FileName":  "BetterWB.4.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.0.5",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.5/BetterWB.4.0.5.zip",
-                                              "FileName":  "BetterWB.4.0.5.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.0.4",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.4/BetterWB.4.0.4.zip",
-                                              "FileName":  "BetterWB.4.0.4.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.2/BetterWB.4.0.2.zip",
-                                              "FileName":  "BetterWB.4.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.0.1",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.1/BetterWB.4.0.1.zip",
-                                              "FileName":  "BetterWB.4.0.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "4.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.0/BetterWB.4.0.0.zip",
-                                              "FileName":  "BetterWB.4.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-68k-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.1.0/ClassicWB.68K.28.1.0.zip",
-                                              "FileName":  "ClassicWB.68K.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.0.2/ClassicWB.68K.28.0.2.zip",
-                                              "FileName":  "ClassicWB.68K.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.0.1/ClassicWB.68K.28.0.1.zip",
-                                              "FileName":  "ClassicWB.68K.28.0.1.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-adv-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.1.1/ClassicWB.ADV.28.1.1.zip",
-                                              "FileName":  "ClassicWB.ADV.28.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.1.0/ClassicWB.ADV.28.1.0.zip",
-                                              "FileName":  "ClassicWB.ADV.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.3",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.3/ClassicWB.ADV.28.0.3.zip",
-                                              "FileName":  "ClassicWB.ADV.28.0.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.2/ClassicWB.ADV.28.0.2.zip",
-                                              "FileName":  "ClassicWB.ADV.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.0/ClassicWB.ADV.28.0.0.zip",
-                                              "FileName":  "ClassicWB.ADV.28.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-advsp-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.1.1/ClassicWB.ADVSP.28.1.1.zip",
-                                              "FileName":  "ClassicWB.ADVSP.28.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.1.0/ClassicWB.ADVSP.28.1.0.zip",
-                                              "FileName":  "ClassicWB.ADVSP.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.3",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.3/ClassicWB.ADVSP.28.0.3.zip",
-                                              "FileName":  "ClassicWB.ADVSP.28.0.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.2/ClassicWB.ADVSP.28.0.2.zip",
-                                              "FileName":  "ClassicWB.ADVSP.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.0/ClassicWB.ADVSP.28.0.0.zip",
-                                              "FileName":  "ClassicWB.ADVSP.28.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-full-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.1.1/ClassicWB.FULL.28.1.1.zip",
-                                              "FileName":  "ClassicWB.FULL.28.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.1.0/ClassicWB.FULL.28.1.0.zip",
-                                              "FileName":  "ClassicWB.FULL.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.3",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.3/ClassicWB.FULL.28.0.3.zip",
-                                              "FileName":  "ClassicWB.FULL.28.0.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.2/ClassicWB.FULL.28.0.2.zip",
-                                              "FileName":  "ClassicWB.FULL.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.0/ClassicWB.FULL.28.0.0.zip",
-                                              "FileName":  "ClassicWB.FULL.28.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-gaae-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-gaae-package/releases/download/28.1.0/ClassicWB.GAAE.28.1.0.zip",
-                                              "FileName":  "ClassicWB.GAAE.28.1.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-lite-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.1.0/ClassicWB.LITE.28.1.0.zip",
-                                              "FileName":  "ClassicWB.LITE.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.3",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.3/ClassicWB.LITE.28.0.3.zip",
-                                              "FileName":  "ClassicWB.LITE.28.0.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.2/ClassicWB.LITE.28.0.2.zip",
-                                              "FileName":  "ClassicWB.LITE.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.0/ClassicWB.LITE.28.0.0.zip",
-                                              "FileName":  "ClassicWB.LITE.28.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-os39-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.2/ClassicWB.OS39.28.1.2.zip",
-                                              "FileName":  "ClassicWB.OS39.28.1.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.1/ClassicWB.OS39.28.1.1.zip",
-                                              "FileName":  "ClassicWB.OS39.28.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.0/ClassicWB.OS39.28.1.0.zip",
-                                              "FileName":  "ClassicWB.OS39.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.0.2/ClassicWB.OS39.28.0.2.zip",
-                                              "FileName":  "ClassicWB.OS39.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.0.1/ClassicWB.OS39.28.0.1.zip",
-                                              "FileName":  "ClassicWB.OS39.28.0.1.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "classicwb-p96-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.1.1/ClassicWB.P96.28.1.1.zip",
-                                              "FileName":  "ClassicWB.P96.28.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.1.0/ClassicWB.P96.28.1.0.zip",
-                                              "FileName":  "ClassicWB.P96.28.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.3",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.3/ClassicWB.P96.28.0.3.zip",
-                                              "FileName":  "ClassicWB.P96.28.0.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.2/ClassicWB.P96.28.0.2.zip",
-                                              "FileName":  "ClassicWB.P96.28.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "28.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.0/ClassicWB.P96.28.0.0.zip",
-                                              "FileName":  "ClassicWB.P96.28.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "eab-whdload-demos-aga-menu-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.2/EAB.WHDLoad.Demos.AGA.Menu.3.1.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.1/EAB.WHDLoad.Demos.AGA.Menu.3.1.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.0/EAB.WHDLoad.Demos.AGA.Menu.3.1.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.2/EAB.WHDLoad.Demos.AGA.Menu.2.6.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.1/EAB.WHDLoad.Demos.AGA.Menu.2.6.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.0/EAB.WHDLoad.Demos.AGA.Menu.2.6.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "eab-whdload-demos-ocs-menu-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.2/EAB.WHDLoad.Demos.OCS.Menu.3.1.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.1/EAB.WHDLoad.Demos.OCS.Menu.3.1.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.0/EAB.WHDLoad.Demos.OCS.Menu.3.1.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.2/EAB.WHDLoad.Demos.OCS.Menu.2.6.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.1/EAB.WHDLoad.Demos.OCS.Menu.2.6.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.0/EAB.WHDLoad.Demos.OCS.Menu.2.6.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "eab-whdload-games-aga-menu-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.2/EAB.WHDLoad.Games.AGA.Menu.3.1.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.1/EAB.WHDLoad.Games.AGA.Menu.3.1.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.0/EAB.WHDLoad.Games.AGA.Menu.3.1.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.2/EAB.WHDLoad.Games.AGA.Menu.2.6.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.1/EAB.WHDLoad.Games.AGA.Menu.2.6.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.0/EAB.WHDLoad.Games.AGA.Menu.2.6.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "eab-whdload-games-ocs-menu-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.2/EAB.WHDLoad.Games.OCS.Menu.3.1.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.1/EAB.WHDLoad.Games.OCS.Menu.3.1.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "3.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.0/EAB.WHDLoad.Games.OCS.Menu.3.1.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.2",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.2/EAB.WHDLoad.Games.OCS.Menu.2.6.2.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.1",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.1/EAB.WHDLoad.Games.OCS.Menu.2.6.1.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "2.6.0",
-                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.0/EAB.WHDLoad.Games.OCS.Menu.2.6.0.zip",
-                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "hstwb-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
                                               "Version":  "1.2.0",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.2.0/HstWB.1.2.0.zip",
-                                              "FileName":  "HstWB.1.2.0.zip"
+                                              "Prerelease":  "False"
                                           },
                                           {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.1.4",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.4/HstWB.1.1.4.zip",
-                                              "FileName":  "HstWB.1.1.4.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.1.3",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.3/HstWB.1.1.3.zip",
-                                              "FileName":  "HstWB.1.1.3.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
+                                              "FileName":  "BestWB.1.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.1.1/BestWB.1.1.1.zip",
                                               "Version":  "1.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BestWB.1.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.1.0/BestWB.1.1.0.zip",
+                                              "Version":  "1.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BestWB.1.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/bestwb-package/releases/download/1.0.0/BestWB.1.0.0.zip",
+                                              "Version":  "1.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "bestwb-package",
+                         "Repository":  "henrikstengaard/bestwb-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "BetterWB.4.3.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.3.0/BetterWB.4.3.0.zip",
+                                              "Version":  "4.3.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.1.0/BetterWB.4.1.0.zip",
+                                              "Version":  "4.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.0.5.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.5/BetterWB.4.0.5.zip",
+                                              "Version":  "4.0.5",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.0.4.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.4/BetterWB.4.0.4.zip",
+                                              "Version":  "4.0.4",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.2/BetterWB.4.0.2.zip",
+                                              "Version":  "4.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.1/BetterWB.4.0.1.zip",
+                                              "Version":  "4.0.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "BetterWB.4.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/betterwb-package/releases/download/4.0.0/BetterWB.4.0.0.zip",
+                                              "Version":  "4.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "betterwb-package",
+                         "Repository":  "henrikstengaard/betterwb-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.68K.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.2.1/ClassicWB.68K.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.68K.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.2.0/ClassicWB.68K.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.68K.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.1.0/ClassicWB.68K.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.68K.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.0.2/ClassicWB.68K.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.68K.28.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-68k-package/releases/download/28.0.1/ClassicWB.68K.28.0.1.zip",
+                                              "Version":  "28.0.1",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-68k-package",
+                         "Repository":  "henrikstengaard/classicwb-68k-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.2.1/ClassicWB.ADV.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.2.0/ClassicWB.ADV.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.1.1/ClassicWB.ADV.28.1.1.zip",
+                                              "Version":  "28.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.1.0/ClassicWB.ADV.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.0.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.3/ClassicWB.ADV.28.0.3.zip",
+                                              "Version":  "28.0.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.2/ClassicWB.ADV.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADV.28.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-adv-package/releases/download/28.0.0/ClassicWB.ADV.28.0.0.zip",
+                                              "Version":  "28.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-adv-package",
+                         "Repository":  "henrikstengaard/classicwb-adv-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.2.1/ClassicWB.ADVSP.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.2.0/ClassicWB.ADVSP.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.1.1/ClassicWB.ADVSP.28.1.1.zip",
+                                              "Version":  "28.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.1.0/ClassicWB.ADVSP.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.0.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.3/ClassicWB.ADVSP.28.0.3.zip",
+                                              "Version":  "28.0.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.2/ClassicWB.ADVSP.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.ADVSP.28.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-advsp-package/releases/download/28.0.0/ClassicWB.ADVSP.28.0.0.zip",
+                                              "Version":  "28.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-advsp-package",
+                         "Repository":  "henrikstengaard/classicwb-advsp-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.2.1/ClassicWB.FULL.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.2.0/ClassicWB.FULL.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.1.1/ClassicWB.FULL.28.1.1.zip",
+                                              "Version":  "28.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.1.0/ClassicWB.FULL.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.0.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.3/ClassicWB.FULL.28.0.3.zip",
+                                              "Version":  "28.0.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.2/ClassicWB.FULL.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.FULL.28.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-full-package/releases/download/28.0.0/ClassicWB.FULL.28.0.0.zip",
+                                              "Version":  "28.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-full-package",
+                         "Repository":  "henrikstengaard/classicwb-full-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.GAAE.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-gaae-package/releases/download/28.2.1/ClassicWB.GAAE.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.GAAE.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-gaae-package/releases/download/28.2.0/ClassicWB.GAAE.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.GAAE.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-gaae-package/releases/download/28.1.0/ClassicWB.GAAE.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-gaae-package",
+                         "Repository":  "henrikstengaard/classicwb-gaae-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.2.1/ClassicWB.LITE.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.2.0/ClassicWB.LITE.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.1.0/ClassicWB.LITE.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.0.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.3/ClassicWB.LITE.28.0.3.zip",
+                                              "Version":  "28.0.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.2/ClassicWB.LITE.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.LITE.28.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-lite-package/releases/download/28.0.0/ClassicWB.LITE.28.0.0.zip",
+                                              "Version":  "28.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-lite-package",
+                         "Repository":  "henrikstengaard/classicwb-lite-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.2.1/ClassicWB.OS39.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.2.0/ClassicWB.OS39.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.2/ClassicWB.OS39.28.1.2.zip",
+                                              "Version":  "28.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.1/ClassicWB.OS39.28.1.1.zip",
+                                              "Version":  "28.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.1.0/ClassicWB.OS39.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.0.2/ClassicWB.OS39.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.OS39.28.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-os39-package/releases/download/28.0.1/ClassicWB.OS39.28.0.1.zip",
+                                              "Version":  "28.0.1",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-os39-package",
+                         "Repository":  "henrikstengaard/classicwb-os39-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.2.1/ClassicWB.P96.28.2.1.zip",
+                                              "Version":  "28.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.2.0/ClassicWB.P96.28.2.0.zip",
+                                              "Version":  "28.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.1.1/ClassicWB.P96.28.1.1.zip",
+                                              "Version":  "28.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.1.0/ClassicWB.P96.28.1.0.zip",
+                                              "Version":  "28.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.0.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.3/ClassicWB.P96.28.0.3.zip",
+                                              "Version":  "28.0.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.2/ClassicWB.P96.28.0.2.zip",
+                                              "Version":  "28.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "ClassicWB.P96.28.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/classicwb-p96-package/releases/download/28.0.0/ClassicWB.P96.28.0.0.zip",
+                                              "Version":  "28.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "classicwb-p96-package",
+                         "Repository":  "henrikstengaard/classicwb-p96-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.2.0/EAB.WHDLoad.Demos.AGA.Menu.3.2.0.zip",
+                                              "Version":  "3.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.2/EAB.WHDLoad.Demos.AGA.Menu.3.1.2.zip",
+                                              "Version":  "3.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.1/EAB.WHDLoad.Demos.AGA.Menu.3.1.1.zip",
+                                              "Version":  "3.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.3.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/3.1.0/EAB.WHDLoad.Demos.AGA.Menu.3.1.0.zip",
+                                              "Version":  "3.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.2/EAB.WHDLoad.Demos.AGA.Menu.2.6.2.zip",
+                                              "Version":  "2.6.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.1/EAB.WHDLoad.Demos.AGA.Menu.2.6.1.zip",
+                                              "Version":  "2.6.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.AGA.Menu.2.6.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-aga-menu-package/releases/download/2.6.0/EAB.WHDLoad.Demos.AGA.Menu.2.6.0.zip",
+                                              "Version":  "2.6.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "eab-whdload-demos-aga-menu-package",
+                         "Repository":  "henrikstengaard/eab-whdload-demos-aga-menu-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.2.0/EAB.WHDLoad.Demos.OCS.Menu.3.2.0.zip",
+                                              "Version":  "3.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.2/EAB.WHDLoad.Demos.OCS.Menu.3.1.2.zip",
+                                              "Version":  "3.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.1/EAB.WHDLoad.Demos.OCS.Menu.3.1.1.zip",
+                                              "Version":  "3.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.3.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/3.1.0/EAB.WHDLoad.Demos.OCS.Menu.3.1.0.zip",
+                                              "Version":  "3.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.2/EAB.WHDLoad.Demos.OCS.Menu.2.6.2.zip",
+                                              "Version":  "2.6.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.1/EAB.WHDLoad.Demos.OCS.Menu.2.6.1.zip",
+                                              "Version":  "2.6.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Demos.OCS.Menu.2.6.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-demos-ocs-menu-package/releases/download/2.6.0/EAB.WHDLoad.Demos.OCS.Menu.2.6.0.zip",
+                                              "Version":  "2.6.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "eab-whdload-demos-ocs-menu-package",
+                         "Repository":  "henrikstengaard/eab-whdload-demos-ocs-menu-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.2.0/EAB.WHDLoad.Games.AGA.Menu.3.2.0.zip",
+                                              "Version":  "3.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.2/EAB.WHDLoad.Games.AGA.Menu.3.1.2.zip",
+                                              "Version":  "3.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.1/EAB.WHDLoad.Games.AGA.Menu.3.1.1.zip",
+                                              "Version":  "3.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.3.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/3.1.0/EAB.WHDLoad.Games.AGA.Menu.3.1.0.zip",
+                                              "Version":  "3.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.2/EAB.WHDLoad.Games.AGA.Menu.2.6.2.zip",
+                                              "Version":  "2.6.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.1/EAB.WHDLoad.Games.AGA.Menu.2.6.1.zip",
+                                              "Version":  "2.6.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.AGA.Menu.2.6.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-aga-menu-package/releases/download/2.6.0/EAB.WHDLoad.Games.AGA.Menu.2.6.0.zip",
+                                              "Version":  "2.6.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "eab-whdload-games-aga-menu-package",
+                         "Repository":  "henrikstengaard/eab-whdload-games-aga-menu-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.2.0/EAB.WHDLoad.Games.OCS.Menu.3.2.0.zip",
+                                              "Version":  "3.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.2/EAB.WHDLoad.Games.OCS.Menu.3.1.2.zip",
+                                              "Version":  "3.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.1/EAB.WHDLoad.Games.OCS.Menu.3.1.1.zip",
+                                              "Version":  "3.1.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.3.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/3.1.0/EAB.WHDLoad.Games.OCS.Menu.3.1.0.zip",
+                                              "Version":  "3.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.2/EAB.WHDLoad.Games.OCS.Menu.2.6.2.zip",
+                                              "Version":  "2.6.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.1/EAB.WHDLoad.Games.OCS.Menu.2.6.1.zip",
+                                              "Version":  "2.6.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "EAB.WHDLoad.Games.OCS.Menu.2.6.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/eab-whdload-games-ocs-menu-package/releases/download/2.6.0/EAB.WHDLoad.Games.OCS.Menu.2.6.0.zip",
+                                              "Version":  "2.6.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "eab-whdload-games-ocs-menu-package",
+                         "Repository":  "henrikstengaard/eab-whdload-games-ocs-menu-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "HstWB.1.2.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.2.1/HstWB.1.2.1.zip",
+                                              "Version":  "1.2.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.1.2.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.2.0/HstWB.1.2.0.zip",
+                                              "Version":  "1.2.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.1.1.4.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.4/HstWB.1.1.4.zip",
+                                              "Version":  "1.1.4",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.1.1.3.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.3/HstWB.1.1.3.zip",
+                                              "Version":  "1.1.3",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.1.1.1.zip",
                                               "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.1/HstWB.1.1.1.zip",
-                                              "FileName":  "HstWB.1.1.1.zip"
+                                              "Version":  "1.1.1",
+                                              "Prerelease":  "False"
                                           },
                                           {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.1.0",
+                                              "FileName":  "HstWB.1.1.0.zip",
                                               "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.1.0/HstWB.1.1.0.zip",
-                                              "FileName":  "HstWB.1.1.0.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.2/HstWB.1.0.2.zip",
-                                              "FileName":  "HstWB.1.0.2.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.0.1",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.1/HstWB.1.0.1.zip",
-                                              "FileName":  "HstWB.1.0.1.zip"
-                                          },
-                                          {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.0/HstWB.1.0.0.zip",
-                                              "FileName":  "HstWB.1.0.0.zip"
-                                          }
-                                      ]
-                     },
-                     {
-                         "Name":  "hstwb-mini-package",
-                         "Releases":  [
-                                          {
-                                              "Prerelease":  "False",
                                               "Version":  "1.1.0",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.1.0/HstWB.Mini.1.1.0.zip",
-                                              "FileName":  "HstWB.Mini.1.1.0.zip"
+                                              "Prerelease":  "False"
                                           },
                                           {
-                                              "Prerelease":  "False",
+                                              "FileName":  "HstWB.1.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.2/HstWB.1.0.2.zip",
                                               "Version":  "1.0.2",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.0.2/HstWB.Mini.1.0.2.zip",
-                                              "FileName":  "HstWB.Mini.1.0.2.zip"
+                                              "Prerelease":  "False"
                                           },
                                           {
-                                              "Prerelease":  "False",
+                                              "FileName":  "HstWB.1.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.1/HstWB.1.0.1.zip",
                                               "Version":  "1.0.1",
-                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.0.1/HstWB.Mini.1.0.1.zip",
-                                              "FileName":  "HstWB.Mini.1.0.1.zip"
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.1.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-package/releases/download/1.0.0/HstWB.1.0.0.zip",
+                                              "Version":  "1.0.0",
+                                              "Prerelease":  "False"
                                           }
-                                      ]
+                                      ],
+                         "Name":  "hstwb-package",
+                         "Repository":  "henrikstengaard/hstwb-package"
                      },
                      {
-                         "Name":  "picasso96-package",
                          "Releases":  [
                                           {
-                                              "Prerelease":  "False",
-                                              "Version":  "1.0.0",
-                                              "Url":  "https://github.com/henrikstengaard/picasso96-package/releases/download/1.0.0/Picasso96.1.0.0.zip",
-                                              "FileName":  "Picasso96.1.0.0.zip"
+                                              "FileName":  "HstWB.Mini.1.1.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.1.2/HstWB.Mini.1.1.2.zip",
+                                              "Version":  "1.1.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.Mini.1.1.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.1.0/HstWB.Mini.1.1.0.zip",
+                                              "Version":  "1.1.0",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.Mini.1.0.2.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.0.2/HstWB.Mini.1.0.2.zip",
+                                              "Version":  "1.0.2",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "HstWB.Mini.1.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/hstwb-mini-package/releases/download/1.0.1/HstWB.Mini.1.0.1.zip",
+                                              "Version":  "1.0.1",
+                                              "Prerelease":  "False"
                                           }
-                                      ]
+                                      ],
+                         "Name":  "hstwb-mini-package",
+                         "Repository":  "henrikstengaard/hstwb-mini-package"
+                     },
+                     {
+                         "Releases":  [
+                                          {
+                                              "FileName":  "Picasso96.1.0.1.zip",
+                                              "Url":  "https://github.com/henrikstengaard/picasso96-package/releases/download/1.0.1/Picasso96.1.0.1.zip",
+                                              "Version":  "1.0.1",
+                                              "Prerelease":  "False"
+                                          },
+                                          {
+                                              "FileName":  "Picasso96.1.0.0.zip",
+                                              "Url":  "https://github.com/henrikstengaard/picasso96-package/releases/download/1.0.0/Picasso96.1.0.0.zip",
+                                              "Version":  "1.0.0",
+                                              "Prerelease":  "False"
+                                          }
+                                      ],
+                         "Name":  "picasso96-package",
+                         "Repository":  "henrikstengaard/picasso96-package"
                      }
                  ]
 }

@@ -1,4 +1,4 @@
-param([string]$PackagesDir=(Join-Path (Split-Path $PSScriptRoot -Parent) 'packages'))
+param([string]$PackagesDir=(Join-Path (Split-Path $PSScriptRoot -Parent) 'packages'),[string]$PackageVersion='3.2.0')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 Import-Module (Join-Path $repo 'modules/package-install-compat.psm1') -Force
@@ -7,7 +7,7 @@ $root=Join-Path $repo ('.output/eab-compat-'+[guid]::NewGuid().ToString('N'))
 $null=New-Item -ItemType Directory -Path $root
 foreach($kind in @('Games','Demos')) {
  foreach($model in @('AGA','OCS')) {
-  $zip=[IO.Compression.ZipFile]::OpenRead((Join-Path $PackagesDir "EAB.WHDLoad.$kind.$model.Menu.3.1.2.zip"))
+  $zip=[IO.Compression.ZipFile]::OpenRead((Join-Path $PackagesDir "EAB.WHDLoad.$kind.$model.Menu.$PackageVersion.zip"))
   try {
    $reader=New-Object IO.StreamReader(($zip.GetEntry('Install')).Open())
    try{$original=$reader.ReadToEnd()}finally{$reader.Dispose()}
