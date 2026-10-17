@@ -2,6 +2,7 @@
 
 ## Observed results
 
+- Installer 1.6.10 adds a reviewed BestClassicWB 2.1.12 adapter to the normal standard-package flow. Official live download, conversion, package detection, normal Run staging/execution generation, startup exclusion, repeat-download skip and invalid-upstream preservation passed. Native installation/boot and OS 3.2.3 compatibility remain pending; see [package notes](bestclassicwb-package.md).
 - Installer 1.6.7 adds WHDLoad Packs archive progress/error handling and corrects ZIP discovery in the Windows pack builder. The first magazine archive passed a host integrity check; a three-format builder fixture passed. The reported native stall remains unresolved pending a fresh-image retest; see [WHDLoad Packs troubleshooting](whdload-pack-troubleshooting.md).
 - Installer version: 1.6.6. Standard-package catalog discovery checks official GitHub releases; all 17 current packages downloaded and were recognized, followed by a repeat pass with zero downloads. Prerelease-to-stable fallback was reported explicitly.
 - All 31 user packages are detected, including the eight additions in 1.6.5. Their payload/layout and source-update tests passed; native qualification is still pending below.

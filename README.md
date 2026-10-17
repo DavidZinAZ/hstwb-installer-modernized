@@ -24,7 +24,7 @@ HstWB Installer comes with prepared image templates partitioned, formatted and r
 
 Kickstart roms for WHDLoad are detected by checking rom file MD5 checksums and installed on Amiga system device along with Cloanto Amiga Forever rom key depending on rom files are encrypted or not. Afterwards additional content can be installed with packages and user packages. 
 
-Packages simplifies installation of Workbench enhancements BetterWB, ClassicWB and HstWB together with demo and game launchers Amiga Games Selector 2, iGame and HstLauncher with screenshots and descriptions for each demo and game. 
+Packages simplifies installation of Workbench enhancements BetterWB, ClassicWB and HstWB together with demo and game launchers Amiga Games Selector 2, iGame and HstLauncher with screenshots and descriptions for each demo and game. BestClassicWB 2.1.12 is also available through the standard package list; see [requirements and experimental OS 3.2.3 integration](docs/bestclassicwb-package.md).
 
 User packages simplifies installation of EAB WHDLoad demo and game packs and can be used for additional simple installations by copying files from host OS running HstWB Installer to various drawers in Amiga harddrive image.
 

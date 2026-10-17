@@ -3,6 +3,13 @@ function UpdateOfficialPackageCatalog($catalog)
     [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
     $updated=@()
     foreach($package in $catalog.Packages) {
+        # The reviewed adapter is deliberately pinned; an unknown upstream release
+        # must not silently replace a system-wide desktop package.
+        if ($package.Adapter -eq 'BestClassicWB-2.1.12') {
+            $updated += $package
+            Write-Host 'BestClassicWB: reviewed 2.1.12 adapter (new releases require review).'
+            continue
+        }
         $repo=[string]$package.Repository
         if(!$repo) {
             $url=@($package.Releases)[0].Url

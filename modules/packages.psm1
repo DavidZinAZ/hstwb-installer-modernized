@@ -1,9 +1,16 @@
+Import-Module (Join-Path $PSScriptRoot 'bestclassicwb.psm1')
+
 Class WebClient
 {
     [System.Net.WebClient]$webClient
     WebClient() { $this.webClient = New-Object System.Net.WebClient }
 
     [void]DownloadFile($activity, $url, $path)
+    {
+        $this.DownloadPackageFile($activity, $url, $path, '', '')
+    }
+
+    [void]DownloadPackageFile($activity, $url, $path, $adapter, $version)
     {
         $parent = Split-Path $path -Parent
         if (!(Test-Path -LiteralPath $parent)) { $null = New-Item -ItemType Directory -Path $parent -Force -ErrorAction Stop }
@@ -38,6 +45,10 @@ Class WebClient
                 } finally {$inputStream.Dispose();$outputStream.Dispose()}
             } finally {$response.Dispose()}
             if ((Get-Item -LiteralPath $temporary).Length -eq 0) { throw 'Download was empty.' }
+            if ($adapter) {
+                if ($adapter -ne 'BestClassicWB-2.1.12') { throw 'Unknown standard package adapter.' }
+                ConvertBestClassicWbArchive $temporary $version
+            }
             if ([IO.Path]::GetExtension($path) -eq '.zip') {
                 Add-Type -AssemblyName System.IO.Compression.FileSystem
                 Add-Type -AssemblyName System.IO.Compression
@@ -91,7 +102,7 @@ Class PackageManager
             if (!$release) { continue }
             if ([IO.Path]::GetFileName([string]$release.FileName) -ne $release.FileName -or $release.FileName -match '[/\\:]') { throw 'Invalid package filename in catalog.' }
             if (!([string]$release.FileName).EndsWith('.zip',[StringComparison]::OrdinalIgnoreCase)) { throw 'Standard packages must be ZIP archives.' }
-            $downloads.Add(@{Name=$package.Name;Version=$release.Version;Url=$release.Url;FileName=$release.FileName})
+            $downloads.Add(@{Name=$package.Name;Version=$release.Version;Url=$release.Url;FileName=$release.FileName;Adapter=$package.Adapter})
         }
         if (!$downloads.Count) { throw 'The package list contains no matching releases. Update the packages list first.' }
         if($this.StableFallbackCount -gt 0) { Write-Host ('{0} packages have no prerelease; using their latest stable releases.' -f $this.StableFallbackCount) }
@@ -105,7 +116,7 @@ Class PackageManager
                 $this.SkippedCount++;continue
             }
             Write-Host ('Downloading {0}/{1}: {2} v{3}' -f $index,$downloads.Count,$download.Name,$download.Version)
-            $this.webClient.DownloadFile(('Downloading package {0}/{1}: {2}' -f $index,$downloads.Count,$download.Name),$download.Url,$destination)
+            $this.webClient.DownloadPackageFile(('Downloading package {0}/{1}: {2}' -f $index,$downloads.Count,$download.Name),$download.Url,$destination,$download.Adapter,$download.Version)
             $this.DownloadedCount++
         }
     }

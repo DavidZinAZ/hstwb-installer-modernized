@@ -1,0 +1,105 @@
+; BestClassicWB HstWB adapter by DavidZinAZ with Scout (OpenAI Codex).
+; Based on kouts/samplist's BCWB installer; upstream content/credits retained.
+; Preserve the selected OS Startup-Sequence, including its module-loading code.
+Stack 65536
+FailAt 21
+echo "Installing BestClassicWB 2.1.12 (AGA, accelerated Amiga)..."
+echo "Upstream targets OS 3.2.2.1; OS 3.2.3 compatibility testing is pending."
+
+Version >NIL: SYSTEMDIR:Libs/workbench.library 47 33 FILE
+IF WARN
+  echo "BestClassicWB requires an installed AmigaOS 3.2 system."
+  SKIP end
+ENDIF
+
+; Check required hook positions before changing the target.
+Search SYSTEMDIR:S/Startup-Sequence "BindDrivers" NONUM >T:_bcwb-bind
+IF WARN
+  SKIP hookerror
+ENDIF
+Search SYSTEMDIR:S/Startup-Sequence "IPrefs" NONUM >T:_bcwb-iprefs
+IF WARN
+  SKIP hookerror
+ENDIF
+
+; Keep backups from the first installation.
+IF NOT EXISTS SYSTEMDIR:S/Startup-Sequence.BCWB-Base
+  Copy SYSTEMDIR:S/Startup-Sequence SYSTEMDIR:S/Startup-Sequence.BCWB-Base
+ENDIF
+IF EXISTS SYSTEMDIR:S/User-Startup
+  IF NOT EXISTS SYSTEMDIR:S/User-Startup.BCWB-Base
+    Copy SYSTEMDIR:S/User-Startup SYSTEMDIR:S/User-Startup.BCWB-Base
+  ENDIF
+ELSE
+  Echo "" >SYSTEMDIR:S/User-Startup
+ENDIF
+IF EXISTS SYSTEMDIR:Libs/icon.library
+  IF NOT EXISTS SYSTEMDIR:Libs/icon.library.BCWB-Base
+    Copy SYSTEMDIR:Libs/icon.library SYSTEMDIR:Libs/icon.library.BCWB-Base
+  ENDIF
+ENDIF
+
+; Upstream moves these components out of the way of its replacements.
+IF NOT EXISTS SYSTEMDIR:Storage/DataTypes
+  MakePath SYSTEMDIR:Storage/DataTypes
+ENDIF
+IF EXISTS SYSTEMDIR:Classes/DataTypes/ilbm.datatype
+  Copy SYSTEMDIR:Classes/DataTypes/ilbm.datatype SYSTEMDIR:Storage/DataTypes/ilbm.datatype
+ENDIF
+IF EXISTS SYSTEMDIR:Classes/DataTypes/jpeg.datatype
+  Copy SYSTEMDIR:Classes/DataTypes/jpeg.datatype SYSTEMDIR:Storage/DataTypes/jpeg.datatype
+ENDIF
+Delete >NIL: SYSTEMDIR:Devs/DataTypes/JPEG SYSTEMDIR:Devs/DataTypes/JPEG.info FORCE
+IF EXISTS SYSTEMDIR:WBStartup/MenuTools
+  Copy SYSTEMDIR:WBStartup/MenuTools SYSTEMDIR:Tools/Commodities/MenuTools
+  Delete SYSTEMDIR:WBStartup/MenuTools
+ENDIF
+IF EXISTS SYSTEMDIR:WBStartup/MenuTools.info
+  Copy SYSTEMDIR:WBStartup/MenuTools.info SYSTEMDIR:Tools/Commodities/MenuTools.info
+  Delete SYSTEMDIR:WBStartup/MenuTools.info
+ENDIF
+IF EXISTS SYSTEMDIR:Tools/Commodities/ClickToFront
+  Copy SYSTEMDIR:Tools/Commodities/ClickToFront SYSTEMDIR:WBStartup/ClickToFront
+  Delete SYSTEMDIR:Tools/Commodities/ClickToFront
+ENDIF
+IF EXISTS SYSTEMDIR:Tools/Commodities/ClickToFront.info
+  Copy SYSTEMDIR:Tools/Commodities/ClickToFront.info SYSTEMDIR:WBStartup/ClickToFront.info
+  Delete SYSTEMDIR:Tools/Commodities/ClickToFront.info
+ENDIF
+Copy SYSTEMDIR:System/Installer SYSTEMDIR:C/Installer CLONE
+
+; Payload excludes both startup files; the original OS startup stays in place.
+INSTALLDIR:C/UnZip -o PACKAGEDIR:Payload.zip -d SYSTEMDIR: >T:_bcwb-extract.log
+IF WARN
+  Type T:_bcwb-extract.log
+  echo "BestClassicWB extraction failed. Stop and retry with a fresh image."
+  SKIP end
+ENDIF
+Protect SYSTEMDIR:C/FBlit +e
+Protect SYSTEMDIR:C/FText +e
+Protect SYSTEMDIR:C/FPPrefs +e
+
+Search >NIL: SYSTEMDIR:S/Startup-Sequence ";BEGIN BestClassicWB" QUIET
+IF WARN
+  sed "1q;d" T:_bcwb-bind >T:_bcwb-line
+  set bcwbbind "`Type T:_bcwb-line`"
+  rep SYSTEMDIR:S/Startup-Sequence "$bcwbbind" ";BEGIN BestClassicWB*N  Assign >NIL: OS3.2: SYS:*N  C:FBlit*N  C:FText*N;END BestClassicWB*N$bcwbbind"
+  sed "1q;d" T:_bcwb-iprefs >T:_bcwb-line
+  set bcwbiprefs "`Type T:_bcwb-line`"
+  rep SYSTEMDIR:S/Startup-Sequence "$bcwbiprefs" "Run >NIL: C:TitleShadow <>NIL:*N$bcwbiprefs*N C:FPPrefs"
+ENDIF
+Search >NIL: SYSTEMDIR:S/User-Startup ";BEGIN BestClassicWB" QUIET
+IF WARN
+  Echo "*N;BEGIN BestClassicWB" >>SYSTEMDIR:S/User-Startup
+  Type PACKAGEDIR:BCWB-User-Startup >>SYSTEMDIR:S/User-Startup
+  Echo ";END BestClassicWB" >>SYSTEMDIR:S/User-Startup
+ENDIF
+MakePath >NIL: SYSTEMDIR:Locale/Help/BestClassicWB
+Copy PACKAGEDIR:BCWB.readme.txt SYSTEMDIR:Locale/Help/BestClassicWB/
+Copy PACKAGEDIR:Adapter-ReadMe.txt SYSTEMDIR:Locale/Help/BestClassicWB/
+echo "BestClassicWB installed. Reboot after the installer finishes."
+SKIP end
+
+LAB hookerror
+echo "BestClassicWB could not find the required OS startup commands. No changes made."
+LAB end
