@@ -74,3 +74,7 @@ The minimum requirements for running self install images are:
 HstWB Installer GitHub Wiki contains documentation and details about installation, quickstarts and tutorials using HstWB Installer.
 
 Please start by reading [How to use HstWB Installer](https://github.com/henrikstengaard/hstwb-installer/wiki/How-to-use-HstWB-Installer) for a quickstart about how to use HstWB Installer.
+
+## Additional user packages
+
+Version 1.6.5 adds xSysInfo, KickSmash, DevTest, SDMAC, A4091 Tools, ZZ9000 Firmware/Drivers and DOpus5. See [destinations, installation and validation notes](docs/additional-user-packages.md).

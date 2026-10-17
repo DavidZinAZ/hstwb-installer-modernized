@@ -11,6 +11,8 @@ Native tests used an A1200, the original bundled 2GB DOS7 image template, the se
 
 ## Remaining qualification
 
+- Version 1.6.5's eight additional user packages passed host detection, payload/layout and updater checks, but native installation/application launches and hardware behavior remain unqualified. ZZ9000's official installer and firmware activation are manual target-machine steps; see [additional package notes](additional-user-packages.md).
+
 - The source-based application updater passed local update/layout checks for five real releases in disposable package copies. Native installation and execution of those updated applications are not yet qualified; see [settings and package update validation](settings-and-package-updates.md).
 
 - Native acceptance for 3.2.1 and 3.2.2, other models and ROM combinations, and package/self-install paths.

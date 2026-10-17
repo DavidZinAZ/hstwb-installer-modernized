@@ -194,8 +194,25 @@ function InstallUserPackageSourceUpdate($result) {
                 try{$inputStream.CopyTo($output)}finally{$inputStream.Dispose();$output.Dispose()}
             }
         } finally {$archive.Dispose()}
+    } elseif ($component.Mode -eq 'RawFile') {
+        $bytes=[IO.File]::ReadAllBytes($download)
+        if ($bytes.Length -lt 32) { throw 'Downloaded binary is too small.' }
+        if ($component.MagicHex) {
+            $magic=([BitConverter]::ToString($bytes,0,4)).Replace('-','')
+            if ($magic -ne $component.MagicHex) { throw 'Downloaded binary has an unexpected format.' }
+        }
+        Copy-Item -LiteralPath $download -Destination (Join-Path $stage $component.LocalFile) -Force
     } else {
-        $members=@(GetLhaArchiveMembers $download)
+        if ($component.Mode -eq 'ZipArchive') {
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            $archive=[IO.Compression.ZipFile]::OpenRead($download)
+            try {
+                $members=@($archive.Entries | ForEach-Object {
+                    AssertUserPackageRelativePath ($_.FullName.TrimEnd('/'))
+                    if ($_.Name -and $_.Length -gt 0) { $_.FullName }
+                })
+            } finally { $archive.Dispose() }
+        } else { $members=@(GetLhaArchiveMembers $download) }
         foreach($required in $component.RequiredMembers) {
             $pattern=$required.Replace('{root}',$newRoot)
             if(!@($members | Where-Object {$_ -like $pattern}).Count){throw ('New archive is incompatible with the installer: missing '+$pattern)}

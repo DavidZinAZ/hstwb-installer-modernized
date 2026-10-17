@@ -1,0 +1,11 @@
+Upstream: https://github.com/cdhooper/amiga_sdmac_test
+Release: https://github.com/cdhooper/amiga_sdmac_test/releases/tag/release_1.1
+Corresponding source: https://github.com/cdhooper/amiga_sdmac_test/archive/refs/tags/release_1.1.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+sdmac
+https://github.com/cdhooper/amiga_sdmac_test/releases/download/release_1.1/sdmac
+SHA256 fb6411f25f7e9fda62855672686720e53f77b3af2be1013ff6d0101ae9f1fb83
+

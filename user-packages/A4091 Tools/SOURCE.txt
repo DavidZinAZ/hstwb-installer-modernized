@@ -1,0 +1,19 @@
+Upstream: https://github.com/A4091/a4091-software
+Release: https://github.com/A4091/a4091-software/releases/tag/v42.39
+Corresponding source: https://github.com/A4091/a4091-software/archive/refs/tags/v42.39.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+a4091_42.39.adf
+https://github.com/A4091/a4091-software/releases/download/v42.39/a4091_42.39.adf
+SHA256 34410aedadba97aaa418f2db8130f563fdaea959ff79203c1bdb913bd1f107ff
+
+a4091.device
+https://github.com/A4091/a4091-software/releases/download/v42.39/a4091.device
+SHA256 40cb53082c4915e684616c0de30af64be51a5549830d1c988f5c20119e45812f
+
+a4091.rom
+https://github.com/A4091/a4091-software/releases/download/v42.39/a4091.rom
+SHA256 e71290b73c5b0e7f2fc1d49ab50744b2569c00e804d5b10d16aaba9aade54a4e
+

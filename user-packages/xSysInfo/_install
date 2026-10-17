@@ -1,0 +1,23 @@
+; xSysInfo - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing xSysInfo..."
+MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-xsysinfo/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:xSysInfo.lha" "SYSTEMDIR:Temp/_HstWB-xsysinfo/"
+IF WARN
+  echo "Archive extraction failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-xsysinfo/xSysInfo-0.12.0/#?" "$INSTALLDIR" ALL CLONE
+IF NOT EXISTS "LIBS:identify.library"
+  MakePath >NIL: "SYSTEMDIR:Libs"
+  Copy >NIL: "SYSTEMDIR:Temp/_HstWB-xsysinfo/xSysInfo-0.12.0/Libs/identify.library" "SYSTEMDIR:Libs" CLONE
+ELSE
+  echo "Existing identify.library retained. Use the included Install script to review replacement."
+ENDIF
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "xSysInfo files installed."

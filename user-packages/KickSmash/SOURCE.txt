@@ -1,0 +1,11 @@
+Upstream: https://github.com/cdhooper/kicksmash32
+Release: https://github.com/cdhooper/kicksmash32/releases/tag/release_2.0
+Corresponding source: https://github.com/cdhooper/kicksmash32/archive/refs/tags/release_2.0.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+kicksmash_2.0_amiga.lha
+https://github.com/cdhooper/kicksmash32/releases/download/release_2.0/kicksmash_2.0_amiga.lha
+SHA256 e27aad53030371222d76703185fec4888915299913fec22f9bbbb0e6a56ca456
+

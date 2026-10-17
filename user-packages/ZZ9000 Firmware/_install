@@ -1,0 +1,20 @@
+; ZZ9000 Firmware - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing ZZ9000 Firmware..."
+Copy >NIL: "USERPACKAGEDIR:a500-2mb.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:a500.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:a500plus.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:zorro2-2mb.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:zorro2.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:zorro3-aga.zip" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:zorro3.zip" "$INSTALLDIR" CLONE
+MakePath >NIL: "$INSTALLDIR/Variants"
+Copy >NIL: "USERPACKAGEDIR:Variants/#?" "$INSTALLDIR/Variants" ALL CLONE
+echo "Select firmware for the actual board. No firmware has been flashed."
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "ZZ9000 Firmware files installed."

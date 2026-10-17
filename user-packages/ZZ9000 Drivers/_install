@@ -1,0 +1,13 @@
+; ZZ9000 Drivers - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing ZZ9000 Drivers..."
+Copy >NIL: "USERPACKAGEDIR:Payload/#?" "$INSTALLDIR" ALL CLONE
+echo "Run ZZ9000Installer/Install ZZ9000 from Workbench on the target ZZ9000 machine."
+echo "Use matching firmware and reboot after the official installer completes."
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "ZZ9000 Drivers files installed."
