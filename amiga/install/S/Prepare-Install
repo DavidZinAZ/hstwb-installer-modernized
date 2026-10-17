@@ -48,7 +48,6 @@ IF EXISTS INSTALLDIR:Prefs/Install-User-Packages
   Execute INSTALLDIR:S/Install-User-Packages VALIDATE
 
   echo ""
-  echo "Continue will start installation."
+  echo "Starting installation."
   echo ""
-  ask "Press ENTER to continue"
 ENDIF
