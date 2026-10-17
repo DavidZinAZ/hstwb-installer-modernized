@@ -1,0 +1,199 @@
+@database usb-poseidon.guide
+@$VER: usb-poseidon.guide 1.0 (29.9.2026)
+
+@node Main "ZZ9000 USB - Poseidon hardware driver"
+@{b}zzusbhw.device@{ub} connects the MNT ZZ9000 EHCI host controller to the
+commercial Poseidon 4.5 USB stack (https://www.platon42.de/en/poseidon/) on
+AmigaOS. Poseidon and its class files are external prerequisites; this
+package does not replace or modify them.
+
+Contents
+
+@{"Implemented and qualified scope" link implemented-and-qualified-scope}
+
+@{"Where the driver lives" link where-the-driver-lives}
+
+@{"Registering the driver with Poseidon" link registering-the-driver-with-poseidon}
+
+@{"Superseded driver" link superseded-driver}
+
+@{"Troubleshooting" link troubleshooting}
+
+@{"Reporting issues" link reporting-issues}
+
+@{"Building from source (developers)" link building-from-source-developers}
+
+@{"License" link license}
+
+@endnode
+
+@node implemented-and-qualified-scope "Implemented and qualified scope"
+@{b}Path               | Implementation             | Current evidence         @{ub}
+---------------------------------------------------------------------------
+
+Control and bulk;  | Supported                  | Existing issue-23        
+mass storage       |                            | baseline reports a       
+                   |                            | known-good storage       
+                   |                            | device; matched 2.9/2.2  
+                   |                            | hardware requalification 
+                   |                            | is pending               
+
+Persistent         | Supported with             | Host lifecycle/cadence   
+interrupt; HID and | event-driven endpoint      | models pass; Sun HID and 
+Ethernet status    | reuse                      | AX88772C issue-23        
+                   |                            | hardware gates are       
+                   |                            | pending                  
+
+Simple ISO IN/OUT  | Supported at explicit or   | Firmware/driver batch and
+                   | ASAP frames                | retirement models pass;  
+                   |                            | commercial-Poseidon      
+                   |                            | hardware gate is pending 
+
+Realtime ISO       | Poseidon                   | UAC1 capture/playback    
+IN/OUT; USB Audio  | add/remove/start/stop      | hardware formats,        
+                   | handlers implemented       | cadence, and soak are    
+                   |                            | unqualified              
+
+MIDIStreaming      | Descriptor-defined bulk    | Concurrent audio/MIDI    
+                   | IN/OUT; independent of ISO | hardware gate is pending 
+                   | advertisement              |                          
+
+Hot-plug, abort,   | Generation/epoch fenced    | Host race/error models   
+timeout, reset     | with exact-once driver     | pass; 100-cycle hardware 
+                   | retirement                 | gate is pending          
+
+Speed/topology     | High speed; split full     | Direct low speed is      
+                   | speed behind a high-speed  | deliberately             
+                   | hub                        | unadvertised;            
+                   |                            | single-TT/multi-TT       
+                   |                            | hardware rows are pending
+
+Earlier hardware measurements for a high-speed mass-storage stick were
+about 4 MB/s write and 3 MB/s read on a Zorro III-capable Amiga. Treat
+those as a historical baseline, not a result for this matched release. See
+@{b}docs/usb-qualification-matrix.md@{ub} (../docs/usb-qualification-matrix.md) for
+the exact evidence and gaps behind every claim.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node where-the-driver-lives "Where the driver lives"
+Release packages ship @{b}zzusbhw.device@{ub} inside the Commodore Installer drawer.
+The installer copies it to @{b}DEVS:USBHardware/zzusbhw.device@{ub}; for a manual
+install, copy @{b}usb-poseidon/zzusbhw.device@{ub} to @{b}DEVS:USBHardware/@{ub} yourself and
+then register it with Poseidon.
+
+The ARM-side USB proxy is part of the firmware. Firmware 2.9 and
+@{b}zzusbhw.device@{ub} 2.2 are the matched pair for persistent interrupt and ISO.
+The driver negotiates protocol capabilities at startup. With older firmware
+it falls back to the constrained legacy transport and does not advertise
+simple or realtime ISO.
+
+Some firmware images may expose a ROM copy of the hardware driver, but the
+filesystem copy in @{b}DEVS:USBHardware/@{ub} is the release package's explicit
+installation path. Confirm with AmigaOS @{b}version ... FILE@{ub} that 2.2 is the
+copy Poseidon opens.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node registering-the-driver-with-poseidon "Registering the driver with Poseidon"
+After @{b}zzusbhw.device@{ub} is in @{b}DEVS:USBHardware/@{ub}, Poseidon may pick it up
+during a hardware scan. If it does not appear, add it from Poseidon's
+Trident GUI:
+
+1. Launch @{b}Trident@{ub} (Poseidon's configuration GUI - usually in
+   @{b}SYS:Prefs/Poseidon@{ub}).
+
+2. Open the @{b}Hardware@{ub} page.
+
+3. Click @{b}Add@{ub} and fill in:
+
+  - @{b}Driver name@{ub}: @{b}zzusbhw.device@{ub}
+
+  - @{b}Unit@{ub}: @{b}0@{ub}
+
+  - Everything else can be left at the defaults.
+
+4. @{b}Save@{ub}, then reboot (or restart Poseidon) so the stack binds the new
+   entry.
+
+The ZZ9000 USB ports should now show up as Poseidon USB hardware.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node superseded-driver "Superseded driver"
+Older ZZ9000 releases shipped a separate @{b}ZZ9000USBStorage.device@{ub} that spoke
+only the mass-storage subset. It is obsolete and @{b}should be removed@{ub} -
+@{b}zzusbhw.device@{ub} via Poseidon replaces it and covers every endpoint type
+implemented by the matched firmware and driver. The installer prompts to
+delete @{b}Devs:ZZ9000USBStorage.device@{ub} when it finds one.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node troubleshooting "Troubleshooting"
+@{b}Symptom             | Check                                                @{ub}
+---------------------------------------------------------------------------
+
+Driver exposes no   | Confirm firmware 2.9 and @{b}zzusbhw.device@{ub} 2.2, then run
+ISO capability      | the matched @{b}ZZDiag@{ub}; legacy fallback intentionally    
+                    | hides ISO                                            
+
+Device not detected | Capture @{b}ZZDiag@{ub}, Poseidon's @{b}PsdErrorlog@{ub}, Trident      
+                    | binding output, VID:PID, speed, hub address/port, and
+                    | TT type                                              
+
+Transfer stops or   | Record the last successful action and the            
+returns an error    | driver/firmware epochs, counters, queue state,       
+                    | schedule bits, and recent events printed by @{b}ZZDiag@{ub}   
+
+Audio product       | Capture raw string-descriptor bytes plus control     
+string ends in @{b}?@{ub}    | requested/actual lengths; do not replace Poseidon    
+                    | files or patch displayed text                        
+
+Direct low-speed    | Expected for this release; test low/full speed only  
+device is absent    | behind a qualified high-speed hub                    
+
+For anything unexpected, please attach the output of Poseidon's @{b}debug log@{ub}
+(enable via Trident -> Main -> Debug) when reporting.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node reporting-issues "Reporting issues"
+- GitHub: <https://github.com/BlitterStudio/zz9000-drivers/issues>
+
+- Community: <https://community.mnt.re> - @{b}#mnt-amiga@{ub} on @{b}irc.libera.chat@{ub} -
+  <zz9000@mntre.com>
+
+@{"Contents" link Main}
+
+@endnode
+
+@node building-from-source-developers "Building from source (developers)"
+
+cd usb-poseidon
+./build.sh          # uses the m68k-amigaos Docker toolchain
+
+Produces @{b}zzusbhw.device@{ub}. For a normal Amiga test, copy it to
+@{b}DEVS:USBHardware/@{ub} and point Poseidon at it via the Trident steps above. For
+a release, CI places the driver in the installer drawer so the Commodore
+Installer can copy it to @{b}DEVS:USBHardware/@{ub}.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node license "License"
+GPL-3.0-or-later. See @{b}LICENSE@{ub}.
+
+@{"Contents" link Main}
+
+@endnode

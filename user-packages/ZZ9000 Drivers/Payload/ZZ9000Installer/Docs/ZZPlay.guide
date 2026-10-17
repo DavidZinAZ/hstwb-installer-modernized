@@ -1,0 +1,255 @@
+@database ZZPlay.guide
+@$VER: ZZPlay.guide 1.0 (29.9.2026)
+
+@node Main "ZZPlay - the ZZ9000 accelerated media player"
+ZZPlay plays MPEG-1 Program Streams and standalone MP3 files using the
+ZZ9000's ARM coprocessor and FPGA video overlay. Video decoding happens on
+the card; on the accelerated Zorro III path no decoded video ever crosses
+the Zorro bus.
+
+Contents
+
+@{"What it plays" link what-it-plays}
+
+@{"Starting it" link starting-it}
+
+@{"Options" link options}
+
+@{"Choosing an audio backend" link choosing-an-audio-backend}
+
+@{"Controls" link controls}
+
+@{"Fullscreen" link fullscreen}
+
+@{"Standalone MP3" link standalone-mp3}
+
+@{"Presentation path" link presentation-path}
+
+@{"Diagnostics" link diagnostics}
+
+@endnode
+
+@node what-it-plays "What it plays"
+@{b}Input                      | Video               | Audio                   @{ub}
+---------------------------------------------------------------------------
+
+MPEG-1 Program Stream      | MPEG-1 video,       | MPEG-1 Layer II,        
+(@{b}.mpg@{ub}, @{b}.mpeg@{ub})              | card-decoded        | card-decoded            
+
+MPEG-1 Program Stream,     | MPEG-1 video,       | none (a warning is      
+video only                 | card-decoded        | printed)                
+
+MPEG Layer III (@{b}.mp3@{ub})      | -                   | card-decoded, CBR and   
+                           |                     | VBR, mono or stereo     
+
+The format is chosen by inspecting the file, not by its name. MPEG-1
+elementary streams, standalone MP2, MPEG-2 and other codecs are rejected
+with a specific message rather than being half-played.
+
+Video requires the Picasso96 overlay. Zorro III uses the normal firmware
+surface allocator. On a matched 4 MiB Zorro II stack, ZZPlay can instead
+use the driver-reserved 224 KiB PIP source pool when one complete aligned
+YUY2 frame fits; 352x288 fits, while 640x360 does not. The 2 MiB profile
+has no PIP pool. Unsupported Zorro II geometry is reported clearly, and
+standalone MP3 continues to work on both shipped Zorro II profiles.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node starting-it "Starting it"
+@{b}Shell.@{ub} @{b}ZZPlay [options] <file>@{ub}. The installer puts it in
+@{b}SYS:Utilities/ZZ9000/@{ub} and offers to add that drawer to the command path;
+AmigaDOS is case-insensitive, so @{b}zzplay@{ub} works too.
+
+@{b}Workbench.@{ub} Drop a media file onto the @{b}ZZPlay@{ub} icon, double-click a project
+icon whose default tool is @{b}ZZPlay@{ub}, or double-click ZZPlay itself and pick a
+file from the requester that appears.
+
+A copy of a suitable project icon ships as @{b}Docs/ZZPlay-project.info@{ub}. To use
+it, copy it next to your media file and rename it to match - for example,
+for @{b}Video:holiday.mpg@{ub}, copy it to @{b}Video:holiday.mpg.info@{ub}.
+
+Errors go to the shell when started from the shell, and to a requester when
+started from Workbench, which has no console.
+
+A Workbench launch is @{b}quiet by default@{ub}: printing progress from Workbench
+makes AmigaDOS open an output window that stays open, so every playback
+would leave another one behind. Use @{b}VERBOSE@{ub} if you want that output anyway.
+@{b}BENCHMARK@{ub} stays verbose regardless, since its numbers are the point.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node options "Options"
+Every option has a Workbench ToolType with the same name and meaning. The
+shipped icon carries all of them disabled, in parentheses; remove the
+parentheses in Workbench's @{i}Information@{ui} window to enable one.
+
+@{b}Shell        | ToolType   | Meaning                                        @{ub}
+---------------------------------------------------------------------------
+
+@{b}--audio=auto@{ub} | @{b}AUDIO=AUTO@{ub} | Pick the best available backend (default)      
+
+@{b}--audio=ahi@{ub}  | @{b}AUDIO=AHI@{ub}  | Card-accelerated decode, output through AHI    
+
+@{b}--audio=mhi@{ub}  | @{b}AUDIO=MHI@{ub}  | @{b}mhizz9000.library@{ub} on ZZ9000AX; MP3 only        
+
+@{b}--audio=ax@{ub}   | @{b}AUDIO=AX@{ub}   | Direct ZZ9000AX output; Program Stream only    
+
+@{b}--audio=none@{ub} | @{b}AUDIO=NONE@{ub} | Mute                                           
+
+@{b}--loop@{ub}       | @{b}LOOP@{ub}       | Repeat forever                                 
+
+@{b}--loop=N@{ub}     | @{b}LOOP=N@{ub}     | Repeat N times after the first play            
+
+@{b}--fullscreen@{ub} | @{b}FULLSCREEN@{ub} | Start fullscreen, no window furniture          
+
+@{b}--quiet@{ub}      | @{b}QUIET@{ub}      | No progress output. The default from Workbench 
+
+@{b}--verbose@{ub}    | @{b}VERBOSE@{ub}    | Force progress output even from Workbench      
+
+@{b}--fps@{ub}        | @{b}FPS@{ub}        | Rolling playback and decode-call frame rates   
+
+@{b}--benchmark@{ub}  | @{b}BENCHMARK@{ub}  | Remove pacing; implies @{b}--fps@{ub}, and mutes audio  
+             |            | unless a backend was named                     
+
+@{b}--trace[=P]@{ub}  | @{b}TRACE[=P]@{ub}  | Write per-frame timing diagnostics to the trace
+             |            | file (default @{b}T:zzplay.trace@{ub})                  
+
+@{b}--help@{ub}       | -          | Print usage                                    
+
+@{"Contents" link Main}
+
+@endnode
+
+@node choosing-an-audio-backend "Choosing an audio backend"
+@{b}AUTO@{ub} never surprises you: it resolves the backend @{i}before@{ui} playback starts
+and prints what it chose and why.
+
+- For @{b}standalone MP3@{ub}, @{b}AUTO@{ub} prefers MHI when a free ZZ9000AX and
+  @{b}mhizz9000.library@{ub} are both present, and otherwise uses accelerated decode
+  plus AHI.
+
+- For @{b}Program Stream MP2@{ub}, @{b}AUTO@{ub} uses AHI, or direct AX where the firmware
+  advertises it.
+
+- MHI is never offered for Program Stream audio: it is a Layer III
+  interface. Asking for it explicitly reports that rather than playing
+  silently.
+
+Only one backend can own the ZZ9000AX daughterboard at a time. If another
+program holds it, an explicitly requested backend reports @{b}BUSY@{ub} instead of
+stealing it, and @{b}AUTO@{ub} falls back and says so.
+
+@{"Back" link options}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node controls "Controls"
+@{b}Key                     | Action                                   @{ub}
+-------------------------------------------------------------------
+
+Space                   | Pause / resume                           
+
+Escape, Q, close gadget | Stop                                     
+
+F                       | Toggle fullscreen and window (video only)
+
+L                       | Toggle looping                           
+
+Ctrl-C                  | Stop (shell)                             
+
+@{"Contents" link Main}
+
+@endnode
+
+@node fullscreen "Fullscreen"
+Fullscreen opens a @{b}dedicated screen@{ub} at the closest display mode and scales
+the picture to fill it, aspect preserved and centred -- the same scaling
+route a window resize takes, so 4:3 content on a 4:3 screen fills it
+completely, and everything else letterboxes or pillarboxes. Small dedicated
+modes render top-left on the card's minimum raster, so exact-size 1:1
+screens are not used for presentation.
+
+Scaling is aspect-preserving -- the picture is never stretched -- and no
+part of Workbench is visible, so it suits a program showing a video
+sequence.
+
+Pressing F again closes that screen and returns to the exact window
+position and size you had before.
+
+If no display mode matches the video, ZZPlay says so and stays windowed
+rather than pretending the request succeeded.
+
+@{b}Starting fullscreen.@{ub} @{b}--fullscreen@{ub}, or the @{b}FULLSCREEN@{ub} ToolType, starts that
+way with no window ever appearing on the desktop - which is what you want
+when another program is showing a video sequence and a framed window on the
+Workbench would break the effect. Combine it with @{b}--quiet@{ub} (already the
+default from Workbench) for a completely silent, chrome-free playback:
+
+ZZPlay --fullscreen --quiet Video:intro.mpg
+
+@{"Back" link controls}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node standalone-mp3 "Standalone MP3"
+MP3 playback has no video window, so it opens a small player window
+instead, showing the file name; sample rate, channel mode and bitrate; an
+@{b}Output:@{ub} line naming the backend actually in use (MHI or AHI); elapsed and
+total time with a position bar; and the control legend. The backend also
+appears in the window title, so it stays readable when the window is partly
+covered. The duration is estimated from the file size, so for a VBR file
+both it and the elapsed time are approximate; an approximate position is
+shown with a leading @{b}~@{ub}.
+
+Pause through MHI stops essentially instantly. Through AHI it stops after
+the already-queued audio finishes, up to about 0.4 seconds, because that
+queue is what keeps playback gap-free.
+
+@{"Back" link controls}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node presentation-path "Presentation path"
+ZZPlay reports which path actually presented your video, asked of the
+firmware rather than guessed:
+
+- @{b}native 1:1@{ub} - exact size and fully visible, straight from the FPGA overlay
+  plane. The fastest path.
+
+- @{b}native scaled@{ub} - resized or clipped, still handled by the overlay's
+  hardware scaler. Also keeps decoded video off the Zorro bus.
+
+- @{b}card-local compositor@{ub} - the ARM software fallback, used only for source
+  geometry the overlay cannot express.
+
+- @{b}unknown@{ub} - the installed firmware predates presentation reporting. This is
+  informational only; playback is unaffected.
+
+Resizing the window switches between the first two and the change is
+reported. Restoring the window to exact size returns to native 1:1.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node diagnostics "Diagnostics"
+@{b}zz9k-mp3@{ub} remains the low-level MP3 decode diagnostic, producing raw or WAV
+output for exactness checking. ZZPlay is the player; @{b}zz9k-mp3@{ub} is the
+instrument.
+
+@{b}--benchmark@{ub} disables pacing so decode throughput can be measured
+independently of display rate, and mutes audio unless a backend was named.
+
+@{"Contents" link Main}
+
+@endnode

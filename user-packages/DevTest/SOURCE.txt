@@ -1,0 +1,11 @@
+Upstream: https://github.com/cdhooper/amiga_devtest
+Release: https://github.com/cdhooper/amiga_devtest/releases/tag/v1.9
+Corresponding source: https://github.com/cdhooper/amiga_devtest/archive/refs/tags/v1.9.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+devtest_1.9.lha
+https://github.com/cdhooper/amiga_devtest/releases/download/v1.9/devtest_1.9.lha
+SHA256 4029e68ec676ff7bbeaaf3ef60c67f7f27ff3dd96a13d052dfca6901789a3d58
+

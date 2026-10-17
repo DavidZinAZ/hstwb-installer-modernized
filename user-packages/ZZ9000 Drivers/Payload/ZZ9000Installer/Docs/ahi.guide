@@ -1,0 +1,339 @@
+@database ahi.guide
+@$VER: ahi.guide 1.0 (29.9.2026)
+
+@node Main "ZZ9000AX audio stack - zz9000ax.audio and mhizz9000.library"
+The ZZ9000AX daughterboard adds a hardware MP3 decoder, a stereo DAC, and a
+Paula pass-through mixer to the ZZ9000. AmigaOS-side support is split
+across two drivers that share the same FPGA card:
+
+@{b}Component   | Folder      | Artifact          | What it drives             @{ub}
+---------------------------------------------------------------------------
+
+AHI         | @{b}ahi/driver/@{ub} | @{b}zz9000ax.audio@{ub}    | Generic PCM via AHI (MODs, 
+subdriver   |             |                   | samples, emulators,        
+            |             |                   | ScummVM, Eagleplayer, ...).
+
+MHI library | @{b}mhi/@{ub}        | @{b}mhizz9000.library@{ub} | Hardware MP3 decoding via  
+            |             |                   | MHI-aware players          
+            |             |                   | (AmigaAmp, etc.).          
+
+On firmware that predates the audio fabric, only one of the two can own the
+card at a time: the driver that wins attaches an interrupt server with a
+well-known name (@{b}ZZ9000AX@{ub} for AHI, @{b}mhizz9000@{ub} for MHI); the other side
+notices the name on the shared interrupt list and refuses to allocate.
+
+On matched firmware advertising the audio fabric and its rate flag, AHI
+playback instead runs as a @{b}fabric lease producer@{ub}: the driver mixes at the
+selected AHI rate into a granted card-side ring and the firmware compositor
+converts and mixes it beside every other producer - so AHI sound effects,
+modules, and emulators play @{b}at the same time@{ub} as MHI/ZZPlay music. The
+legacy register path remains the byte-identical fallback for non-fabric
+stacks, and AHI's own low-level exclusivity (one @{b}AllocAudio@{ub} owner) is
+unchanged on both paths.
+
+Build and install locations are covered in the main README (../README.md).
+
+Contents
+
+@{"Mixing channels" link mixing-channels}
+
+@{"AHI timer pairing" link ahi-timer-pairing}
+
+@{"AHI recording" link ahi-recording}
+
+@{"Hardware revisions" link hardware-revisions}
+
+@{"Firmware-authoritative control plane" link firmware-authoritative-control-plane}
+
+@{"Runtime tunables (ENV variables)" link runtime-tunables-env-variables}
+
+@{"ENV:ZZ9K_INT2 (AHI + MHI)" link env-zz9k-int2-ahi-mhi}
+
+@{"Troubleshooting" link troubleshooting}
+
+@{"References" link references}
+
+@endnode
+
+@node mixing-channels "Mixing channels"
+@{b}zz9000ax.audio@{ub} 4.29 advertises up to @{b}8 mixing channels@{ub} per mode
+(@{b}AHIDB_MaxChannels@{ub} was 1 before, which is why the channel selector in AHI
+Prefs was greyed out). The driver is an @{b}AHISF_MIXING@{ub} subdriver: AHI mixes
+all allocated channels in software on the Amiga's CPU - linear
+interpolation, 32-bit accumulation - and the card still receives a single
+stereo PCM stream, exactly as before. Nothing in the hardware transport,
+the fabric lease, the legacy register path, or MHI coexistence changes with
+the channel count; the ceiling is a host CPU budget, not a hardware limit.
+
+Practical guidance:
+
+- The actual count is chosen per mode in AHI Prefs; CPU cost accrues only
+  for channels that are actively playing (silent channels take AHI's cheap
+  silence path).
+
+- 68030: 2-4 channels at 44.1/48 kHz. 68040: 4-8. 68060 / Apollo core:
+
+  8. (The community two-channel variant of the stock 4.19 driver -
+
+Xanxi/Fitzsteve, same one-line change - was validated with ZZQuake on a
+68030/25.)
+
+- Overcommitting shows up as AHI CPU-limiter period skips - audible stutter
+  - not as a driver failure. If 8 proves comfortable on your hardware,
+  raising the ceiling further is a one-line change (@{b}ZZ_AX_AHI_MAX_CHANNELS@{ub}
+  in @{b}driver/zz9000ax-ahi.c@{ub}).
+
+UAE's AHI is not a yardstick here: its m68k-side driver advertises 8
+channels while the actual mixing runs on the host CPU, so emulated channel
+counts are effectively free.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node ahi-timer-pairing "AHI timer pairing"
+Version 4.28 calls @{b}PostTimer@{ub} after every executed @{b}PreTimer@{ub}, including when
+AHI's CPU limiter skips mixing. Both fabric and legacy playback use this
+pairing. Earlier versions left the previous exit timestamp stale on a skip,
+which could incorrectly suppress subsequent periods. The CPU limit, 50-Hz
+pacing, startup runway and buffer bounds are unchanged.
+
+The target regression in @{b}driver/timer_pair_test.c@{ub} includes the real driver.
+It checks recovery of complete, ordered PCM after an overload skip in both
+paths, and balanced timing without delivery for oversized legacy periods.
+Scheduling, hook dispatch and coherent RAM are controlled by the fixture;
+this does not qualify real interrupt, DMA or cache timing.
+
+After the normal AHI build has staged the SDK headers, run from the repo
+root (the executable can also run on AmigaOS):
+
+tools/amiga-docker.sh ahi/driver m68k-amigaos-gcc \
+  timer_pair_test.c asmfuncs.s -m68020 -O3 \
+  -I../../include -Izz9k-headers -ffunction-sections -fdata-sections \
+  -Wl,--gc-sections -Wall -Wextra -Werror -Wno-unused-parameter \
+  -o timer_pair_test -ldebug -lamiga -noixemul
+vamos --cpu=68020 --ram-size=8192 --stack-size=64 ahi/driver/timer_pair_test
+
+The emulator verification used @{b}amitools==0.8.1@{ub} and @{b}machine68k==0.3.0@{ub}. All
+three cases must pass. Hardware still needs a separate playback and
+recording check; a corrected timing pair does not diagnose a weak analog
+return.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node ahi-recording "AHI recording"
+@{b}zz9000ax.audio@{ub} supports stereo recording from the ZZ9000AX RCA inputs when
+used with firmware that exposes the AX receive-status register. Firmware
+without that capability continues to provide playback, but the driver does
+not advertise AHI recording.
+
+Set both ZZ9000AX auxiliary jumpers to @{b}IN@{ub} before recording. AHI sees one
+fixed-gain input named @{b}RCA In@{ub}; samples are delivered as signed 16-bit
+stereo at the selected AudioMode rate. Playback and recording may be
+started and stopped independently, including full-duplex operation.
+
+The production capture path uses a TDM8 slot-0/1 bridge ahead of the
+existing I2S receive formatter, DMA ring, and receive interrupt. It
+therefore requires a matching FPGA bitstream, ARM firmware, and
+@{b}zz9000ax.audio@{ub} build. The register and buffer contract is documented in
+@{b}docs/ahi-recording-spec.md@{ub} (../docs/ahi-recording-spec.md).
+
+For the production full-duplex hardware gate, build and run @{b}ZZAXDuplexTest@{ub}
+(duplextest/README.md). It starts playback and recording together on one
+low-level AHI control, unlike two-client tests involving AHI Record and a
+separate player.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node hardware-revisions "Hardware revisions"
+Early ZZ9000AX @{b}Revision 1@{ub} boards carry an opamp at @{b}U4@{ub} on the Paula
+pass-through path that over-amplifies Paula's line-in before the mixer. The
+practical effect is that raw Paula drowns out AHI and MHI playback even
+with the mixer set symmetric - MP3 / MOD sound noticeably quieter than the
+same Amiga's chip-audio through the ZZ9000AX. MNT resolved this in
+subsequent revisions by @{b}removing U4@{ub}.
+
+Newer revisions omit U4, but that alone does not qualify every card's
+default gain as distortion-free. With no saved audio settings, current
+firmware uses the one-card-informed Paula/AX ceiling fallback 48/80 and
+parity baseline 36/72 (Level 132/160). Saved settings take precedence,
+including older louder pairs; check ZZTop before testing.
+
+If you have an unfixed R1:
+
+1. @{b}Desolder U4@{ub} - MNT's analog-path fix, if you're comfortable with SMD
+   rework. A digital mixer or limiter cannot undo analog distortion already
+   produced before its input.
+
+2. @{b}Measure and set each clean ceiling and baseline@{ub} - matched firmware
+   exposes these controls in ZZTop's Audio window. The qualified R1 card
+   measured Paula 48 / AX 80. With the permanent post-mix limiter the
+   boundary for that calibrated pair is 160; firmware caps each leg at its
+   own ceiling first. The older three-quarter-of-AX boundary (60 for 48/80)
+   is pre-limiter history. Save the card's own measurements, not the
+   example pair.
+
+The former @{b}ENV:ZZ9K_MIX_LEVELS@{ub} register override was removed; see
+@{"Runtime tunables" link runtime-tunables-env-variables} below.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node firmware-authoritative-control-plane "Firmware-authoritative control plane"
+Both drivers are clients of the firmware's audio control plane. When
+zz9k.library is present @{b}and@{ub} the running firmware advertises the
+audio-control capability, allocating the device submits the owner's neutral
+source trim - the reserved keep-baseline word, "no trim from this owner" -
+through the control-plane mailbox, and the same word is resubmitted at
+release. The firmware owns every master-chain write (LPF, mixer volume,
+EQ): neither driver stamps DSP state at allocate, Play start, or release,
+so a dialed-in scene survives apps opening and closing the device.
+
+The MHI app mixer API (@{b}MHISetParam@{ub} for volume, panning, prefactor, and the
+EQ bands) is legacy-only against pre-control-plane firmware: those
+parameters map straight onto the master chain the scene module owns, so on
+control-plane firmware the call reports the documented not-supported status
+and the chain is left alone - use scenes (ZZTop's Audio window) instead.
+The calibrated matched firmware advertises the capability after its
+hardware gate. Clients still require a matched pair and retain these
+mixed-version fallbacks:
+
+- @{b}New driver + old firmware@{ub} - no control surface, no trims: the driver
+  detects the absent capability and falls back to legacy playback with the
+  old anti-alias stamps (the AHI LPF at half the mix rate, the MHI 20000 Hz
+  LPF at Play start), so old firmware behaves as before. Audio works; the
+  Paula/AX balance is whatever the firmware's own state leaves it at (on an
+  unfixed early R1 that can mean loud Paula - see @{"Hardware revisions" link hardware-revisions}). The
+  balance remedy still needs the matched firmware. If @{b}ENV:ZZ9K_MIX_LEVELS@{ub}
+  is still set, each driver prints one load-time line on the debug channel
+  (Sashimi/serial) saying the variable is ignored and that the balance
+  remedy needs the matched firmware.
+
+- @{b}Old driver + new firmware@{ub} - the old driver's DSP register stamps (LPF at
+  allocate/Play, mixer volume) are rejected by the firmware's
+  scene-authority gate and playback continues, but the legacy anti-alias
+  LPF tracking no longer happens: the cutoff stays where the active scene
+  put it until the drivers are updated. Early-R1 baseline/calibration is
+  unavailable until the matched drivers expose the control surface.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node runtime-tunables-env-variables "Runtime tunables (ENV variables)"
+The variable below is optional. Unset it to get the default behavior. Its
+value is read on each @{b}AllocAudio@{ub} (AHI) or @{b}AllocDecoder@{ub} (MHI) call, so
+changing it takes effect the next time an app opens the device - no reboot
+required.
+
+@{b}ENV:ZZ9K_MIX_LEVELS@{ub} @{i}(AHI + MHI)@{ui} and @{b}ENV:ZZ9000AX-NOLPF@{ub} @{i}(AHI only)@{ui} were
+@{b}removed@{ub}. Balance intent now flows through the firmware control plane's
+operator baseline and LPF intent through the active scene (see
+@{"Firmware-authoritative control plane" link firmware-authoritative-control-plane}). Neither driver reads either
+variable; if @{b}ZZ9K_MIX_LEVELS@{ub} is still set, the drivers print a one-line
+load-time notice on the debug channel (Sashimi/serial) that it is ignored.
+Delete the stale variables (@{b}Unsetenv ZZ9K_MIX_LEVELS@{ub}, @{b}Unsetenv
+ZZ9000AX-NOLPF@{ub}, plus their @{b}ENVARC:@{ub} copies if you used @{b}setenv SAVE@{ub}) when
+updating.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node env-zz9k-int2-ahi-mhi "ENV:ZZ9K_INT2 (AHI + MHI)"
+If this variable exists, both drivers attach their interrupt server to @{b}INT2@{ub}
+(@{b}INTB_PORTS@{ub}) instead of the default @{b}INT6@{ub} (@{b}INTB_EXTER@{ub}). Useful if something
+else on your system is monopolising INT6 (some 68060 accelerator boards,
+certain SCSI controllers, poorly-behaved networking hardware). The two
+drivers @{b}must@{ub} agree - AHI and MHI coordinate on the same interrupt line, so
+this setting has to be consistent for both or they won't see each other's
+ISR and the mutual-exclusion check will break. Setting the variable
+configures both drivers uniformly; don't partially enable it.
+
+setenv ZZ9K_INT2 1
+
+With firmware 2.3+ the preferred home for this option is @{b}int2 = on@{ub} in the
+SD card's @{b}ZZ9000.CFG@{ub} (editable from ZZTop's Settings window), which
+configures AHI, MHI and ZZ9000Net uniformly. An existing @{b}ENV:ZZ9K_INT2@{ub}
+variable still takes precedence over the config file, so remove the ENV
+variable when migrating.
+
+@{"Back" link runtime-tunables-env-variables}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node troubleshooting "Troubleshooting"
+@{b}Symptom              | Likely cause / fix                                  @{ub}
+---------------------------------------------------------------------------
+
+Paula much louder    | Early R1 (U4 opamp). Desolder U4, or - on matched   
+than MP3/MOD through | firmware - set the operator baseline in ZZTop's     
+the card             | Audio window.                                       
+
+Muffled / dull AHI   | On control-plane firmware the LPF is scene-owned:   
+output at low sample | raise the scene LPF cutoff in ZZTop's Audio window  
+rates                | (the old @{b}ENV:ZZ9000AX-NOLPF@{ub} bypass was removed; on  
+                     | pre-control-plane firmware the legacy half-rate LPF 
+                     | stamp applies as before).                           
+
+ZZTop's Audio button | The firmware does not advertise the audio-control   
+is greyed out        | capability (pre-verification builds), or the AX     
+                     | daughterboard is absent. Update to the matched      
+                     | firmware release that advertises it; playback itself
+                     | is unaffected.                                      
+
+ZZTop says "Audio:   | The firmware did not return a valid audio boundary. 
+control state        | Reopen Audio once the control service responds; no  
+unavailable - retry" | audio settings were changed.                        
+
+ZZTop says           | Audio edits and Save pause while the firmware       
+"Calibration         | confirms the new ceiling pair; the one-second       
+awaiting firmware    | Audio-window timer retries the read. If it remains  
+state..."            | pending, close and reopen Audio to read the live    
+                     | state.                                              
+
+"Can't allocate!     | The other driver owns the card. Close whatever      
+Hardware already     | MHI/AHI app is running first.                       
+used by MHI/AHI."    |                                                     
+
+Audio device fails   | INT6 conflict. @{b}setenv ZZ9K_INT2 1@{ub} to move both      
+to open on specific  | drivers to INT2.                                    
+accelerators         |                                                     
+
+Short random burst   | Fixed in recent commits (driver now silences the DAC
+before playback on   | at allocate time). Update to the latest             
+first app open       | @{b}zz9000ax.audio@{ub}.                                     
+
+AHI application has  | Update both the ARM firmware and @{b}zz9000ax.audio@{ub}; old
+no recording option  | firmware is intentionally detected as playback-only.
+
+Recording is silent  | Move both ZZ9000AX auxiliary jumpers to @{b}IN@{ub} and      
+                     | select @{b}RCA In@{ub}.                                      
+
+@{"Contents" link Main}
+
+@endnode
+
+@node references "References"
+- MNT community forum, @{b}"ZZ9000AX mixing levels register"@{ub} -
+  <https://community.mnt.re/t/zz9000ax-mixing-levels-register/1011>
+  (documents the undocumented @{b}AP_DSP_SET_VOLUMES@{ub} parameter the removed
+  @{b}ZZ9K_MIX_LEVELS@{ub} override used to write).
+
+- AHI developer documentation -
+  <https://aminet.net/package/dev/misc/ahidev>
+
+- MHI SDK - shipped with the MHI-aware player's source; the public
+  interface definitions this library implements live in @{b}mhi/mhilib.h@{ub} and
+  @{b}mhi/mhizz9000.h@{ub}.
+
+@{"Contents" link Main}
+
+@endnode

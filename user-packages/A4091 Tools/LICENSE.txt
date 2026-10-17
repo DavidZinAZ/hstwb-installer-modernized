@@ -1,0 +1,37 @@
+A4091 upstream copyright and license notices
+Exact corresponding source is included in A4091-source.zip.
+Additional third-party notices are retained in that source archive.
+
+--- device.c ---
+//
+// Copyright 2022-2025 Stefan Reinauer & Chris Hooper
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+
+
+--- ncr7xx.c ---
+/*
+ * A4091 Test Utility
+ * ------------------
+ * Utility to inspect and test an installed NCR53c7xx based SCSI controller
+ * for correct operation.
+ *
+ * Copyright 2023 Chris Hooper.  This program and source may be used
+ * and distributed freely, for any purpose which benefits the Amiga
+ * community. Commercial use of the binary, source, or algorithms requires
+ * prior written or email approval from Chris Hooper <amiga@cdh.eebugs.com>.
+ * All redistributions must retain this Copyright notice.
+ *
+ * DISCLAIMER: THE SOFTWARE IS PROVIDED "AS-IS", WITHOUT ANY WARRANTY.
+ * THE AUTHOR ASSUMES NO LIABILITY FOR ANY DAMAGE ARISING OUT OF THE USE
+ * OR MISUSE OF THIS UTILITY OR INFORMATION REPORTED BY THIS UTILITY.
+ */
+

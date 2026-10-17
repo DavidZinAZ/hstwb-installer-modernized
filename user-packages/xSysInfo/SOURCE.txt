@@ -1,0 +1,11 @@
+Upstream: https://github.com/reinauer/xSysInfo
+Release: https://github.com/reinauer/xSysInfo/releases/tag/v0.12.0
+Corresponding source: https://github.com/reinauer/xSysInfo/archive/refs/tags/v0.12.0.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+xsysinfo-0.12.0.lha
+https://github.com/reinauer/xSysInfo/releases/download/v0.12.0/xsysinfo-0.12.0.lha
+SHA256 3997e688cd07150aa6ccf4d279e2d30c36ae3f3673ad94663672225bab4bbfe0
+

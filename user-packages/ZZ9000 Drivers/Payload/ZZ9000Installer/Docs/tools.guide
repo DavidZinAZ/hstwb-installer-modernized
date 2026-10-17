@@ -1,0 +1,177 @@
+@database tools.guide
+@$VER: tools.guide 1.0 (29.9.2026)
+
+@node Main "ZZ9000 command-line tools"
+The installer puts the diagnostic and maintenance tools in @{b}C:@{ub}, where any
+shell finds them. This manual covers the firmware updater, the networking
+tools, the board diagnostic, and the scanline controller; @{b}ZZCapture@{ub} has its
+own manual (@{b}ZZCapture.guide@{ub} in this drawer), and the GUI tools ZZTop and
+ZZPlay install to @{b}SYS:Utilities/ZZ9000/@{ub}.
+
+Contents
+
+@{"Firmware updates - ZZFwUpdate" link firmware-updates-zzfwupdate}
+
+@{"Backups and rollback" link backups-and-rollback}
+
+@{"Networking - ZZ9000Net.device" link networking-zz9000net-device}
+
+@{"ZZNetStats" link zznetstats}
+
+@{"Board diagnostics - ZZDiag" link board-diagnostics-zzdiag}
+
+@{"Boot-time link check - ZZNetReady" link boot-time-link-check-zznetready}
+
+@{"Scanlines - ZZScanlines" link scanlines-zzscanlines}
+
+@endnode
+
+@node firmware-updates-zzfwupdate "Firmware updates - ZZFwUpdate"
+@{b}ZZFwUpdate@{ub} copies a firmware image from AmigaOS to the ZZ9000's FAT32
+microSD card without removing the card. The usual update flow:
+
+ZZFwUpdate RAM:BOOT.bin
+
+Power-cycle the Amiga after replacing @{b}BOOT.bin@{ub} so the ZZ9000 boots the new
+firmware. The ZZTop Project menu offers the same operation with a file
+requester.
+
+By default the destination filename on the SD card is the source basename.
+To write a different root-level filename, pass it as the optional second
+argument:
+
+ZZFwUpdate SYS:Storage/zz9000-fw.bin BOOT.bin
+
+The destination name must be 1-64 characters from @{b}A-Z@{ub}, @{b}a-z@{ub}, @{b}0-9@{ub}, @{b}.@{ub}, @{b}_@{ub}, or
+@{b}-@{ub}.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node backups-and-rollback "Backups and rollback"
+When you replace @{b}BOOT.bin@{ub}, the firmware keeps the previous image as
+@{b}BOOT.bak@{ub}. If a new firmware boots but misbehaves, roll back without
+removing the card:
+
+ZZFwUpdate RESTORE
+
+This promotes @{b}BOOT.bak@{ub} to the active @{b}BOOT.bin@{ub} (discarding the replaced
+image, so no backup remains afterwards) after a confirmation prompt. Pass
+@{b}-y@{ub} to skip the prompt, or a name to restore something other than @{b}BOOT.bin@{ub}.
+Restore talks to the @{i}running@{ui} firmware, so it recovers a
+booting-but-misbehaving update; a card that does not boot at all still
+needs the microSD removed and restored on another computer. RESTORE needs
+firmware with FWUP cmd 5 support.
+
+@{"Back" link firmware-updates-zzfwupdate}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node networking-zz9000net-device "Networking - ZZ9000Net.device"
+@{b}ZZ9000Net.device@{ub} in @{b}Devs:Networks/@{ub} is the SANA-II Ethernet driver. It
+programs the firmware's multicast hash filter, so IPv6 and
+service-discovery stacks receive their groups. It adopts the MAC address
+from @{b}ZZ9000.CFG@{ub} (@{b}mac@{ub}), honours @{b}int2 = on@{ub}, and works with any SANA-II stack
+(Roadshow, Miami DX, Genesis).
+
+The installer can also install a Roadshow NetInterface template
+(@{b}Devs:NetInterfaces/ZZ9000@{ub}) configured for DHCP. When the installer asks
+about network setup, answering yes writes the template; Roadshow then
+brings the interface up with no manual @{b}NetConfig@{ub} editing.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node zznetstats "ZZNetStats"
+@{b}ZZNetStats@{ub} opens @{b}ZZ9000Net.device@{ub}, requests SANA-II global stats, and
+prints the firmware RX queue, backpressure and drop counters:
+
+ZZNetStats
+ZZNetStats DEVICE=Networks/ZZ9000Net.device UNIT=0
+ZZNetStats Networks/ZZ9000Net.device 0
+
+Run it before and after a throughput test to see whether drops happen in
+the Amiga-side driver or in the firmware RX path.
+
+@{"Back" link networking-zz9000net-device}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node board-diagnostics-zzdiag "Board diagnostics - ZZDiag"
+@{b}ZZDiag@{ub} dumps the useful hardware-facing diagnostics in one place:
+
+ZZDiag
+ZZDiag 3 50
+
+The optional arguments are sample count and AmigaDOS delay ticks between
+samples. It reports the board identity, firmware version, VideoCap state,
+USB, SD, AX/audio and Ethernet diagnostic registers - the VideoCap section
+includes the detailed capture and genlock registers when the running
+firmware exposes them. It also checks whether the installed firmware,
+drivers and SDK payloads are a matched set; include its output when
+reporting a problem.
+
+@{"Contents" link Main}
+
+@endnode
+
+@node boot-time-link-check-zznetready "Boot-time link check - ZZNetReady"
+@{b}ZZNetReady@{ub} answers one question for @{b}S:User-Startup@{ub}: is the ZZ9000 present,
+and is its Ethernet port up? It needs no TCP/IP stack:
+
+ZZNetReady
+ZZNetReady TIMEOUT=10 QUIET
+
+Exit codes: @{b}0@{ub} link ready (also returned on firmware that cannot report link
+state, so the old always-start behaviour is kept), @{b}5@{ub} not ready - no card,
+no link within @{b}TIMEOUT@{ub} seconds (default 5), or unreadable arguments.
+Everything except OK returns WARN because AmigaDOS shells run
+@{b}S:User-Startup@{ub} with FAILAT 10 by default: a failure code would abort the
+rest of the script before @{b}If WARN@{ub} can branch. A typical @{b}S:User-Startup@{ub}
+gating:
+
+ZZNetReady QUIET
+If WARN
+  ; no card or no link - skip the stack this boot
+Else
+  Run SYS:Network/... ; or your stack's start script
+EndIf
+
+Requires firmware with @{b}ETH_CONFIG_CAP_LINK_STATE@{ub} for real link reporting
+(v2.8.1); the bit means negotiation completed since power-on, not that the
+cable is in right now.
+
+@{b}ZZCapture@{ub} extends native-video diagnosis with row timing and C28
+calibration evidence. Its phase-changing commands are experimental; see
+@{b}ZZCapture.guide@{ub} before using them.
+
+@{"Back" link board-diagnostics-zzdiag}
+
+@{"Contents" link Main}
+
+@endnode
+
+@node scanlines-zzscanlines "Scanlines - ZZScanlines"
+@{b}ZZScanlines@{ub} controls the scanline modes of the scandoubler output:
+
+ZZScanlines 0
+ZZScanlines 1 0
+ZZScanlines 2 1
+ZZScanlines 3 0
+
+Modes are @{b}0=off@{ub}, @{b}1=classic@{ub}, @{b}2=soft@{ub}, @{b}3=gradient@{ub}; parity is @{b}0=odd dark@{ub},
+@{b}1=even dark@{ub}.
+
+Like ZZTop's Scandoubler window, @{b}ZZScanlines@{ub} changes the live FPGA state
+immediately. To make scanlines survive a power cycle, save them to
+@{b}ZZ9000.CFG@{ub} - the ZZTop Scandoubler window's Save button does that.
+
+@{"Contents" link Main}
+
+@endnode

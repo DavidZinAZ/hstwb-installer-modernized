@@ -1,0 +1,11 @@
+Upstream: https://github.com/BlitterStudio/zz9000-drivers
+Release: https://github.com/BlitterStudio/zz9000-drivers/releases/tag/v2.8.1
+Corresponding source: https://github.com/BlitterStudio/zz9000-drivers/archive/refs/tags/v2.8.1.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+zz9000-drivers-v2.8.1.zip
+https://github.com/BlitterStudio/zz9000-drivers/releases/download/v2.8.1/zz9000-drivers-v2.8.1.zip
+SHA256 a9ab42b208655384c74b6f237fdf676257686449912cdac1b4b02a8fa3b7ea72
+

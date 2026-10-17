@@ -1,0 +1,11 @@
+Upstream: https://github.com/BlitterStudio/dopus5
+Release: https://github.com/BlitterStudio/dopus5/releases/tag/v5.102
+Corresponding source: https://github.com/BlitterStudio/dopus5/archive/refs/tags/v5.102.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+DOpus5_102_os3-68000.lha
+https://github.com/BlitterStudio/dopus5/releases/download/v5.102/DOpus5_102_os3-68000.lha
+SHA256 74e22522a9a35c6dadac13775b69f5990f33af3c4989a6d2c1023b310b3afb33
+

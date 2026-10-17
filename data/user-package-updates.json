@@ -624,6 +624,343 @@
           "DownloadUrl": "https://www.whdload.de/whdload/WHDLoad_usr.lha"
         }
       ]
+    },
+    {
+      "Id": "xsysinfo",
+      "Directory": "xSysInfo",
+      "Name": "xSysInfo",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "xsysinfo",
+          "Name": "xSysInfo",
+          "LocalFile": "xSysInfo.lha",
+          "Version": "0.12.0",
+          "BaselineSha256": "3997e688cd07150aa6ccf4d279e2d30c36ae3f3673ad94663672225bab4bbfe0",
+          "Provider": "GitHub",
+          "Repository": "reinauer/xSysInfo",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^xsysinfo\\-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "{root}/xSysInfo",
+            "{root}/Libs/identify.library"
+          ],
+          "RootTemplate": "xSysInfo-{version}",
+          "InstalledRoot": "xSysInfo-0.12.0"
+        }
+      ]
+    },
+    {
+      "Id": "kicksmash",
+      "Directory": "KickSmash",
+      "Name": "KickSmash",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "kicksmash",
+          "Name": "KickSmash",
+          "LocalFile": "KickSmash.lha",
+          "Version": "2.0",
+          "BaselineSha256": "e27aad53030371222d76703185fec4888915299913fec22f9bbbb0e6a56ca456",
+          "Provider": "GitHub",
+          "Repository": "cdhooper/kicksmash32",
+          "TagPattern": "^release_([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^kicksmash_[0-9.]+_amiga\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "{root}/amiga/smash",
+            "{root}/amiga/smashfs",
+            "{root}/amiga/smashftp"
+          ],
+          "RootTemplate": "kicksmash_{version}",
+          "InstalledRoot": "kicksmash_2.0"
+        }
+      ]
+    },
+    {
+      "Id": "devtest",
+      "Directory": "DevTest",
+      "Name": "DevTest",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "devtest",
+          "Name": "DevTest",
+          "LocalFile": "DevTest.lha",
+          "Version": "1.9",
+          "BaselineSha256": "4029e68ec676ff7bbeaaf3ef60c67f7f27ff3dd96a13d052dfca6901789a3d58",
+          "Provider": "GitHub",
+          "Repository": "cdhooper/amiga_devtest",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^devtest_[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "{root}/devtest"
+          ],
+          "RootTemplate": "devtest_{version}",
+          "InstalledRoot": "devtest_1.9"
+        }
+      ]
+    },
+    {
+      "Id": "sdmac",
+      "Directory": "SDMAC",
+      "Name": "SDMAC",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "sdmac",
+          "Name": "SDMAC",
+          "LocalFile": "sdmac",
+          "Version": "1.1",
+          "BaselineSha256": "fb6411f25f7e9fda62855672686720e53f77b3af2be1013ff6d0101ae9f1fb83",
+          "Provider": "GitHub",
+          "Repository": "cdhooper/amiga_sdmac_test",
+          "TagPattern": "^release_([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^sdmac$",
+          "Mode": "RawFile",
+          "RequiredMembers": [],
+          "MagicHex": "000003F3"
+        }
+      ]
+    },
+    {
+      "Id": "a4091-tools",
+      "Directory": "A4091 Tools",
+      "Name": "A4091 Tools",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "a4091",
+          "Name": "A4091 Tools / A4091.adf",
+          "LocalFile": "A4091.adf",
+          "Version": "42.39",
+          "BaselineSha256": "34410aedadba97aaa418f2db8130f563fdaea959ff79203c1bdb913bd1f107ff",
+          "Provider": "GitHub",
+          "Repository": "A4091/a4091-software",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^a4091_[0-9.]+\\.adf$",
+          "Mode": "RawFile",
+          "RequiredMembers": [],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "a4091",
+          "Name": "A4091 Tools / a4091.device",
+          "LocalFile": "a4091.device",
+          "Version": "42.39",
+          "BaselineSha256": "40cb53082c4915e684616c0de30af64be51a5549830d1c988f5c20119e45812f",
+          "Provider": "GitHub",
+          "Repository": "A4091/a4091-software",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^a4091\\.device$",
+          "Mode": "RawFile",
+          "RequiredMembers": [],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "a4091",
+          "Name": "A4091 Tools / a4091.rom",
+          "LocalFile": "a4091.rom",
+          "Version": "42.39",
+          "BaselineSha256": "e71290b73c5b0e7f2fc1d49ab50744b2569c00e804d5b10d16aaba9aade54a4e",
+          "Provider": "GitHub",
+          "Repository": "A4091/a4091-software",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^a4091\\.rom$",
+          "Mode": "RawFile",
+          "RequiredMembers": [],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        }
+      ]
+    },
+    {
+      "Id": "zz9000-firmware",
+      "Directory": "ZZ9000 Firmware",
+      "Name": "ZZ9000 Firmware",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "a500-2mb",
+          "Name": "ZZ9000 Firmware / a500-2mb.zip",
+          "LocalFile": "a500-2mb.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "2ce40bee561db58b6360fa2f4ea45794f97407cd35a6609368c72f1304a202ca",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-a500\\-2mb\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "a500",
+          "Name": "ZZ9000 Firmware / a500.zip",
+          "LocalFile": "a500.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "7b2ff0b20afef6a98dc5ba7598c442d044a57eb582e238dab426bc8f202b8adb",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-a500\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "a500plus",
+          "Name": "ZZ9000 Firmware / a500plus.zip",
+          "LocalFile": "a500plus.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "411c86482e12795a2d64ec6e10d406f386fce9cb78bea20086685ff36b4eeb34",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-a500plus\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "zorro2-2mb",
+          "Name": "ZZ9000 Firmware / zorro2-2mb.zip",
+          "LocalFile": "zorro2-2mb.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "8fcc6b2ecd904c181beb05e04fc8c3518440f5521fd5b8cd434a0d2552ed8720",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-zorro2\\-2mb\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "zorro2",
+          "Name": "ZZ9000 Firmware / zorro2.zip",
+          "LocalFile": "zorro2.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "845db8f087bc1ffbed330c5c3da15891e9a90231fe09701b8a006bed0eeaee57",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-zorro2\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "zorro3-aga",
+          "Name": "ZZ9000 Firmware / zorro3-aga.zip",
+          "LocalFile": "zorro3-aga.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "add9780aea23ce6b4f4404dea03266628a82070c4c169c501b3b1e28965d9bb8",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-zorro3\\-aga\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        },
+        {
+          "Id": "zorro3",
+          "Name": "ZZ9000 Firmware / zorro3.zip",
+          "LocalFile": "zorro3.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "9ba8171713162c58d2f30501b230e468666dcc04d1db8787bd90ad038598cc5a",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-firmware",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-firmware\\-v[0-9.]+\\-zorro3\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/BOOT.bin",
+            "*/ZZ9000.CFG"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        }
+      ]
+    },
+    {
+      "Id": "zz9000-drivers",
+      "Directory": "ZZ9000 Drivers",
+      "Name": "ZZ9000 Drivers",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "zz9000-drivers",
+          "Name": "ZZ9000 Drivers",
+          "LocalFile": "ZZ9000-drivers.zip",
+          "Version": "2.8.1",
+          "BaselineSha256": "a9ab42b208655384c74b6f237fdf676257686449912cdac1b4b02a8fa3b7ea72",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/zz9000-drivers",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^zz9000\\-drivers\\-v[0-9.]+\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": [
+            "*/ZZ9000Installer/Install ZZ9000",
+            "*/ZZ9000Installer/Libs/Picasso96/ZZ9000.card"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+        }
+      ]
+    },
+    {
+      "Id": "dopus5",
+      "Directory": "DOpus5",
+      "Name": "DOpus5",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "dopus5",
+          "Name": "DOpus5",
+          "LocalFile": "DOpus5.lha",
+          "Version": "5.102",
+          "BaselineSha256": "74e22522a9a35c6dadac13775b69f5990f33af3c4989a6d2c1023b310b3afb33",
+          "Provider": "GitHub",
+          "Repository": "BlitterStudio/dopus5",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^DOpus[0-9_]+_os3-68000\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "DOpus5/DirectoryOpus",
+            "DOpus5/Libs/dopus5.library"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,35 @@
+Upstream: https://github.com/BlitterStudio/zz9000-firmware
+Release: https://github.com/BlitterStudio/zz9000-firmware/releases/tag/v2.8.1
+Corresponding source: https://github.com/BlitterStudio/zz9000-firmware/archive/refs/tags/v2.8.1.zip
+
+Upstream payloads are unmodified. HstWB wrapper scripts: DavidZinAZ with Scout (OpenAI Codex).
+The original authors retain all copyright and license rights.
+
+zz9000-firmware-v2.8.1-a500-2mb.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-a500-2mb.zip
+SHA256 2ce40bee561db58b6360fa2f4ea45794f97407cd35a6609368c72f1304a202ca
+
+zz9000-firmware-v2.8.1-a500.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-a500.zip
+SHA256 7b2ff0b20afef6a98dc5ba7598c442d044a57eb582e238dab426bc8f202b8adb
+
+zz9000-firmware-v2.8.1-a500plus.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-a500plus.zip
+SHA256 411c86482e12795a2d64ec6e10d406f386fce9cb78bea20086685ff36b4eeb34
+
+zz9000-firmware-v2.8.1-zorro2-2mb.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-zorro2-2mb.zip
+SHA256 8fcc6b2ecd904c181beb05e04fc8c3518440f5521fd5b8cd434a0d2552ed8720
+
+zz9000-firmware-v2.8.1-zorro2.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-zorro2.zip
+SHA256 845db8f087bc1ffbed330c5c3da15891e9a90231fe09701b8a006bed0eeaee57
+
+zz9000-firmware-v2.8.1-zorro3-aga.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-zorro3-aga.zip
+SHA256 add9780aea23ce6b4f4404dea03266628a82070c4c169c501b3b1e28965d9bb8
+
+zz9000-firmware-v2.8.1-zorro3.zip
+https://github.com/BlitterStudio/zz9000-firmware/releases/download/v2.8.1/zz9000-firmware-v2.8.1-zorro3.zip
+SHA256 9ba8171713162c58d2f30501b230e468666dcc04d1db8787bd90ad038598cc5a
+

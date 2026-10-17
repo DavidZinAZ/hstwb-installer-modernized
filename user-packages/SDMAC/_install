@@ -1,0 +1,12 @@
+; SDMAC - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing SDMAC..."
+Copy >NIL: "USERPACKAGEDIR:sdmac" "$INSTALLDIR" CLONE
+Protect "$INSTALLDIR/sdmac" +e
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "SDMAC files installed."

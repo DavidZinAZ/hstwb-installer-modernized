@@ -1,0 +1,17 @@
+; DOpus5 - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing DOpus5..."
+MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-dopus5/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:DOpus5.lha" "SYSTEMDIR:Temp/_HstWB-dopus5/"
+IF WARN
+  echo "Archive extraction failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-dopus5/DOpus5/#?" "$INSTALLDIR" ALL CLONE
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "DOpus5 files installed."

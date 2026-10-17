@@ -1,0 +1,724 @@
+@DATABASE "A4091"
+@$VER: A4091.guide 1.3 (30.7.2026)
+@(C) Stefan Reinauer & Chris Hooper
+@WORDWRAP
+@AUTHOR Stefan Reinauer & Chris Hooper
+@INDEX Index
+@NODE MAIN "A4091 Guide"
+@{CODE}
+            ________  ___   ___  ________  ________    _____
+           |\\   __  \\|\\  \\ |\\  \\|\\   __  \\|\\  ___  \\  / __  \\
+           \\ \\  \\|\\  \\ \\  \\\\_\\  \\ \\  \\|\\  \\ \\____   \\|\\/_|\\  \\
+            \\ \\   __  \\ \\______  \\ \\  \\\\\\  \\|____|\\  \\|/ \\ \\  \\
+             \\ \\  \\ \\  \\|_____|\\  \\ \\  \\\\\\  \\  __\\_\\  \\   \\ \\  \\
+              \\ \\__\\ \\__\\     \\ \\__\\ \\_______\\|\\_______\\   \\ \\__\\
+               \\|__|\\|__|      \\|__|\\|_______|\\|_______|    \\|__|
+
+                       © 2022-2026 Stefan Reinauer & Chris Hooper
+
+____________________________________________________________________________
+
+
+@{BODY}
+                        A4091 Master Guide
+
+
+Guide Version 1.3                      a4091.device Version 42.39
+
+
+     @{"License      : License Terms of this Project                       " link License}
+     @{"What is it   : What is the Amiga 4091?                             " link A4091Overview}
+     @{"Go smaler    : What is the Amiga 4091 Mini?                        " link A4091MiniOverview}
+     @{"Wait, what?  : What is the Amiga 4092?                             " link A4092Overview}
+     @{"Compatibility: Compatibility guidelines & Requirements             " link Compatibility}
+     @{"ROM Versions : What are all the available ROM versions             " link ROMVersions}
+     @{"Configuration: Early Startup Menu / Configuration                  " link Configuration}
+     @{"Contents     : What's all in this stuff in this archive            " link Contents}
+     @{"Installation : How to install the A4091                            " link Install}
+     @{"FAQ          : Frequently Asked Questions.                         " link FAQ}
+     @{"Credits      : And credits go to ...                               " link Credits}
+     @{"Glossary     : What does it all mean?                              " link Glossary}
+     @{"History      : How it all started                                  " link History}
+
+____________________________________________________________________________
+
+Contacts:
+
+ Web:    https://www.scsi.me
+ GitHub: https://github.com/A4091/
+ EMail:  a4091\@amiga.technology
+
+@ENDNODE
+
+@NODE License "License"
+
+Copyright 2021-2026 Chris D Hooper, Stefan Reinauer
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+@ENDNODE
+
+@NODE A4091Overview "What is the A4091?"
+
+The Amiga 4091 is one of only two SCSI-II controllers ever produced for
+the Amiga's Zorro III bus.
+
+As rare as it was, Chris Hooper and Stefan Reinauer decided in 2021 to
+create a reproduction of this card: The ReA4091
+
+You can find more information at https://www.scsi.me/
+You can find all source code available at https://github.com/A4091/
+
+
+@ENDNODE
+
+@NODE A4091MiniOverview "What is the A4091 Mini?"
+
+The Amiga 4091 Mini is a half size version of the ReA4091
+
+You can find more information at https://www.scsi.me/
+You can find all source code available at https://github.com/A4091/
+
+@ENDNODE
+
+@NODE A4092Overview "What is the A4092?"
+
+The Amiga A4092 is a complete, modern reimplementation of the A4091.
+While it still has a lot of architectural similarity to the A4091,
+it has a lot of new things under the hood:
+
+ o) CPLD Instead of GALs
+    The original A4091 used eight discrete GALs (ATF22V10 and similar)
+    programmed with WinCUPL to implement all bus interface, AutoConfig,
+    address decoding, arbitration, and SCSI control logic. The A4092
+    consolidates all of this into a single Xilinx XC95144XL CPLD.
+    This brings several advantages:
+
+     *) Field-updatable logic ¿ no need to pull and reprogram individual
+        GAL chips
+     *) No soldering and no sockets required for upgrading the logic.
+     *) More logic resources and routing flexibility than the original
+        GAL array
+     *) Eliminates dependence on increasingly scarce GAL parts
+     *) The original WinCUPL equations have been rewritten from scratch
+        in Verilog for the CPLD
+     *) Significantly higher speed and better Zorro III compatibility
+
+ o) SPI Flash Instead of EPROM
+    The parallel EPROM used for the A4091's boot ROM has been replaced
+    with SPI Flash memory. Firmware updates no longer require a UV eraser
+    and a dedicated EPROM programmer ¿ the flash can be reprogrammed
+    in-system.
+
+ o) Modern SMD Packages
+    Where the original A4091 used through-hole, PLCC and SOIC packages,
+    the A4092 uses TSSOP and other modern surface-mount packages (such
+    as 0603 passives). This reduces the board footprint, improves signal
+    integrity and aligns with current PCB assembly capabilities.
+
+ o) Designed for Current Manufacturing
+    The A4092 is designed to be manufactured with services like JLCPCB
+    or PCBway, using (mostly) components that are in current production
+    and readily sourced. No hunting for NOS parts or pulling chips from
+    donor boards.
+
+ o) AutoConfig in the CPLD
+    The AutoConfig logic ¿ previously spread across multiple GALs ¿ is
+    now integrated into the CPLD alongside the rest of the glue logic,
+    resulting in a cleaner and more maintainable design.
+
+You can find more information at https://www.scsi.me/
+You can find all source code available at https://github.com/A4091/
+
+
+@ENDNODE
+
+
+
+@NODE Compatibility "Compatibility Guidelines & Requirements"
+
+The A4091 was originally developed for the Amiga 4000 only. It can run
+in an Amiga 3000 as well, with a few extra caveats
+
+ * Super Buster 11 is needed for all operation
+ * There are some pecularities when operating the A4091 with other Zorro
+   cards. If you are seeing problems, please try to switch cards around.
+
+@ENDNODE
+
+@NODE ROMVersions "ROM Versions"
+
+There are several ROM versions out there:
+
+ o) v40.13 is the last release version by Commodore for the A4091. This
+    was the default version for the A4091 Rev II as sold by DKB
+
+ o) v40.8, v40.10 are older (Rev I) versions of the ROM by Commodore.
+
+ o) v40.20 is a version of the ROM that has been floating around the
+    internet that has a few bugs fixed
+
+ o) v42.23 and newer is the Open Source driver for the A4091. It has
+    been written from scratch based on the BSD driver for the NCR53c710.
+    It supports driver larger than 4G and booting from CDROM (with a
+    little extra work)
+
+@ENDNODE
+
+@NODE Configuration "Early Boot Menu / Configuration"
+
+@{B}NOTE:@{UB} This is only available with the Open Source Boot ROM / driver
+
+You can enter a configuration screen / early boot menu by pressing the
+right mouse button during system boot (similar to pressing both mouse
+buttons to get into the AmigaOS Early Startup Menu).
+
+Here you can
+
+  o) See your connected SCSI devices without booting into AmigaOS
+
+  o) See the current DIP switch configuration
+
+  o) Change debug settings (like turning CDROM boot on and off)
+
+  o) Some additional information about the card
+
+@ENDNODE
+
+@NODE Contents "Contents of the Disk"
+
+Here's what's on this disk
+
+@{CODE}
+
+@{B}Tools@{UB}        Directory.
+        This directory contains three tools to test the A4091
+
+        @{"ncr7xx          " link NCR7XXTool}
+        @{"a4091d          " link A4091D}
+        @{"devtest         " link devtest}
+        @{"rdb             " link rdb}
+
+
+@{B}A4091.guide@{UB}
+        This guide. Latest news and changes made to the contents.
+
+@{BODY}
+
+
+@{B}Where is the source code?@{UB}
+
+
+You can find the source code at https://github.com/A4091/
+
+@ENDNODE
+
+@NODE NCR7XXTool "ncr7xx tool"
+
+1> ncr7xx
+ncr7xx 1.2 (Jun 17 2024) © Chris Hooper
+
+This tool will test an installed NCR53C7xx SCSI controller for correct operation.
+Options:
+	-a  specify card address (slot or physical address): <addr>
+	-c  decode device autoconfig area
+	-d  enable debug output
+	-D  perform DMA from/to Amiga memory: <src> <dst> <len>
+	-f  ignore fact enforcer is present
+	-h  display this help text
+	-k  kill (disable) active C= A4091 device driver
+	-l  specify the <number> of test iterations to run
+	-L  loop until failure
+	-P  probe and list all detected A4091 cards
+	-q  quiet mode (only show errors)
+	-r  display NCR53C710 registers
+	-s  decode device external switches
+	-S  attempt to suspend all A4091 drivers while testing
+	-t  test card
+	-?  show individual test steps
+1>
+
+Example:  ncr7xx -t56
+          This will execute both test 5 and test 6.
+  -0  Device access: Check ROM header and Zorro config area
+  -1  Register access
+          53C710 register read-only bits are verified.
+          TEMP and SCRATCH walking bits test
+          Byte, word, and long register access (A0 & A1)
+          53C710 register DNAD/DBC auto increment/decrement
+  -2  DMA FIFO: 53C710 RAM + parity
+  -3  SCSI FIFO: 53C710 RAM + parity
+  -4  Bus access
+  -5  Simple DMA (4 bytes at a time)
+          53C710 SCRATCH  -> 53C710 TEMP register
+          RAM (Fastmem)   -> 53C710 SCRATCH register
+          53C710 SCRATCH  -> RAM (Fastmem)
+  -6  Copy block DMA: Main mem->main mem data verify
+  -7  DMA copy performance (no verify)
+  -8  SCSI pins: data pins and some control pins
+
+@ENDNODE
+
+@NODE A4091D "a4091d debug tool"
+
+1> a4091d
+This tool is used to show a4091.device driver internal state.
+It does not work on any other driver.
+Usage:  a4091d [<unit>]
+        a4091d -c   -- show 68040 special registers
+        a4091d -p <periph address>
+        a4091d -x <xs address>
+1>
+
+@ENDNODE
+
+@NODE devtest "Amiga devtest tool"
+
+1> devtest
+You must specify an operation to perform
+devtest 1.6 (Aug 25 2024) © Chris Hooper
+
+usage: devtest <options> <x.device> <unit>
+   -b           benchmark device performance [-bb tests latency]
+   -c <cmd>     test a specific device driver request
+   -d           also do destructive operations (write)
+   -g           test drive geometry
+   -h           display help
+   -i <tsize>   data integrity test (destructive) [-i=rand -ii=addr -iii=patt]
+   -l <loops>   run multiple times
+   -m <addr>    use specific memory (<addr> Chip Fast 24Bit Zorro -=list)
+   -mm <addr>   use specific address without allocation by OS
+   -o           test open/close
+   -p           probe SCSI bus for devices
+   -t           test all packet types (basic, TD64, NSD) [-tt = more]
+1>
+
+@ENDNODE
+
+@NODE rdb "Amiga rdb tool"
+
+1> rdb
+rdb 1.2 (08-Feb-2018) © Chris Hooper
+Usage: rdb [options] {disk.device} [unit] [flags]
+    -rigid            Edit fields in the Rigid Disk Block
+    -part NAME        Modify partition table parameters of NAME
+    -newpart NAME     Add new partition NAME to the RDB
+    -promote NAME     Make partition NAME first to be mounted
+    -extract DOSTYPE  Extract filesystem to a file
+    -avail            Report next available block in RDB
+    -seglist          Show seglist addresses for filesystems
+    -help             Give more help
+    Other keywords:
+         HostID BlockBytes RigidFlags BadBlockList PartitionList
+         FileSysHeaderList DriveInit Cylinders Sectors Heads Interleave Park
+         WritePreComp ReducedWrite StepRate RDBBlocksLo RDBBlocksHi LoCylinder
+         HiCylinder CylBlocks AutoParkSeconds DiskVendor DiskProduct
+         DiskRevision ControllerVendor ControllerProduct ControllerRev
+         Next Flags DevFlags DriveName Surfaces BlocksPerTrack Reserved
+         PreAlloc Interleave LowCyl HighCyl NumBuffers BufMemType MaxTransfer
+         Mask BootPri DosType
+1>
+
+@ENDNODE
+
+@NODE Install "Installation"
+
+In order to partition your drives, you can use the partitioning tool of
+your choice, e.g. HDInstTool: https://aminet.net/package/disk/misc/hdinst
+or your AmigaOS' HDToolBox.
+
+  o) In HDTOOLBOX you should edit your Tool types to point to the right
+     device:
+
+       @{B}SCSI_DEVICE_NAME=a4091.device@{UB}
+
+  o) To circumvent the 4GB limit in HDToolBox with the Commodore driver,
+     replace
+     @{B}(LIMIT_4GBYTE)@{UB} with @{B}LIMIT_4GBYTE=OFF@{UB}
+
+  o) Note: You can also specify these parameters on the command line when
+     starting HDToolBox from a Shell
+
+@ENDNODE
+
+@NODE FAQ "Frequently asked questions"
+
+
+Some questions we have come across so far. If you encounter an issue,
+please check here first before contacting us:
+
+____________________________________________________________________________
+
+Q:      Does the A4091 work with Kickstart 1.3
+
+A:      Honestly, we have never tried. The old Commodore driver expects
+        to run at least on v39 (Kickstart 3.0). The Open Source driver might
+        be fixed to run on 1.3. Reports, tests, patches welcome!
+____________________________________________________________________________
+
+Q:      CDROM Booting doesn't work for me, what do I do?
+
+A:      Use a4091_cdfs.rom from the release archive. This version will use
+        the ROM profile build of ODFileSystem as CDFileSystem.
+
+A:      If you do not want to use ODFileSystem, make sure you use BootCDFileSystem
+        from the AmigaOS 4.1 installation disk or CDFileSystem from 3.2(.x)
+___________________________________________________________________________
+
+Q:      All of a sudden, I can't boot from CD anymore but it worked before.
+
+A:      Check whether the RDBFF_LAST flag is set in the RDB of your disk.
+        When it is set, the driver stops probing after that disk, so CD-ROM
+        drives at higher SCSI IDs are not detected. Enable "Scan past
+        RDBFF_LAST" in the A4091 boot menu to scan the remaining targets.
+
+A:      Booting from CD requires a functioning RTC.
+____________________________________________________________________________
+
+
+@ENDNODE
+
+@NODE Credits "Credits: Thanks to all who made this possible"
+
+The A4091 project was made possible by the awesome Amiga community.
+
+@{B}Thank you!@{UB}
+
+The project wouldn't have been possible without your encouragement and
+excitement, help and information out there.
+
+Special thanks:
+
+@{B}Dave Haynie@{UB}: For developing the Amiga 4091 in the first
+place, but also for releasing a ton of relevant information to the Amiga
+community and enabling this project.
+
+@{B}Toni Wilen@{UB}: For a feature complete "Mounter" when Stefan was
+still struggling to understand how to incorporate new filesystems. Also,
+for lots of great information on the inner workings of AmigaOS and for
+putting up with Stefan's patches.
+
+@{B}Olaf Barthel@{UB}: For all the information, anecdotes and for
+trackfile.device, a complete device implementation that is part of the
+AmigaOS 3.2 NDK (and nobody seems to know about this)
+
+@{B}Dorken@{UB}: For making the Verilog rewrite of the A4092 a reality.
+
+@{B}Matt Harlum@{UB}: For many fixes and great help debugging!
+
+@{B}Szymon Gosk@{UB}: For creating A4091 compatible metal brackets and
+making the design available to the Amiga community.
+
+@{B}Tim Eyre@{UB}: For scanning an original Amiga 4091 manual for the project.
+
+@{B}Paul Rezendes (Acill)@{UB} and everybody on the Acill Classics Discord chat:
+You guys have built an amazing little community
+of highly technical Amiga enthusiasts that is a joy to be around and
+getting inspired for projects like the ReA4091.
+
+@{B}Bernie Innocenti, Francis Bernier@{UB}:
+For helping with box and disk pictures and dimensions, bug fixes,
+testing, etc.
+
+@ENDNODE
+
+@NODE Glossary "Glossary"
+
+Zorro           :       The Expansion Bus in your Amiga. Like PCI, it is
+                        fully auto configuring. Zorro exists in two
+                        versions: Zorro-II, which is 16 bits wide, and
+                        available on the A2000, and Zorro-III, which is
+                        a full 32-bit wide bus deployed on the Amiga 3000
+                        and Amiga 4000.
+
+
+
+Super Buster    :       The custom chip that handles translation between
+                        the 68030 FAST LOCAL BUS and the Zorro-III bus.
+                        It is not worth selling your kidney for, but
+                        there is still hope for a revision 12 some day.
+
+@ENDNODE
+@NODE History "History: How did it all begin?"
+
+@{B}Version History@{UB}
+
+Full history available at https://github.com/A4091/a4091-software/commits/main
+
+Release v42.36:
+
+SCSI and DMA
+ o) Improve Zorro II RAM compatibility for DMA allocations
+ o) Copy SCSI scripts to Chip RAM on Zorro II systems
+ o) Add bounce buffer support for SCSI direct commands
+ o) Allocate inquiry buffers from DMA-capable memory
+ o) Probe disconnect-reconnect capability and improve NCR53C720/770 support
+ o) Handle Command Complete and NOP messages during message-in phase
+ o) Enable TolerANT active negation for Ultra SCSI controllers
+
+A4092 support
+ o) Add manufacturing data support and boot menu display page
+ o) Update SPI offsets for the latest CPLD design
+ o) Add configurable A4092 main screen color
+ o) Add update shortcut for A4092 firmware flashing
+
+A4092 flash tools
+ o) Fix SPI flash capacity calculation
+ o) Show installed and update versions before flashing
+ o) Share SPI code with mfgtool instead of duplicating it
+ o) Add error checking and input validation in flash update paths
+ o) Avoid time_t usage in flash tooling
+
+Bug fixes
+ o) Fix TEMP register range checking
+ o) Fix DMA chain index validation
+ o) Fix undefined behavior from bad bit shifts
+ o) Initialize io_Actual before issuing read/write commands
+
+Build system and utilities
+ o) Derive NDK include path from compiler location
+ o) Pass device type flags to assembler
+ o) Build per-device disk image variants
+ o) Rename the A4091 test utility to ncr7xx
+ o) Switch UI and artwork to an 8-color palette
+
+Release v42.35:
+
+A4092 support
+ o) Add full support for the new A4092 SCSI controller
+ o) Allow changing A4092 DIP switches from the boot menu
+ o) Add SPI flash support with bootmenu and a4092flash integration
+ o) Store A4092 settings directly in flash-based NVRAM
+
+ROM and driver
+ o) Replace RNC ProPack compression with Salvador ZX0
+ o) Reduce ROM header size and improve compressed binary sizes
+ o) Add Zorro III quick interrupt support
+ o) Add Zorro II DMA bounce buffers for Chip RAM / Zorro II Fast RAM systems
+ o) Fix geometry reporting for drives larger than 2TB
+
+Build system
+ o) Derive device version from git tags
+ o) Include all ROM and kickstart module artifacts in release builds
+ o) Fix version string handling for non-release builds
+ o) Improve gcc 6.5.0 compatibility
+
+Performance and cleanup
+ o) Reduce library dependencies in printf and command handling code
+ o) Add disk creation workflow improvements and system-configuration generation
+ o) Improve boot menu gadget appearance and status messages
+ o) Add optional external add-on script support in disk creation
+ o) Update devtest and salvador submodules
+
+Release v42.34:
+
+Bug fixes
+ o) Fix false detection of shadow devices
+
+Release v42.33:
+
+a4091.rom
+ o) Fix CDROM boot regression introduced in 42.32
+ o) Update CDVDFS to fix gcc 13 optimization issues
+ o) Add Phase 5 wide SCSI ID handling support
+
+Boot menu
+ o) Improve probing for non-standard host controller addresses
+ o) Improve handling of LUN probing and wide SCSI addresses
+ o) Add keyboard shortcuts
+
+A4092 support
+ o) Add a4092flash utility for updating the A4092 autoboot ROM
+
+Code quality
+ o) Fix the last outstanding Coverity issue
+
+
+Release v42.32:
+
+a4091.rom
+ o) Massive mounter rework
+ o) Fix Acard based optical drives (and probably many others)
+ o) Fix all Coverity issues
+ o) Reduce differences with upstream BSD driver
+
+Release v42.31:
+
+a4091.rom
+ o) mounter: Fix bug in filesystem.resource parsing
+ o) bootmenu now can be invoked with DEL key
+ o) romfile: Don't add duplicate filesystems to filesystem.resource
+ o) siop_poll(): Turn interrupts on before exiting to prevent performance degradation
+ o) Properly count CDROM drives
+ o) Allow booting from WORM and optical disks
+
+Release v42.30:
+
+a4091.rom
+ o) Fully integrate CDVDFS with A4091 ROMs and use it as default CDFilesystem
+ o) Add CDFS rom to release LHA
+ o) Add romtool to release LHA
+ o) Coverity fixes for various potential code issues
+
+a4091 utilities
+ o) a4091 -t6 enhancements
+ o) Upgrade devtest to v1.6
+
+
+Release v42.29:
+
+a4091.device
+ o) reloc.S: Fix memory corruption with compressed files
+ o) mounter: Fix use after free memory corruption
+ o) battmem: Fix handling of RDBFF_LAST setting
+ o) bootmenu: Don't configure joystick pullups
+
+Documentation
+ o) README.md: Update supported CD Filesystems
+ o) Leave a hint on how to add fat95
+
+
+Release v42.28:
+
+This is a quick fix release to prevent some machines to always enter the A4091
+boot menu upon booting. If that does not happen to you with 42.27, there is no
+benefit in updating to 42.28.
+
+
+Release v42.27:
+
+a4091.device
+  o) Add compression support to ROM (propack)
+  o) Improve CDFileSystem support
+  o) MBR and GPT support (disabled by default)
+  o) bootmenu: Open libraries on demand only
+  o) mounter: Disable drive motor after probing
+  o) mounter: checksum must pay attention to SummedLongs (LIV2)
+  o) mounter: fix offset calculation in readblock() (LIV2)
+  o) mounter: Fixes suggested by Olaf Barthel
+  o) mounter: Dynamically determine block size
+
+a4091 test utility
+  o) Document basics of the a4091 tool (tkurbad)
+  o) Changed `a4091 -t` Device access test to ignore ROM version
+  o) a4091 -t improvements for bus test failure output
+  o) Fix "a4091 -l <Loops>" invalid input checking
+  o) a4091 test fixes (-l, -c, ISTAT, ROM check)
+
+
+Release v42.26:
+
+  o) mounter: Fix creation of filesystem.resource on Kick 1.3 (LIV2)
+  o) mounter: Use dip switch to determine LUN probing
+  o) mounter: Read Short/Long Spinup DIP Switch
+  o) build: Include debug images in builds
+  o) refactor build system
+  o) improve error handling
+  o) automatically produce disk image from source code
+  o) Add menu option to ignore RDBFF_LAST
+  o) Make timer initialization more solid
+  o) Fix timer handling
+  o) Improve AmigaGuide documentation consistency
+  o) Update devtest to 1.4
+  o) Add RDBFlags to tools
+  o) Improved A4091 test utility
+  o) Make floppy disk bootable (tkurbad)
+  o) CD Boot: Check PVD for correct system id (LIV2)
+  o) Don't probe for SCSI targets on other cards (Fixes HDInstTool)
+  o) Fix compilation with gcc 13.1
+  o) Misc. smaller bug fixes
+
+
+Release v42.25:
+
+a4091.device
+  o) Fix cache handling (LIV2)
+      * Unbalanced CachePre/PostDMA calls caused issues for mmulibs
+      * Add CachePostDMA() call
+      * Remove CACRF_ClearI flag from CacheClearE calls as they're not needed
+      * Add  NULL ptr & buffer length check around the CachePostDMA call
+      * Re-enable error handling in relocation code
+
+a4091 test utility
+  o) Improved detection and disable/enable of driver present in system
+  o) Expunge is attempted first if driver is present
+  o) If driver is present, -f (ignore) or -S (suspend driver) must be issued
+  o) Improved DMA failure error reporting
+  o) Added new Bus Test which read tests A4091 DMA master address lines
+  o) Added new DMA SCRATCH-to-TEMP and SCRATCH-to-memory DMA master tests
+  o) Added Zorro slave A0 and A1 (byte) register access test
+
+
+Release v42.24:
+
+a4091.device
+  o) Kickstart 3.1 and Reloc fixes by LIV2 in #1
+
+Release v42.23:
+
+  o) Initial release. Can't believe we got this far.
+
+@ENDNODE
+@NODE INDEX "Index"
+
+@{CODE}
+
+        C...
+
+        @{"Compatibility Guidelines" link COMPATIBILITY}
+	@{"Configuration / Boot Menu" link CONFIGURATION}
+        @{"Contents" link CONTENTS}
+        @{"Credits: And credits go to ... " link CREDITS}
+
+        F...
+
+        @{"Frequently Asked Questions" link FAQ}
+
+        G...
+
+        @{"Glossary" link GLOSSARY}
+
+        H...
+
+        @{"History: How did it all begin?" link HISTORY}
+
+        I...
+
+        @{"Index" link INDEX}
+        @{"Installation" link INSTALL}
+
+	L...
+        @{"License" link License}
+
+        O...
+	@{"A4091 Overview" link A4091Overview}
+
+        R...
+	@{"ROM Versions" link ROMVersions}
+
+@{BODY}
+@ENDNODE
+
+

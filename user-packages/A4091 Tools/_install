@@ -1,0 +1,20 @@
+; A4091 Tools - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing A4091 Tools..."
+Copy >NIL: "USERPACKAGEDIR:Tools/#?" "$INSTALLDIR" ALL CLONE
+Copy >NIL: "USERPACKAGEDIR:A4091#?" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:a4091.device" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:a4091.rom" "$INSTALLDIR" CLONE
+Protect "$INSTALLDIR/ncr7xx" +e
+Protect "$INSTALLDIR/a4091d" +e
+Protect "$INSTALLDIR/devtest" +e
+Protect "$INSTALLDIR/rdb" +e
+Protect "$INSTALLDIR/RDBFlags" +e
+Protect "$INSTALLDIR/scsifix" +e
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "A4091 Tools files installed."

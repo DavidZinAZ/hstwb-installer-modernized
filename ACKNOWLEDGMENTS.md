@@ -24,4 +24,6 @@ This continuation is independent and does not imply endorsement by Henrik, Hyper
 
 ## Software and community
 
+The additional user packages include work by Stefan Reinauer and the xSysInfo contributors, Chris Hooper, the A4091 contributors, the ZZ9000/MNT and BlitterStudio contributors, and Jonathan Potter, GP Software and the Directory Opus open-source contributors. Each package retains upstream notices and source references; see [the package list](docs/additional-user-packages.md).
+
 Thanks to the WinUAE developers, the authors of the utilities and packages used by HstWB Installer, the Amiga community, and the vendors who continue supporting Amiga software. Third-party components retain their own attribution and licensing terms. Commercial AmigaOS and Kickstart media must be supplied by the user; this repository update does not include the licensed test media or completed installation disks.

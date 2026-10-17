@@ -1,0 +1,18 @@
+; KickSmash - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing KickSmash..."
+MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-kicksmash/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:KickSmash.lha" "SYSTEMDIR:Temp/_HstWB-kicksmash/"
+IF WARN
+  echo "Archive extraction failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-kicksmash/kicksmash_2.0/amiga/#?" "$INSTALLDIR" ALL CLONE
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-kicksmash/kicksmash_2.0/LICENSE.md" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "KickSmash files installed."

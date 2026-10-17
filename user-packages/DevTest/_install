@@ -1,0 +1,17 @@
+; DevTest - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+MakeIcon >NIL: "$INSTALLDIR"
+echo "Installing DevTest..."
+MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-devtest/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:DevTest.lha" "SYSTEMDIR:Temp/_HstWB-devtest/"
+IF WARN
+  echo "Archive extraction failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-devtest/devtest_1.9/#?" "$INSTALLDIR" ALL CLONE
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "DevTest files installed."

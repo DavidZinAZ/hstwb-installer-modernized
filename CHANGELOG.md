@@ -4,6 +4,7 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 16, 2026
 
+- Version 1.6.5 adds eight independent user-package selections: xSysInfo, KickSmash, DevTest, SDMAC, A4091 Tools, ZZ9000 Firmware, ZZ9000 Drivers and DOpus5. Retain upstream payloads, hashes, notices and source references; preserve manual hardware activation and standalone DOpus behavior. Extend source updating with raw Amiga binaries and validated ZIP archives. Native/hardware qualification remains pending.
 - Advance the maintained installer version to 1.6.4. Correct Amiga WHDLoad script line endings, invoke the bundled archiver explicitly, and display its version. Prevent redundant EAB Games/Demos AGA/OCS assign confirmations for matching paths and use configured paths automatically on fresh OS installs; retain conflict confirmation on existing installations. Native WHDLoad resolution remains pending retest.
 - Set an explicit 64 KiB stack in the package-installation shell and WHDLoad user package. Show WHDLoad/SKick extraction progress for diagnosis. The reported WHDLoad 18.7 stall is awaiting a fresh-image user retest; this change does not establish its cause or resolution.
 - Keep settings, assigns, and logs in each installation's own `settings` folder. Update Windows launchers and preserve explicit settings-directory overrides. Offer a one-time, non-overwriting import of previous shared settings.
