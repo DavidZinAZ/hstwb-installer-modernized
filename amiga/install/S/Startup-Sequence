@@ -313,7 +313,6 @@ LAB startinstall
 
 echo "Done"
 echo ""
-ask "Press ENTER to continue"
 
 ; log
 echo "" >>SYS:hstwb-installer.log

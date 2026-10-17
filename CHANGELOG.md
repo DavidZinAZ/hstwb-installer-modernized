@@ -4,6 +4,7 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 17, 2026
 
+- Version 1.6.8 removes only the two requested normal-install pauses: after loading OS system files and after user-package assign validation. Other confirmations and error prompts remain unchanged.
 - Version 1.6.7 removes remaining forced LhA PURE residency in package, self-install and OS 3.9 paths, matching the earlier OS-install correction. Show per-archive WHDLoad Packs progress and stop on archive errors; correct ZIP extraction/discovery. First magazine archive integrity and three-format builder checks passed. Native stall resolution awaits a fresh-image retest.
 
 - Update validation notes through 1.6.6, remove identified local machine paths from documentation/tests, make optional licensed-media test paths configurable, and add a current-content privacy check. Review GitHub notes and historical content; keep the history/publication limitation explicit.
