@@ -18,6 +18,7 @@ Import-Module (Resolve-Path('modules\config.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
 Import-Module (Resolve-Path('modules\data.psm1')) -Force
 Import-Module (Resolve-Path('modules\amigaos-release.psm1')) -Force
+Import-Module (Resolve-Path('modules\package-install-compat.psm1')) -Force
 
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -230,6 +231,9 @@ function ExtractPackages($hstwb, $packageNames, $packagesDir)
 
         # extract package to package directory
         [System.IO.Compression.ZipFile]::ExtractToDirectory($package.PackageFile, $packageDir)
+        if ($package.Name -match '^EAB WHDLoad (Games|Demos) (AGA|OCS) Menu$') {
+            UpdateEabPackageInstallScript (Join-Path $packageDir 'Install') ($hstwb.Settings.AmigaOs.InstallAmigaOs -eq 'Yes')
+        }
     }
 }
 
