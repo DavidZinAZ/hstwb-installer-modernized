@@ -1,0 +1,8 @@
+{
+  "Name": "BestClassicWB",
+  "Version": "2.1.12",
+  "Priority": 1,
+  "ContentIds": ["bestclassicwb", "amigaos"],
+  "Assigns": [{"Name": "SYSTEMDIR"}],
+  "AmigaOsVersions": ["3.2"]
+}

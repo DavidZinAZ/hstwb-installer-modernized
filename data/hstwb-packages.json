@@ -741,6 +741,19 @@
                                       ],
                          "Name":  "picasso96-package",
                          "Repository":  "henrikstengaard/picasso96-package"
+                     },
+                     {
+                         "Name": "best-classic-wb",
+                         "Repository": "kouts/best-classic-wb",
+                         "Adapter": "BestClassicWB-2.1.12",
+                         "Releases": [
+                             {
+                                 "Version": "2.1.12",
+                                 "Prerelease": "False",
+                                 "FileName": "BestClassicWB.2.1.12.zip",
+                                 "Url": "https://github.com/kouts/best-classic-wb/releases/download/v2.1.12/BestClassicWB.zip"
+                             }
+                         ]
                      }
                  ]
 }

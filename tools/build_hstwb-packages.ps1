@@ -143,6 +143,12 @@ $repositoriesMetadata = Get-Content $hstwbRepositoriesJsonFile -Raw | ConvertFro
 # get packages from hstwb repositories
 $packages = $packageManager.GetPackages($repositoriesMetadata.Repositories)
 
+# Retain reviewed upstream adapters when rebuilding the traditional repositories list.
+if (Test-Path -LiteralPath $hstwbPackagesJsonFile) {
+    $existingCatalog = Get-Content -LiteralPath $hstwbPackagesJsonFile -Raw | ConvertFrom-Json
+    $packages += @($existingCatalog.Packages | Where-Object { $_.Adapter })
+}
+
 # create packages list with date, description, url and packages
 $packagesList = [PackagesList]::new(
     (Get-Date -format "yyyy-MM-dd HH:mm:ss"),
@@ -152,5 +158,5 @@ $packagesList = [PackagesList]::new(
 )
 
 # write hstwb packages json file
-$hstwbPackagesJson = $packagesList | ConvertTo-Json -Depth 4
+$hstwbPackagesJson = $packagesList | ConvertTo-Json -Depth 12
 Set-Content -Path $hstwbPackagesJsonFile -Value $hstwbPackagesJson -NoNewline
