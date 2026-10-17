@@ -701,8 +701,6 @@ def build_install_entries(user_package_name, entries, user_package_path, install
                     install_entries_lines.append("  Execute \"USERPACKAGEDIR:{0}/{1}/{2}\"".format(user_package_name, user_package_path, install_entry_filename_index[index_name][hardware][language]))
                 else:
                     install_entries_lines.append("  IF \"$entrieslanguage{0}\" EQ 1 VAL".format(language))
-                    install_entries_lines.append("    echo \"*e[1mInstalling {0}, {1}, {2}...*e[0m\"".format(index_name, hardware.upper(), language.upper()))
-                    install_entries_lines.append("    wait 1")
                     install_entries_lines.append("    Execute \"USERPACKAGEDIR:{0}/{1}/{2}\"".format(user_package_name, user_package_path, install_entry_filename_index[index_name][hardware][language]))
                     install_entries_lines.append("    IF \"$stopinstallation\" EQ 1 VAL")
                     install_entries_lines.append("      SKIP end")
