@@ -12,7 +12,12 @@
 ; Keep archive tools on an explicit stack, including direct Execute callers.
 Stack 65536
 FailAt 21
-echo "Checking archive: {entryfile}"
+; Show one progress line per letter group, across hardware/language subsets.
+IF NOT "$whdloadprogress" EQ "{indexname}"
+  echo "Installing {indexname}..."
+  set whdloadprogress "{indexname}"
+ENDIF
+echo "" >T:_whdload-entry.log
 
 set lhaentry "0"
 set lzxentry "0"
@@ -52,6 +57,7 @@ LAB lhaentry
 set lhaentry "1"
 INSTALLDIR:C/LhA l "{entryfile}" >T:_lhalist
 IF WARN
+  Type T:_lhalist
   SKIP archiveerror
 ENDIF
 set lhalines `wc -l <T:_lhalist`
@@ -73,6 +79,7 @@ LAB lzxentry
 set lzxentry "1"
 unlzx l "{entryfile}" >T:_lzxlist
 IF WARN
+  Type T:_lzxlist
   SKIP archiveerror
 ENDIF
 set lzxlines `wc -l <T:_lzxlist`
@@ -87,6 +94,7 @@ LAB zipentry
 set zipentry "1"
 unzip -l "{entryfile}" >T:_ziplist
 IF WARN
+  Type T:_ziplist
   SKIP archiveerror
 ENDIF
 set ziplines `wc -l <T:_ziplist`
@@ -101,7 +109,6 @@ delete >NIL: T:_zipsize#?
 ; -----------------
 LAB devicefreespace
 
-echo "Checking free space: $INSTALLDIR"
 set entrysizeb `sed "1d;q" T:_entrysize`
 delete >NIL: T:_entrysize
 set entrysizemb `eval "$entrysizeb / 1048576"`
@@ -170,31 +177,29 @@ SKIP BACK continue
 ; -------------
 LAB installentry
 
-echo "Extracting: {entryfile}"
-echo "Destination: $entrydir"
 IF $lhaentry EQ 1 VAL
-  INSTALLDIR:C/LhA -N -m1 x "{entryfile}" "$entrydir/"
+  INSTALLDIR:C/LhA -N -m1 x "{entryfile}" "$entrydir/" >T:_whdload-entry.log
   IF WARN
     SKIP archiveerror
   ENDIF
 ENDIF
 IF $lzxentry EQ 1 VAL
-  unlzx -m x "{entryfile}" "$entrydir/"
+  unlzx -m x "{entryfile}" "$entrydir/" >T:_whdload-entry.log
   IF WARN
     SKIP archiveerror
   ENDIF
 ENDIF
 IF $zipentry EQ 1 VAL
-  unzip -o "{entryfile}" -d "$entrydir/"
+  unzip -o "{entryfile}" -d "$entrydir/" >T:_whdload-entry.log
   IF WARN
     SKIP archiveerror
   ENDIF
 ENDIF
-echo "Completed: {entryfile}"
 SKIP end
 
 LAB archiveerror
 echo "Archive command failed: {entryfile}"
+Type T:_whdload-entry.log
 echo "Pack installation stopped. Check the archive and messages above."
 set stopinstallation "1"
 echo "{entryfile}" >T:_whdloadpack-stop

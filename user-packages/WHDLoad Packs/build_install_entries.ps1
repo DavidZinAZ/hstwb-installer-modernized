@@ -816,8 +816,6 @@ function BuildInstallEntries()
                 else
                 {
                     $installEntriesLines.Add("  IF ""`$entrieslanguage{0}"" EQ 1 VAL" -f $language)
-                    $installEntriesLines.Add(("    echo ""*e[1mInstalling {0}, {1}, {2}...*e[0m""" -f $indexName, $hardware.ToUpper(), $language.ToUpper()))
-                    $installEntriesLines.Add("    wait 1")
                     $installEntriesLines.Add(("    Execute ""USERPACKAGEDIR:{0}/{1}/{2}""" -f $userPackageName, $userPackagePath, $installEntryFilenameIndex[$indexName][$hardware][$language]))
                     $installEntriesLines.Add("    IF ""`$stopinstallation"" EQ 1 VAL")
                     $installEntriesLines.Add("      SKIP end")

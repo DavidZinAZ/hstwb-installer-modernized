@@ -4,6 +4,7 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 17, 2026
 
+- Version 1.6.9 reduces WHDLoad Packs output to one progress line per letter group. Archive output is captured for error reporting; stack and residency fixes remain. Remove redundant hardware/language progress lines and their one-second delays from both pack builders.
 - Version 1.6.8 removes only the two requested normal-install pauses: after loading OS system files and after user-package assign validation. Other confirmations and error prompts remain unchanged.
 - Version 1.6.7 removes remaining forced LhA PURE residency in package, self-install and OS 3.9 paths, matching the earlier OS-install correction. Show per-archive WHDLoad Packs progress and stop on archive errors; correct ZIP extraction/discovery. First magazine archive integrity and three-format builder checks passed. Native stall resolution awaits a fresh-image retest.
 
