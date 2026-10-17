@@ -4,6 +4,8 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 
 ## Unreleased — October 16, 2026
 
+- Add a shared media library folder, recursive OS/ROM discovery, rescan and scan summary. Preserve explicit set/version choices and existing installation switches and file views. Keep optional separate folder overrides and support nested encrypted ROMs with their key paths. Unwanted media belongs outside the scanned tree; there is no exclusion list.
+
 - Identify the continuation as hstwb-updated, with prominent original-project attribution and links. Preserve the MIT license, original notices, and compatible internal filenames.
 - Integrate an explicit AmigaOS 3.2 target-version choice into the existing setup menu and saved settings. Prepare the base and selected update without silently including other update versions.
 - Build on the earlier release manifest, checksum catalogs, host orchestration, and Amiga-side update work for the 3.2 family. Keep unsupported fresh-image 3.2.2.1 selection blocked because it requires an installed 3.2.2 source.
