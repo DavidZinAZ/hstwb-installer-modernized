@@ -281,7 +281,7 @@ def test_32_set_row_counts_pin_preservation():
                or r["Filename"].startswith("amiga-os-321-")]
     new_rows = [r for r in rows if r not in old_adf]
     assert len(old_adf) == 60, "qualified 3.2/3.2.1 rows were not preserved intact"
-    assert len(new_rows) == 9, "exactly the 5 archive + 4 update-ADF rows may be added"
+    assert len(new_rows) == 37, "release archives, update disks, and 3.2.3 companion media"
 
 
 def test_new_adf_rows_never_trigger_legacy_32_or_321_markers():

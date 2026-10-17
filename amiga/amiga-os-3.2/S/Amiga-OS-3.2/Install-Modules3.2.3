@@ -1,0 +1,13 @@
+; Install selected model's 3.2.3 softkick modules using the vendor copy sets.
+set modulesdisk `Which $amigaosdisk:`
+echo "$modulesdisk" >T:_modulesdisk1
+sed "s/Modules//;s/_3.2.3://" T:_modulesdisk1 >T:_modulesdisk2
+set modulesdisk `Type T:_modulesdisk2`
+MakePath >NIL: "SYSTEMDIR:Modules/$modulesdisk"
+Copy >NIL: "$amigaosdisk:~(CLI|Disk.info|ReadMe.txt|ReadMe.txt.info|Shell.info|SYStoInstallDisk|SYStoInstallDisk.info)" "SYSTEMDIR:Modules/$modulesdisk" ALL CLONE
+IF "$modulesdisk" EQ "$modulesname"
+  Copy >NIL: "$amigaosdisk:L/(Ram-Handler|System-startup)" SYSTEMDIR:L CLONE
+  Copy >NIL: "$amigaosdisk:LIBS/(A500|A600|A1000|A1200|A2000A|A2000B|A3000|A4000D|A4000T|CD32|intuition.library)" SYSTEMDIR:LIBS CLONE
+  MakePath >NIL: SYSTEMDIR:Libs/Modules
+  Copy >NIL: "$amigaosdisk:LIBS/Modules/bootmenu" SYSTEMDIR:Libs/Modules CLONE
+ENDIF

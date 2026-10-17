@@ -17,6 +17,7 @@ Import-Module (Resolve-Path('modules\version.psm1')) -Force
 Import-Module (Resolve-Path('modules\config.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
 Import-Module (Resolve-Path('modules\data.psm1')) -Force
+Import-Module (Resolve-Path('modules\amigaos-release.psm1')) -Force
 
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -2217,6 +2218,16 @@ function RunInstall($hstwb)
     {
         $amigaOsSetEntries = @()
         $amigaOsSetEntries = $hstwb.AmigaOsEntries | Where-Object { $_.Set -eq $hstwb.Settings.AmigaOs.AmigaOsSet }
+
+        # Honor the version saved by the normal setup flow. Cumulative updates
+        # use the base plus the selected update, without installing other releases.
+        $selectedReleasePlan = $null
+        if ($hstwb.Settings.AmigaOs.AmigaOsSet -eq 'Amiga OS 3.2' -and $hstwb.Settings.AmigaOs.TargetVersion)
+        {
+            $manifest = GetAmigaOs32ReleaseManifest (Join-Path $PSScriptRoot 'data/release-manifest.json')
+            $selectedReleasePlan = GetAmigaOs32InstallPlan $amigaOsSetEntries $hstwb.Settings.AmigaOs.TargetVersion $manifest
+            $amigaOsSetEntries = $selectedReleasePlan.Entries
+        }
     
         # find amiga os 3.9 iso in amiga os set
         $amigaOs39Iso = $amigaOsSetEntries | Where-Object { $_.File -and $_.Filename -match '^amigaos3\.9\.iso$' } | Select-Object -First 1
@@ -2259,7 +2270,17 @@ function RunInstall($hstwb)
         # write manifest-driven release state for recognized release archives.
         # The AmigaDOS execution layer consumes this state; this slice does not copy it.
         $releaseManifestPath = Join-Path $PSScriptRoot -ChildPath 'data/release-manifest.json'
-        if (Test-Path -LiteralPath $releaseManifestPath -PathType Leaf)
+        if ($selectedReleasePlan)
+        {
+            # The Amiga-side reader expects BOM-free LF text, including on Windows.
+            if ($selectedReleasePlan.State.TargetVersion -ne '3.2')
+            {
+                $releaseStateFile = Join-Path $prefsDir 'AmigaOS-3.2.x-State.json'
+                $stateText = ($selectedReleasePlan.State | ConvertTo-Json -Depth 5) -replace "`r`n", "`n"
+                [System.IO.File]::WriteAllText($releaseStateFile, $stateText + "`n", (New-Object System.Text.UTF8Encoding($false)))
+            }
+        }
+        elseif (Test-Path -LiteralPath $releaseManifestPath -PathType Leaf)
         {
             $releaseManifest = GetAmigaOs32ReleaseManifest $releaseManifestPath
             $detectedReleaseVersions = @{}

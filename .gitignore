@@ -12,3 +12,9 @@ hstwb-installer*.zip
 /packages/
 /.output/
 /.release/
+/test-media/
+/.hermes/
+/ACTIVE-TASK.md
+/PROJECT-STATUS.md
+/SESSION-HANDOFF.md
+/RECOVERY-STATUS.md

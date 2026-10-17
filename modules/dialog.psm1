@@ -62,6 +62,11 @@ function PrintSettings($hstwb)
     }
 
     # show kickstart for installer modes: test, install and build self install
+    if ($hstwb.Settings.AmigaOs.AmigaOsSet -eq 'Amiga OS 3.2' -and $hstwb.Settings.AmigaOs.TargetVersion)
+    {
+        Write-Host ("  Amiga OS version      : '{0}'" -f $hstwb.Settings.AmigaOs.TargetVersion)
+    }
+
     if ($hstwb.Settings.Installer.Mode -match "^(Test|Install|BuildSelfInstall)$")
     {
         Write-Host "Kickstart"

@@ -18,12 +18,12 @@ IF NOT EXISTS "$amigaosdisk:Update/Release"
 ENDIF
 
 ; end, if startup hard drive doesn't exist
-IF NOT EXISTS "$amigaosdisk:Update/Startup-HardDrive"
+IF NOT EXISTS "$amigaosdisk:Update/Startup-HardDrive.Z"
   SKIP notvalid
 ENDIF
 
 ; end, if amiga model doesn't exist
-IF NOT EXISTS "$amigaosdisk:C/AmigaModel"
+IF NOT EXISTS "$amigaosdisk:C/AmigaModel.Z"
   SKIP notvalid
 ENDIF
 

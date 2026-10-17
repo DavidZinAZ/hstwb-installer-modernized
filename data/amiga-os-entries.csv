@@ -107,3 +107,31 @@ Amiga OS 3.1 Locale Disk;True;Amiga OS 3.1;3.1;3.1;;b53c9ff336e168643b10c4a9cfff
 Amiga OS 3.1 Storage Disk;True;Amiga OS 3.1;3.1;3.1;;4fa1401aeb814d3ed138f93c54a5caef;Storage3.1;amiga-os-310-storage.adf;True;Amiga-OS-310-ADF;Cloanto Amiga Forever 2016, 7, 9
 Amiga OS 3.1 Workbench Disk;True;Amiga OS 3.1;3.1;3.1;;590c42a69675d6970df350e200fe25dc;Workbench3.1;amiga-os-310-workbench.adf;True;Amiga-OS-310-ADF;Cloanto Amiga Forever 2016, 7
 Amiga OS 3.1 Workbench Disk;True;Amiga OS 3.1;3.1;3.1;;e7b3a83df665a85e7ec27306a152b171;Workbench3.1;amiga-os-310-workbench.adf;True;Amiga-OS-310-ADF;Cloanto Amiga Forever 7, 9
+Amiga OS 3.2.3 classes Disk;False;Amiga OS 3.2;3.2;3.1;;58af923f36f1fe0ee16bb62216fbb44e;Classes3.2.3;amiga-os-323-classes.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 disk-doctor Disk;False;Amiga OS 3.2;3.2;3.1;;cc19b8acf0fb41a7abd79304e224390a;DiskDoctor3.2.3;amiga-os-323-disk-doctor.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 extras Disk;False;Amiga OS 3.2;3.2;3.1;;1be9c9a15900ee655564777d185c5929;Extras3.2.3;amiga-os-323-extras.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-cz Disk;False;Amiga OS 3.2;3.2;3.1;;5be89147576c7953e7be039406b65910;Locale3.2.3-CZ;amiga-os-323-locale-cz.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-de Disk;False;Amiga OS 3.2;3.2;3.1;;f523dd8f7922761dfc87743e400b51e6;Locale3.2.3-DE;amiga-os-323-locale-de.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-dk Disk;False;Amiga OS 3.2;3.2;3.1;;2316fdc9f96b087cbd5ff6c0f0d58a5b;Locale3.2.3-DK;amiga-os-323-locale-dk.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-en Disk;False;Amiga OS 3.2;3.2;3.1;;4355f9fd19a05152289818ab19f7333d;Locale3.2.3-EN;amiga-os-323-locale-en.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-es Disk;False;Amiga OS 3.2;3.2;3.1;;929f937fc9837c64e33fa6c90e246def;Locale3.2.3-ES;amiga-os-323-locale-es.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-fr Disk;False;Amiga OS 3.2;3.2;3.1;;156bc39b8b30141ecc32bcb06f69f1af;Locale3.2.3-FR;amiga-os-323-locale-fr.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-gr Disk;False;Amiga OS 3.2;3.2;3.1;;655864477a98d59e7d608d92bca4e645;Locale3.2.3-GR;amiga-os-323-locale-gr.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-it Disk;False;Amiga OS 3.2;3.2;3.1;;523b818877aea73a79fcb330c06e2da9;Locale3.2.3-IT;amiga-os-323-locale-it.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-nl Disk;False;Amiga OS 3.2;3.2;3.1;;4023662f85856dfe1cb3a89b3a804143;Locale3.2.3-NL;amiga-os-323-locale-nl.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-no Disk;False;Amiga OS 3.2;3.2;3.1;;607531db32b4cb60a23f81a03e70e035;Locale3.2.3-NO;amiga-os-323-locale-no.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-pl Disk;False;Amiga OS 3.2;3.2;3.1;;d1c6b0536c532fa629ea5b7c70511394;Locale3.2.3-PL;amiga-os-323-locale-pl.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-pt Disk;False;Amiga OS 3.2;3.2;3.1;;9389b8b1c3d73bbf3f694e1f85788ccd;Locale3.2.3-PT;amiga-os-323-locale-pt.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-rs Disk;False;Amiga OS 3.2;3.2;3.1;;f699a62a04b0076b0c73c51a415b53b3;Locale3.2.3-RS;amiga-os-323-locale-rs.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-ru Disk;False;Amiga OS 3.2;3.2;3.1;;97f54f938fc3ff909eaeaed9656137c7;Locale3.2.3-RU;amiga-os-323-locale-ru.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-se Disk;False;Amiga OS 3.2;3.2;3.1;;554fc350c906b2b5966d15f1fa43727f;Locale3.2.3-SE;amiga-os-323-locale-se.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-tr Disk;False;Amiga OS 3.2;3.2;3.1;;afab6a82afcdba73b5cffa762311ceb5;Locale3.2.3-TR;amiga-os-323-locale-tr.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 locale-uk Disk;False;Amiga OS 3.2;3.2;3.1;;b44138a4c96c7272f1e3e3f595fa6bad;Locale3.2.3-UK;amiga-os-323-locale-uk.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a1200 Disk;False;Amiga OS 3.2;3.2;3.1;A1200;a44b18aa3aab9e0474e4b1b958365f28;ModulesA1200_3.2.3;amiga-os-323-modules-a1200.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a2000 Disk;False;Amiga OS 3.2;3.2;3.1;A2000;51b85621e4d4df08a8ee0e4746c1923d;ModulesA2000_3.2.3;amiga-os-323-modules-a2000.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a3000 Disk;False;Amiga OS 3.2;3.2;3.1;A3000;1a385ca1c824d7d82783e71a4bb96460;ModulesA3000_3.2.3;amiga-os-323-modules-a3000.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a4000d Disk;False;Amiga OS 3.2;3.2;3.1;A4000D;38ca3bcb99796be0d4c59301006a81f6;ModulesA4000D_3.2.3;amiga-os-323-modules-a4000d.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a4000t Disk;False;Amiga OS 3.2;3.2;3.1;A4000T;91da051276b26d56f59cc4de18c1f8ab;ModulesA4000T_3.2.3;amiga-os-323-modules-a4000t.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a500 Disk;False;Amiga OS 3.2;3.2;3.1;A500;371ef369b13dc7234043b0e95c08aa46;ModulesA500_3.2.3;amiga-os-323-modules-a500.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-a600 Disk;False;Amiga OS 3.2;3.2;3.1;A600;4b489adf76a41c72d8850028d298cf48;ModulesA600_3.2.3;amiga-os-323-modules-a600.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment
+Amiga OS 3.2.3 modules-cd32 Disk;False;Amiga OS 3.2;3.2;3.1;CD32;3cafa62831d8e1b617f8a52bfc136eea;ModulesCD32_3.2.3;amiga-os-323-modules-cd32.adf;True;Amiga-OS-32-ADF;Hyperion Entertainment

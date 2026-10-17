@@ -103,14 +103,14 @@ def sed_extract(script_text, key, state_text):
     for line in script_text.splitlines():
         # lines look like: sed -n 's/.../p' "file"  or
         #                  set target `sed -n 's/.../p' "file"`
-        if '"{}"'.format(key) in line and "sed -n " in line:
-            pattern = line.split("'")[1]
+        if 's/{}://'.format(key) in line and line.startswith('sed "'):
+            pattern = line.split('sed "', 1)[1].split('" T:_32x_line', 1)[0].replace('*"', '"')
             break
     assert pattern is not None, "no sed pipeline for key {} in {}".format(
         key, EXECUTOR.name)
     proc = subprocess.run(
-        ["sed", "-n", pattern],
-        input=state_text, capture_output=True, text=True,
+        ["sed", pattern],
+        input='\n'.join(line for line in state_text.splitlines() if '"{}"'.format(key) in line), capture_output=True, text=True,
     )
     assert proc.returncode == 0
     return proc.stdout.strip()
@@ -123,6 +123,21 @@ def is_subsequence(short_lines, long_lines):
     return all(any(norm(s) == norm(l) for l in it) for s in short_lines)
 
 
+def test_state_reader_handles_windows_powershell_json_spacing():
+    state = pinned_state("3.2.3", "3.2", "Install-Update-3.2.x", "47.115")
+    # Windows PowerShell 5 emits two spaces after each colon.
+    state = state.replace('\": ', '\":  ')
+    assert sed_extract(read(EXECUTOR), "TargetVersion", state) == "3.2.3"
+    assert sed_extract(read(ADF_RUNNER), "TargetVersion", state) == "3.2.3"
+
+
+def test_update_failure_prevents_completion():
+    main = read(INSTALL_MAIN)
+    start = read(REPO_ROOT / "amiga/install/S/Start-Install")
+    assert 'IF EXISTS INSTALLDIR:Prefs/Install-Failed' in main
+    assert start.index('IF EXISTS INSTALLDIR:Prefs/Install-Failed') < start.index('execute "INSTALLDIR:S/Install-Complete"')
+
+
 # ---------------------------------------------------------------------------
 # 1. executor state parsing
 # ---------------------------------------------------------------------------
@@ -132,10 +147,10 @@ def test_executor_sed_pipeline_parses_pinned_state(target, source, entry, kick):
     state = pinned_state(target, source, entry, kick)
     script = read(EXECUTOR)
     assert sed_extract(script, "FormatVersion", state) == "1.0"
-    assert sed_extract(script, "Family", state) == "AmigaOS 3.2.x"
+    assert sed_extract(script, "Family", state) == "AmigaOS3.2.x"
     assert sed_extract(script, "TargetVersion", state) == target
     if source is None:
-        assert sed_extract(script, "SourceVersion", state) == ""
+        assert sed_extract(script, "SourceVersion", state) == "null"
     else:
         assert sed_extract(script, "SourceVersion", state) == source
     assert sed_extract(script, "KickstartVersion", state) == kick
@@ -360,8 +375,8 @@ def test_adf_runner_dispatch(target, disk, required, optional):
     assert '"INSTALLDIR:S/Amiga-OS-3.2/Adf-Template" "{}"'.format(disk) \
         in block
     assert '"INSTALLDIR:Temp/Amiga-OS/{}"'.format(required) in block
-    # exactly one Adf-Template dispatch per target (update only)
-    assert block.count("Adf-Template") == 1
+    # The cumulative 3.2.3 release includes its companion disks.
+    assert block.count("Adf-Template") == (29 if target == "3.2.3" else 1)
     # optional disks are guarded by IF EXISTS
     for opt in optional:
         assert 'IF EXISTS "INSTALLDIR:Temp/Amiga-OS/{}"'.format(opt) \
@@ -374,11 +389,14 @@ def test_no_deferred_classes_or_modules_dispatch_remains():
     runner = read(ADF_RUNNER)
     import re
     disks = re.findall(r'Adf-Template" "([^"]+)"', runner)
-    assert sorted(disks) == ["Update3.2.2", "Update3.2.2.1", "Update3.2.3"]
-    for disk in DEFERRED_DISKS:
+    assert {"Classes3.2.3", "Extras3.2.3", "DiskDoctor3.2.3", "Locale3.2.3", "Modules3.2.3"} <= set(disks)
+    for disk in ["Classes3.2.2", "Modules3.2.2"]:
         assert '"{}"'.format(disk) not in runner
-    for adf in DEFERRED_ADFS:
+    for adf in ["amiga-os-322-classes.adf", "amiga-os-322-modules.adf"]:
         assert adf not in runner
+    for disk in disks:
+        assert (AMIGA_DIR / ("Detect-" + disk)).is_file()
+        assert (AMIGA_DIR / ("Install-" + disk)).is_file()
 
 
 def test_detect_and_install_pairs_exist_for_template_dispatch():
@@ -505,8 +523,7 @@ def test_readmes_do_not_solicit_deferred_classes_or_modules():
     for rel, ver in (
             ("support/self_install/amigaos/amiga-os-3.2.2/readme.txt",
              "3.2.2"),
-            ("support/self_install/amigaos/amiga-os-3.2.3/readme.txt",
-             "3.2.3")):
+            ):
         text = (REPO_ROOT / rel).read_text(encoding="ascii")
         assert "- Update{}.adf".format(ver) in text
         assert "- Classes{}.adf".format(ver) not in text
@@ -536,8 +553,10 @@ def test_executor_uses_house_conventions():
     # state file path matches the host contract
     assert 'INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json' in script
     # reboot is required for all update completions (3.2.2.1 semantics)
-    assert "TotalReset" in script
-    assert "UAEquit" in script
+    assert "The system must reboot" in script
+    # Return to normal cleanup; quitting here bypassed Install-Complete.
+    assert "TotalReset" not in script
+    assert "UAEquit" not in script
 
 
 def test_executor_updates_version_prefs_for_each_target():
@@ -545,3 +564,15 @@ def test_executor_updates_version_prefs_for_each_target():
     assert 'echo "3.2.2" NOLINE >SYSTEMDIR:Prefs/AmigaOS' in script
     assert 'echo "3.2.2.1" NOLINE >SYSTEMDIR:Prefs/AmigaOS' in script
     assert 'echo "3.2.3" NOLINE >SYSTEMDIR:Prefs/AmigaOS' in script
+
+
+def test_323_compressed_startup_and_selected_model_modules():
+    script = read(AMIGA_DIR / "Install-Update3.2.3")
+    assert 'gunzip -d "$amigaosdisk:Update/Startup-HardDrive.Z"' in script
+    assert 'SYSTEMDIR:S/Startup-Sequence_NOMEMFKICK' in script
+    assert 'Execute S:Boot-Startup' in script
+    assert '*\\"' not in script  # AmigaDOS escapes quotes with *, not backslash.
+    modules = read(AMIGA_DIR / "Install-Modules3.2.3")
+    assert 'IF "$modulesdisk" EQ "$modulesname"' in modules
+    assert 'intuition.library' in modules
+    assert 'LIBS/Modules/bootmenu' in modules

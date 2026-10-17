@@ -34,27 +34,40 @@ IF NOT EXISTS "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json"
 ENDIF
 
 
+; A failure must not reach the normal completion marker.
+echo "Update has not completed" >INSTALLDIR:Prefs/Install-Failed
+
 ; read state
 ; ----------
 
 ; get state format version
-sed -n 's/^[ ]*"FormatVersion": "\(.*\)",*$/\1/p' "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" >T:_32x_state_format
+Search "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" "FormatVersion" NONUM >T:_32x_line
+sed "s/ //g;s/*"//g;s/,//g;s/FormatVersion://" T:_32x_line >T:_32x_state_format
+Copy T:_32x_state_format INSTALLDIR:Temp/State-FormatVersion.txt
 set formatversion `type T:_32x_state_format`
 
 ; get state family
-sed -n 's/^[ ]*"Family": "\(.*\)",*$/\1/p' "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" >T:_32x_state_family
+Search "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" "Family" NONUM >T:_32x_line
+sed "s/ //g;s/*"//g;s/,//g;s/Family://" T:_32x_line >T:_32x_state_family
+Copy T:_32x_state_family INSTALLDIR:Temp/State-Family.txt
 set family `type T:_32x_state_family`
 
 ; get state target version
-sed -n 's/^[ ]*"TargetVersion": "\(.*\)",*$/\1/p' "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" >T:_32x_state_target
+Search "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" "TargetVersion" NONUM >T:_32x_line
+sed "s/ //g;s/*"//g;s/,//g;s/TargetVersion://" T:_32x_line >T:_32x_state_target
+Copy T:_32x_state_target INSTALLDIR:Temp/State-TargetVersion.txt
 set targetversion `type T:_32x_state_target`
 
 ; get state source version (may be the literal string null)
-sed -n 's/^[ ]*"SourceVersion": "\(.*\)",*$/\1/p' "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" >T:_32x_state_source
+Search "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" "SourceVersion" NONUM >T:_32x_line
+sed "s/ //g;s/*"//g;s/,//g;s/SourceVersion://" T:_32x_line >T:_32x_state_source
+Copy T:_32x_state_source INSTALLDIR:Temp/State-SourceVersion.txt
 set sourceversion `type T:_32x_state_source`
 
 ; get state kickstart version
-sed -n 's/^[ ]*"KickstartVersion": "\(.*\)",*$/\1/p' "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" >T:_32x_state_kickstart
+Search "INSTALLDIR:Prefs/AmigaOS-3.2.x-State.json" "KickstartVersion" NONUM >T:_32x_line
+sed "s/ //g;s/*"//g;s/,//g;s/KickstartVersion://" T:_32x_line >T:_32x_state_kickstart
+Copy T:_32x_state_kickstart INSTALLDIR:Temp/State-KickstartVersion.txt
 set kickstartversion `type T:_32x_state_kickstart`
 
 
@@ -68,7 +81,7 @@ IF NOT "$formatversion" EQ "1.0"
 ENDIF
 
 ; exit, if state family is not AmigaOS 3.2.x
-IF NOT "$family" EQ "AmigaOS 3.2.x"
+IF NOT "$family" EQ "AmigaOS3.2.x"
   echo "AmigaOS 3.2.x state file family is '$family', expected AmigaOS 3.2.x."
   quit 20
 ENDIF
@@ -115,6 +128,9 @@ IF "$targetversion" EQ "3.2.2"
 
   ; run install amiga os 3.2.x adf
   execute "INSTALLDIR:S/Amiga-OS-3.2/Install-Adf-3.2.x"
+  IF WARN
+    quit 20
+  ENDIF
 
   ; update amiga os version prefs to 3.2.2
   echo "3.2.2" NOLINE >SYSTEMDIR:Prefs/AmigaOS
@@ -152,6 +168,9 @@ IF "$targetversion" EQ "3.2.2.1"
 
   ; run install amiga os 3.2.x adf
   execute "INSTALLDIR:S/Amiga-OS-3.2/Install-Adf-3.2.x"
+  IF WARN
+    quit 20
+  ENDIF
 
   ; update amiga os version prefs to 3.2.2.1
   echo "3.2.2.1" NOLINE >SYSTEMDIR:Prefs/AmigaOS
@@ -185,6 +204,9 @@ IF "$targetversion" EQ "3.2.3"
 
   ; run install amiga os 3.2.x adf
   execute "INSTALLDIR:S/Amiga-OS-3.2/Install-Adf-3.2.x"
+  IF WARN
+    quit 20
+  ENDIF
 
   ; update amiga os version prefs to 3.2.3
   echo "3.2.3" NOLINE >SYSTEMDIR:Prefs/AmigaOS
@@ -212,24 +234,9 @@ echo "AmigaOS 3.2.x update is complete."
 echo "The system must reboot to finish the update."
 echo ""
 
-; set uae to 1, if uae prefs exist
-set uae "0"
-IF EXISTS INSTALLDIR:Prefs/UAE
-  set uae "1"
-ENDIF
-
-; quit uae, if uae is used. otherwise reboot
-IF $uae EQ 1 VAL
-  echo "UAE will quit in 10 seconds..."
-  wait 10
-  UAEquit >>SYS:hstwb-installer.log
-ELSE
-  echo "System will reboot in 10 seconds..."
-  wait 10
-  TotalReset >>SYS:hstwb-installer.log
-ENDIF
-
+; Return to the normal installer for completion and cleanup before reboot.
 
 ; end
 ; ---
 LAB end
+Delete >NIL: INSTALLDIR:Prefs/Install-Failed
