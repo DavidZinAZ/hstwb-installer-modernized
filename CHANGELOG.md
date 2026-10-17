@@ -24,3 +24,8 @@ This records modernization work by DavidZinAZ with AI assistance, including Scou
 - Exclude local media, generated images, recovery/session records, and test artifacts from this update. English-only test media uses the existing skip behavior for absent optional language disks.
 
 Validation: 171 regression tests passed, one skipped; PowerShell setup selection and settings round-trip checks passed. Native base 3.2 and base-to-3.2.3 A1200 installation and Workbench boot were observed. See [validation status](docs/validation-status.md) for scope and outstanding work; these results do not establish every release, model, ROM combination, or self-install path.
+# Setup display and package refresh fixes
+
+- Show the selected Amiga OS target separately from the base media set.
+- Refresh downloaded packages when opening their selection screen and after a failed batch; show the local package count and folder.
+

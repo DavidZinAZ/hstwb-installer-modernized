@@ -989,6 +989,7 @@ function ConfigurePackages($hstwb)
 {
     do
     {
+        $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath
         $choice = Menu $hstwb "Configure packages" @("Select packages", "Update packages", "Back") 
         switch ($choice)
         {
@@ -1060,6 +1061,10 @@ function SelectPackageFiltering($hstwb)
 # select packages
 function SelectPackages($hstwb)
 {
+    $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath
+    if (!$hstwb.Packages.Count) {
+        Write-Host ('No downloaded packages were found in ' + $hstwb.Paths.PackagesPath + '. Use Update packages to download them.') -ForegroundColor Yellow
+    }
     # get package names sorted
     $packageNames = @()
     $packageNames += SortPackageNames $hstwb | Where-Object { $hstwb.Settings.Packages.PackageFiltering -eq 'All' -or !$hstwb.Packages[$_].AmigaOsVersions -or $hstwb.Packages[$_].AmigaOsVersions -contains $hstwb.Settings.Packages.PackageFiltering } | ForEach-Object { $_.ToLower() }
@@ -1386,6 +1391,8 @@ function DownloadLatestPackages($hstwb, $prerelease)
     try { $packageManager.DownloadPackages($packagesList.Packages, $prerelease) }
     catch {
         Write-Host ('Package download failed: ' + $_.Exception.Message) -ForegroundColor Red
+        $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath
+        Write-Host ('Available locally: {0} packages in {1}. Successfully downloaded packages remain selectable.' -f $hstwb.Packages.Count,$hstwb.Paths.PackagesPath)
         Read-Host 'Press enter to continue'
         return
     }
@@ -1393,7 +1400,7 @@ function DownloadLatestPackages($hstwb, $prerelease)
     # read packages
     $hstwb.Packages = ReadPackages $hstwb.Paths.PackagesPath;
 
-    Write-Host 'Done' -ForegroundColor 'Yellow'
+    Write-Host ('Done: {0} packages available in {1}' -f $hstwb.Packages.Count,$hstwb.Paths.PackagesPath) -ForegroundColor 'Yellow'
     Write-Host ''
     Write-Host "Press enter to continue"
     Read-Host

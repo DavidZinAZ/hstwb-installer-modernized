@@ -48,7 +48,7 @@ function PrintSettings($hstwb)
         Write-Host ("'" + $hstwb.Settings.AmigaOs.InstallAmigaOs + "'")
         Write-Host "  Amiga OS dir          : " -NoNewline -foregroundcolor "Gray"
         Write-Host ("'" + $hstwb.Settings.AmigaOs.AmigaOsDir + "'")
-        Write-Host "  Amiga OS set          : " -NoNewline -foregroundcolor "Gray"
+        Write-Host "  Amiga OS media set    : " -NoNewline -foregroundcolor "Gray"
     
         if ($hstwb.Settings.AmigaOs.AmigaOsSet -notmatch '^$' -and $hstwb.UI.AmigaOs.AmigaOsSetInfo)
         {
@@ -70,7 +70,7 @@ function PrintSettings($hstwb)
     # show kickstart for installer modes: test, install and build self install
     if ($hstwb.Settings.AmigaOs.AmigaOsSet -eq 'Amiga OS 3.2' -and $hstwb.Settings.AmigaOs.TargetVersion)
     {
-        Write-Host ("  Amiga OS version      : '{0}'" -f $hstwb.Settings.AmigaOs.TargetVersion)
+        Write-Host ("  Target Amiga OS       : 'Amiga OS {0}'" -f $hstwb.Settings.AmigaOs.TargetVersion)
     }
 
     if ($hstwb.Settings.Installer.Mode -match "^(Test|Install|BuildSelfInstall)$")
