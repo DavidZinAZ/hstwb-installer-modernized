@@ -2468,7 +2468,7 @@ function RunInstall($hstwb)
             if (!$romKeyPath -and $bestMatchingKickstartSetEntry.Encrypted -eq 'Yes')
             {
                 $encrypted = $true
-                $romKeyPath = Join-Path (Split-Path $bestMatchingKickstartSetEntry.File -Parent) -ChildPath 'rom.key'
+                $romKeyPath = if ($bestMatchingKickstartSetEntry.RomKeyFile) { $bestMatchingKickstartSetEntry.RomKeyFile } else { Join-Path (Split-Path $bestMatchingKickstartSetEntry.File -Parent) -ChildPath 'rom.key' }
             }
 
             # create install kickstart prefs file
@@ -4005,7 +4005,7 @@ try
         $hstwb.Paths.KickstartEntry = $kickstartEntry
 
         # kickstart rom key
-        $kickstartRomKeyFile = Join-Path (Split-Path $kickstartEntry.File -Parent) -ChildPath 'rom.key'
+        $kickstartRomKeyFile = if ($kickstartEntry.RomKeyFile) { $kickstartEntry.RomKeyFile } else { Join-Path (Split-Path $kickstartEntry.File -Parent) -ChildPath 'rom.key' }
 
         # fail, if kickstart entry is encrypted and kickstart rom key file doesn't exist
         if ($kickstartEntry.Encrypted -eq 'Yes' -and !(test-path -path $kickstartRomKeyFile))

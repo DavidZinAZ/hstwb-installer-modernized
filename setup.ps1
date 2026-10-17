@@ -118,11 +118,12 @@ function Main($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Main" @("Configure Installer", "Configure image", "Configure Amiga OS", "Configure Kickstart", "Configure packages", "Configure user packages", "Configure emulator", "Run Installer", "Reset settings", "Exit")
+        $choice = Menu $hstwb "Main" @("Configure Installer", "Configure image", "Configure media library", "Configure Amiga OS", "Configure Kickstart", "Configure packages", "Configure user packages", "Configure emulator", "Run Installer", "Reset settings", "Exit")
         switch ($choice)
         {
             "Configure Installer" { ConfigureInstaller $hstwb }
             "Configure image" { ConfigureImage $hstwb }
+            "Configure media library" { ConfigureMediaLibrary $hstwb }
             "Configure Amiga OS" { ConfigureAmigaOs $hstwb }
             "Configure Kickstart" { ConfigureKickstart $hstwb }
             "Configure packages" { ConfigurePackages $hstwb }
@@ -137,6 +138,75 @@ function Main($hstwb)
 
 
 # configure image
+function ConfigureMediaLibrary($hstwb)
+{
+    do {
+        $choice = Menu $hstwb 'Configure media library' @('Choose media folder', 'Rescan media', 'View scan results', 'Back')
+        switch ($choice) {
+            'Choose media folder' { ChangeMediaLibraryDir $hstwb }
+            'Rescan media' { RescanMediaLibrary $hstwb }
+            'View scan results' { ViewMediaScanResults $hstwb }
+        }
+    } until ($choice -eq 'Back')
+}
+
+function ChangeMediaLibraryDir($hstwb)
+{
+    $path = if ($hstwb.Settings.Media.Dir) { $hstwb.Settings.Media.Dir } else { $env:USERPROFILE }
+    $chosen = FolderBrowserDialog 'Select media folder (all subfolders are scanned)' $path $false
+    if (!$chosen) { return }
+    if (!(Test-Path -LiteralPath $chosen -PathType Container)) { throw 'Media folder does not exist.' }
+    if (!$hstwb.Settings.Media) { $hstwb.Settings.Media = @{} }
+    $hstwb.Settings.Media.Dir = $chosen
+    # Keep the original saved path fields for every existing installer mode.
+    $hstwb.Settings.AmigaOs.AmigaOsDir = $chosen
+    $hstwb.Settings.Kickstart.KickstartDir = $chosen
+    RescanMediaLibrary $hstwb
+}
+
+function RescanMediaLibrary($hstwb)
+{
+    Write-Host 'Scanning media folders and all subfolders...'
+    UpdateAmigaOsEntries $hstwb
+    UpdateKickstartEntries $hstwb
+    FindAmigaOsFiles $hstwb
+    FindKickstartFiles $hstwb
+    # Discovery never changes an explicit OS, target version, or ROM selection.
+    if (!$hstwb.Settings.AmigaOs.AmigaOsSet) {
+        $hstwb.Settings.AmigaOs.AmigaOsSet = FindBestMatchingAmigaOsSet $hstwb
+    }
+    if (!$hstwb.Settings.Kickstart.KickstartSet) {
+        $hstwb.Settings.Kickstart.KickstartSet = FindBestMatchingKickstartSet $hstwb
+    }
+    UiAmigaOsSetInfo $hstwb $hstwb.Settings.AmigaOs.AmigaOsSet
+    UiKickstartSetInfo $hstwb $hstwb.Settings.Kickstart.KickstartSet
+    Save $hstwb
+    Write-Host 'Scan complete. Use the OS and Kickstart menus to select sets and view files.'
+}
+
+function UseMediaLibraryFolder($hstwb, $kind)
+{
+    if (!$hstwb.Settings.Media.Dir) { Write-Host 'Choose a media library folder first.'; return }
+    if ($kind -eq 'AmigaOs') { $hstwb.Settings.AmigaOs.AmigaOsDir = $hstwb.Settings.Media.Dir }
+    else { $hstwb.Settings.Kickstart.KickstartDir = $hstwb.Settings.Media.Dir }
+    RescanMediaLibrary $hstwb
+}
+
+function ViewMediaScanResults($hstwb)
+{
+    foreach ($item in @(@{Title='Amiga OS'; Entries=$hstwb.AmigaOsEntries}, @{Title='Kickstart'; Entries=$hstwb.KickstartEntries})) {
+        Write-Host $item.Title
+        $found = @($item.Entries | Where-Object { $_.File })
+        if (!$found.Count) { Write-Host '  No recognized files found.' }
+        foreach ($set in @($found | Group-Object Set | Sort-Object Name)) {
+            $count = @($set.Group.File | Sort-Object -Unique).Count
+            Write-Host ('  {0}: {1} recognized files' -f $set.Name, $count)
+        }
+    }
+    Write-Host 'All subfolders are included. Keep unwanted media outside the library folder.'
+    Read-Host 'Press enter to continue'
+}
+
 function ConfigureImage($hstwb)
 {
     do
@@ -456,11 +526,12 @@ function ConfigureAmigaOs($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Configure Amiga OS" @("Switch install Amiga OS", "Change Amiga OS dir", "Select Amiga OS set", "Select Amiga OS 3.2 version", "View Amiga Os set files", "Back")
+        $choice = Menu $hstwb "Configure Amiga OS" @("Switch install Amiga OS", "Use media library folder", "Change Amiga OS folder (override)", "Select Amiga OS set", "Select Amiga OS 3.2 version", "View Amiga Os set files", "Back")
         switch ($choice)
         {
             "Switch install Amiga OS" { SwitchInstallAmigaOs $hstwb }
-            "Change Amiga OS dir" { ChangeAmigaOsDir $hstwb }
+            "Use media library folder" { UseMediaLibraryFolder $hstwb 'AmigaOs' }
+            "Change Amiga OS folder (override)" { ChangeAmigaOsDir $hstwb }
             "Select Amiga OS set" { SelectAmigaOsSet $hstwb }
             "Select Amiga OS 3.2 version" { SelectAmigaOs32Version $hstwb }
             "View Amiga Os set files" { ViewAmigaOsSetFiles $hstwb }
@@ -712,11 +783,12 @@ function ConfigureKickstart($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Configure Kickstart" @("Switch install Kickstart", "Change Kickstart dir", "Select Kickstart set", "View Kickstart set files", "Back") 
+        $choice = Menu $hstwb "Configure Kickstart" @("Switch install Kickstart", "Use media library folder", "Change Kickstart folder (override)", "Select Kickstart set", "View Kickstart set files", "Back")
         switch ($choice)
         {
             "Switch install Kickstart" { SwitchInstallKickstart $hstwb }
-            "Change Kickstart dir" { ChangeKickstartDir $hstwb }
+            "Use media library folder" { UseMediaLibraryFolder $hstwb 'Kickstart' }
+            "Change Kickstart folder (override)" { ChangeKickstartDir $hstwb }
             "Select Kickstart set" { SelectKickstartSet $hstwb }
             "View Kickstart set files" { ViewKickstartSetFiles $hstwb }
         }

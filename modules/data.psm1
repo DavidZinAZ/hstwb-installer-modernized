@@ -448,7 +448,7 @@ function ReadAdfVolumeName($bytes)
 # find matching amiga os adfs
 function FindMatchingAmigaOsEntriesByAdfVolumeName($amigaOsEntries, $dir)
 {
-    $adfFiles = Get-ChildItem -Path $dir -filter *.adf
+    $adfFiles = Get-ChildItem -LiteralPath $dir -Filter *.adf -Recurse -File
 
     $validAdfFiles = @()
 
@@ -515,17 +515,9 @@ function FindMatchingAmigaOsEntriesByFileName($amigaOsEntries, $dir)
 function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
 {
     $romKeyPath = Join-Path $dir -ChildPath 'rom.key'
-    $romKeyPresent = Test-Path $romKeyPath
 
-    # read key bytes
-    $keyBytes = @()
-    if ($romKeyPresent)
-    {
-        $keyBytes += [System.IO.File]::ReadAllBytes($romKeyPath)
-    }
-
-    # get entries
-    $files = Get-ChildItem -Path $dir | Where-Object { !$_.PSIsContainer }
+    # Scan recursively without loading large OS disk/ISO images as ROMs.
+    $files = Get-ChildItem -LiteralPath $dir -Recurse -File | Where-Object { $_.Length -le 2097163 }
 
     # index file hashes
     $kickstartFileHashesIndex = @{}
@@ -533,18 +525,22 @@ function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
     foreach($file in $files)
     {
         # read rom bytes
-        $romBytes = @()
-        $romBytes += [System.IO.File]::ReadAllBytes($file.FullName)
+        [byte[]]$romBytes = [System.IO.File]::ReadAllBytes($file.FullName)
 
         $encrypted = 'No'
 
         # calculate decrypted kickstart md5, if file is not encrypted kickstart rom file
         if (IsEncryptedKickstartRom $romBytes)
         {
-            if (!$romKeyPresent)
+            # Preserve adjacent keys in nested layouts; also support a root key.
+            $fileRomKeyPath = Join-Path $file.DirectoryName 'rom.key'
+            if (!(Test-Path -LiteralPath $fileRomKeyPath)) { $fileRomKeyPath = $romKeyPath }
+            if (!(Test-Path -LiteralPath $fileRomKeyPath))
             {
                 continue
             }
+            [byte[]]$keyBytes = [IO.File]::ReadAllBytes($fileRomKeyPath)
+            if (!$keyBytes.Length) { continue }
 
             $encrypted = 'Yes'
             $md5Hash = CalculateDecryptedKickstartMd5FromBytes $romBytes $keyBytes
@@ -558,6 +554,7 @@ function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
             'File' = $file.FullName;
             'Md5Hash' = $md5Hash;
             'Encrypted' = $encrypted
+            'RomKeyFile' = $(if ($encrypted -eq 'Yes') { $fileRomKeyPath } else { $null })
         }
 
         # add kickstart file
@@ -584,6 +581,7 @@ function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
         $kickstartEntry | Add-Member -MemberType NoteProperty -Name 'MatchType' -Value 'MD5' -Force
         $kickstartEntry | Add-Member -MemberType NoteProperty -Name 'MatchRank' -Value '1' -Force
         $kickstartEntry | Add-Member -MemberType NoteProperty -Name 'Encrypted' -Value $kickstartFile.Encrypted -Force
+        $kickstartEntry | Add-Member -MemberType NoteProperty -Name 'RomKeyFile' -Value $kickstartFile.RomKeyFile -Force
     }
 }
 

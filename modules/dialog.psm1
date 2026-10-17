@@ -15,6 +15,12 @@ function PrintSettings($hstwb)
     Write-Host ("'" + $hstwb.Paths.SettingsFile + "'")
     Write-Host "  Assigns File          : " -NoNewline -foregroundcolor "Gray"
     Write-Host ("'" + $hstwb.Paths.AssignsFile + "'")
+    if ($hstwb.Settings.Media.Dir) {
+        Write-Host 'Media library'
+        Write-Host ('  Folder (all subfolders): ' + $hstwb.Settings.Media.Dir)
+        if ($hstwb.Settings.AmigaOs.AmigaOsDir -ne $hstwb.Settings.Media.Dir) { Write-Host '  Amiga OS uses a separate folder override.' }
+        if ($hstwb.Settings.Kickstart.KickstartDir -ne $hstwb.Settings.Media.Dir) { Write-Host '  Kickstart uses a separate folder override.' }
+    }
     Write-Host "Installer"
     Write-Host "  Mode                  : " -NoNewline -foregroundcolor "Gray"
     switch ($hstwb.Settings.Installer.Mode)
