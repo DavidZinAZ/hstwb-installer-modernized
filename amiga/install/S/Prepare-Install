@@ -18,14 +18,6 @@ IF EXISTS INSTALLDIR:Prefs/Install-Packages
   echo ""
   Execute INSTALLDIR:S/Install-Packages VALIDATE
 
-  echo ""
-  IF EXISTS INSTALLDIR:Prefs/Install-User-Packages
-    echo "Continue show user package status."
-  ELSE
-    echo "Continue will start installation."
-  ENDIF
-  echo ""
-  ask "Press ENTER to continue"
 ENDIF
 
 ; run install user packages, if install user packages prefs exists
