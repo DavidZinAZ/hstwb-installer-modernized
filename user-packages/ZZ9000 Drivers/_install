@@ -2,7 +2,34 @@
 ; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
 Stack 65536
 MakePath >NIL: "$INSTALLDIR"
-MakeIcon >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Tools"
+  IF NOT EXISTS "SYSTEMDIR:Tools.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Hardware"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Hardware.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
 echo "Installing ZZ9000 Drivers..."
 Copy >NIL: "USERPACKAGEDIR:Payload/#?" "$INSTALLDIR" ALL CLONE
 echo "Run ZZ9000Installer/Install ZZ9000 from Workbench on the target ZZ9000 machine."

@@ -2,7 +2,34 @@
 ; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
 Stack 65536
 MakePath >NIL: "$INSTALLDIR"
-MakeIcon >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Tools"
+  IF NOT EXISTS "SYSTEMDIR:Tools.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Diagnostics"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Diagnostics.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Diagnostics" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Diagnostics"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
 echo "Installing SDMAC..."
 Copy >NIL: "USERPACKAGEDIR:sdmac" "$INSTALLDIR" CLONE
 Protect "$INSTALLDIR/sdmac" +e

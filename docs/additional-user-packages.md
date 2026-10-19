@@ -27,6 +27,39 @@ Each package retains upstream release URLs, SHA256 hashes, license notices and c
 - **ZZ9000 Drivers:** installs the official `ZZ9000Installer` drawer. On the target machine, open it and double-click **Install ZZ9000**. That installer handles Picasso96, system components, network configuration and CPU-specific options. Reboot afterward. HstWB does not activate hardware drivers while preparing an image in WinUAE.
 - **DOpus5:** launch `DirectoryOpus` from its drawer. The OS3 68000 build includes its library and modules. No Workbench replacement or WBStartup entry is installed by the wrapper.
 
+## Missing drawers in Workbench
+
+The wrappers previously created an icon for the final install drawer only.
+`MakePath` also created parent drawers such as `Tools/Hardware` and
+`Tools/Diagnostics`, without giving those parents `.info` files. Those parents
+can hide the applications when Workbench shows icons only. Firmware's `Variants`
+and board variant drawers had the same omission.
+
+The updated wrappers add missing parent icons and firmware variant drawer icons,
+using the installed default drawer icon when available. Existing icons are kept.
+DevTest, SDMAC and A4091 Tools also receive the parent fix because they use the
+same locations. Custom destination drawers receive an icon, but custom parent
+paths outside the default hierarchy must be checked separately.
+
+For an existing installation, copy `support/Repair-User-Package-Icons` to the
+Amiga and run it from Shell, for example:
+
+```text
+Execute RAM:Repair-User-Package-Icons
+```
+
+This repairs existing hardware and diagnostic drawers at the default locations above,
+including firmware variants and the official installer's default
+`SYS:Utilities/ZZ9000` drawer. It copies the system default drawer icon, falling
+back to `SYS:Tools.info`, and skips icons already present. It does not reinstall
+applications or run the ZZ9000 installer. Reopen the Workbench windows afterward.
+The script needs no HstWB-specific commands. If neither icon template exists,
+it stops without changes.
+
+For immediate access, use Workbench's **Window > Show > All Files** in each
+affected parent window. The folder contents can then be reached while their
+icons are repaired. This does not create permanent `.info` files.
+
 ## Updates
 
 **Update apps from sources** checks official GitHub stable releases. xSysInfo, KickSmash, DevTest, SDMAC and DOpus5 support local package updates with baseline hashes, archive-member/file-format validation, preserved custom files and backups. CPU/platform and asset patterns are explicit; DOpus5 remains on the OS3 68000 build.

@@ -17,6 +17,7 @@ Param(
 Import-Module (Resolve-Path('modules\version.psm1')) -Force
 Import-Module (Resolve-Path('modules\config.psm1')) -Force
 Import-Module (Resolve-Path('modules\local-settings.psm1')) -Force
+Import-Module (Resolve-Path('modules\settings-profiles.psm1')) -Force
 Import-Module (Resolve-Path('modules\user-package-updates.psm1')) -Force
 Import-Module (Resolve-Path('modules\package-catalog.psm1')) -Force
 Import-Module (Resolve-Path('modules\dialog.psm1')) -Force
@@ -1691,15 +1692,100 @@ function ConfigureInstaller($hstwb)
 {
     do
     {
-        $choice = Menu $hstwb "Configure Installer" @("Change Installer mode", "Back") 
+        $choice = Menu $hstwb "Configure Installer" @("Change Installer mode", "Load settings profile", "Save settings profile", "Back")
         switch ($choice)
         {
             "Change Installer mode" { ChangeInstallerMode $hstwb }
+            "Load settings profile" { LoadInstallerProfile $hstwb }
+            "Save settings profile" { SaveInstallerProfile $hstwb }
         }
     }
     until ($choice -eq 'Back')
 }
 
+
+function SaveInstallerProfile($hstwb)
+{
+    $ErrorActionPreference = 'Stop'
+    try {
+        $directory = Join-Path $hstwb.Paths.SettingsDir 'profiles'
+        $null = New-Item -ItemType Directory -Path $directory -Force -ErrorAction Stop
+        $path = SaveFileDialog 'Save settings and assigns as one profile' $directory 'HstWB settings profiles|*.hstwb-profile.json'
+        if (!$path) { return }
+        WriteSettingsProfile $path $hstwb
+        Write-Host "Profile saved: $path" -ForegroundColor Green
+    } catch { Write-Host "Profile save failed: $($_.Exception.Message)" -ForegroundColor Red }
+    $null = Read-Host 'Press Enter to continue'
+}
+
+function LoadInstallerProfile($hstwb)
+{
+    $ErrorActionPreference = 'Stop'
+    try {
+        $directory = Join-Path $hstwb.Paths.SettingsDir 'profiles'
+        $null = New-Item -ItemType Directory -Path $directory -Force -ErrorAction Stop
+        $path = OpenFileDialog 'Load settings and assigns profile' $directory 'HstWB settings profiles|*.hstwb-profile.json'
+        if (!$path) { return }
+        $profile = ReadSettingsProfile $path
+
+        # Refresh a separate configuration before touching the current settings.
+        $candidate = $hstwb.Clone()
+        $candidate.Settings = $profile.Settings
+        $candidate.Assigns = $profile.Assigns
+        $candidate.UI = @{ AmigaOs = @{}; Kickstart = @{} }
+        $candidate.IgnoreIdenticalContent = $false
+        $candidate.Packages = ReadPackages $candidate.Paths.PackagesPath
+        $imageDir = $candidate.Settings.Image.ImageDir
+        UpgradeSettings $candidate
+        $candidate.Settings.Image.ImageDir = $imageDir
+        UpgradeAssigns $candidate
+        UpdateAmigaOsEntries $candidate
+        UpdateKickstartEntries $candidate
+        $candidate.UserPackages = DetectUserPackages $candidate
+        $candidate.Emulators = FindEmulators
+        $missingPackages = @()
+        foreach ($key in @($candidate.Settings.Packages.Keys | Where-Object { $_ -match '^InstallPackage\d+$' })) {
+            $name = $candidate.Settings.Packages[$key]
+            if (!$candidate.Packages.ContainsKey($name)) { $missingPackages += $name }
+        }
+        foreach ($key in @($candidate.Settings.UserPackages.Keys | Where-Object { $_ -match '^InstallUserPackage\d+$' })) {
+            $name = $candidate.Settings.UserPackages[$key]
+            if (!$candidate.UserPackages.ContainsKey($name)) { $missingPackages += $name }
+        }
+        UpdateInstallPackages $candidate
+        UpdateInstallUserPackages $candidate
+        UpdateAssigns $candidate
+        # Media discovery normally clears absent paths. Keep saved locations so
+        # temporarily disconnected drives can be reconnected after loading.
+        $amigaOsDir = $candidate.Settings.AmigaOs.AmigaOsDir
+        $kickstartDir = $candidate.Settings.Kickstart.KickstartDir
+        FindAmigaOsFiles $candidate
+        FindKickstartFiles $candidate
+        $candidate.Settings.AmigaOs.AmigaOsDir = $amigaOsDir
+        $candidate.Settings.Kickstart.KickstartDir = $kickstartDir
+        UiAmigaOsSetInfo $candidate $candidate.Settings.AmigaOs.AmigaOsSet
+        UiKickstartSetInfo $candidate $candidate.Settings.Kickstart.KickstartSet
+
+        $backup = Join-Path $directory ('before-load-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8) + '.hstwb-profile.json')
+        WriteSettingsProfile $backup $hstwb
+        try { Save $candidate }
+        catch {
+            Save $hstwb
+            throw
+        }
+        foreach ($key in @($candidate.Keys)) { $hstwb[$key] = $candidate[$key] }
+        Write-Host "Profile loaded: $path" -ForegroundColor Green
+        Write-Host "Previous settings saved: $backup"
+        if ($missingPackages.Count -gt 0) {
+            Write-Host ('Unavailable packages were left unselected: ' + ($missingPackages -join ', ')) -ForegroundColor Yellow
+        }
+        foreach ($location in @($candidate.Settings.Image.ImageDir, $amigaOsDir, $kickstartDir, $candidate.Settings.Media.Dir, $candidate.Settings.UserPackages.UserPackagesDir, $candidate.Settings.Emulator.EmulatorFile) | Where-Object { $_ } | Select-Object -Unique) {
+            if (!(Test-Path -LiteralPath $location)) { Write-Host "Saved location is unavailable: $location" -ForegroundColor Yellow }
+        }
+        Write-Host 'Review the settings above before running the installer. Paths refer to the original saved locations.'
+    } catch { Write-Host "Profile load failed: $($_.Exception.Message)" -ForegroundColor Red }
+    $null = Read-Host 'Press Enter to continue'
+}
 
 # change installer mode
 function ChangeInstallerMode($hstwb)

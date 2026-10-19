@@ -2,7 +2,9 @@
 
 This records modernization work by DavidZinAZ with AI assistance, including Scout (OpenAI Codex). The underlying installer and earlier history come from [Henrik Nørfjand Stengaard's HstWB Installer](https://github.com/henrikstengaard/hstwb-installer).
 
-## Unreleased — October 17, 2026
+## Unreleased — October 18, 2026
+
+- Version 1.6.11 adds named settings profiles under Configure Installer, saving settings and assigns together with automatic backups before loading, validation, refreshed package/media details and missing-location reporting. Add missing Workbench parent and firmware variant drawer icons for additional user packages and a repair script for existing installations. Profile and settings regression checks passed in Windows PowerShell; interactive file-picker and native drawer-icon testing remain pending.
 
 - Version 1.6.10 adds BestClassicWB 2.1.12 to standard packages through a hash-pinned upstream adapter. Retain desktop conflict handling and upstream attribution, preserve the selected OS startup file, and add the desktop hooks. AmigaOS 3.2.3/native qualification remains pending.
 - Version 1.6.9 reduces WHDLoad Packs output to one progress line per letter group. Archive output is captured for error reporting; stack and residency fixes remain. Remove redundant hardware/language progress lines and their one-second delays from both pack builders.

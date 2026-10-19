@@ -290,14 +290,22 @@ function ExtractFilesFromZipFile($zipFile, $pattern, $outputDir)
 # calculate md5 hash from file
 function CalculateMd5FromFile($file)
 {
+    $md5 = $null
+    $stream = $null
     try
     {
         $md5 = new-object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
-        return [System.BitConverter]::ToString($md5.ComputeHash([System.IO.File]::ReadAllBytes($file))).ToLower().Replace('-', '')
+        $stream = [System.IO.File]::OpenRead($file)
+        return [System.BitConverter]::ToString($md5.ComputeHash($stream)).ToLower().Replace('-', '')
     }
     catch
     {
-        throw ('Failed to read MD5 from file ''{0}'': {1}' -f $file, $_.ErrorDetails.Message)
+        throw ('Failed to read MD5 from file ''{0}'': {1}' -f $file, $_.Exception.Message)
+    }
+    finally
+    {
+        if ($stream) { $stream.Dispose() }
+        if ($md5) { $md5.Dispose() }
     }
 }
 
@@ -380,7 +388,8 @@ function GetFileHashes($path)
         return $fileHashes
     }
 
-    $files = Get-ChildItem -Path $path -Recurse | Where-Object { ! $_.PSIsContainer }
+    # Hard disk images are installation targets, not Amiga OS distribution media.
+    $files = Get-ChildItem -Path $path -Recurse | Where-Object { ! $_.PSIsContainer -and $_.Extension -ine '.hdf' }
 
     foreach ($file in $files)
     {
