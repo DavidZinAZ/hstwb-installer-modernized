@@ -1,6 +1,44 @@
-# Publication privacy review — October 17, 2026
+# Publication privacy review — updated October 18, 2026
 
-The development repository remains private. Its current content has been cleaned of identified maintainer machine paths, but **the existing Git history is not cleared for publication**.
+The existing Git history is **not cleared for publication**. On October 18,
+an authenticated GitHub read confirmed that the development repository is still
+private. The connected API initially returned 404; the follow-up used the
+repository's existing GitHub login. See the
+[current readiness report](publication-readiness.md).
+
+## October 18 follow-up
+
+The expanded reachable-history scan covered 1,512 commits and 4,886 text blobs.
+It found 372 path-pattern matches across 80 historical blob versions in six
+paths. This includes inherited examples, not just private maintainer data; the
+five previously identified continuation blob versions with private archive
+paths remain reachable. Deleting the feature branches did not remove their
+history after merging it into master.
+
+The baseline current-content scan covered 2,141 tracked files and 228 ZIP members
+without a pattern match. It did not expand 23 large ZIP members. No token,
+private-key or credential-URL patterns matched in the historical text scan;
+931 binary blobs and nine large blobs were not expanded/scanned. These limits
+prevent a blanket claim that all content is free of personal information.
+
+The repository also intentionally preserves public contributor names, upstream
+contact/copyright notices and Git commit identities. Privacy cleanup must not
+erase those credits. Screenshots, image contents, LhA payloads and dependencies
+still require their own review. This is separate from
+[redistribution clearance](../THIRD_PARTY_NOTICES.md).
+
+A visual sample of four legacy screenshots found local Windows account paths
+in the two Setup screenshots examined. Only four of the 101 screenshot files
+were inspected; do not extend the zero pattern-match result to image pixels.
+Replacing or redacting those images and completing the visual review remains
+part of publication preparation.
+
+The authenticated GitHub follow-up reviewed 14 PRs and their 14 corresponding
+issue records, with no title/body privacy-pattern matches. No issue/PR/commit
+comments, release records or workflow artifacts were returned, discussions are
+disabled and no remote Git notes were found. Branch rules/protection and secret
+scanning/private vulnerability reporting could not be verified (403/404); those
+responses are not a claim that every security feature is enabled or disabled.
 
 ## Work completed
 
@@ -28,6 +66,16 @@ GitHub explains the limitations and cached-reference handling in its [sensitive-
 
 ## Repeatable current-content check
 
-Run `python tools/audit_public_content.py` before publication. It reports file locations and categories without echoing matching values, checks that private runtime directories are untracked, scans tracked bytes and small ZIP members, and returns a failure status for findings. Large ZIP members are reported as unexpanded; compressed LhA contents are not expanded by this tool. This supplements review and provenance/hash checks of upstream binary assets; it is not a complete credential scanner or a license audit.
+Run `python tools/audit_public_content.py` before publication. Add
+`--include-untracked` to check new non-ignored files before staging. For history,
+run `python tools/audit_public_content.py --history --summary --output .output/publication-audit.json`.
+The history command currently fails on the known findings. Reports contain
+locations/categories without matching values, and check that private runtime
+directories, settings profiles and history backups are not tracked. ZIP and
+NuGet members up to 2 MiB are scanned; larger members are counted as unexpanded.
+Compressed LhA contents are not expanded. The automatic content workflow checks
+current tracked files only: a passing result does not clear history or licensing.
+This supplements review of upstream binary assets; it is not a complete
+credential scanner or a license audit.
 
 Runtime testing still uses privately supplied OS media. This review does not qualify the pending Amiga application installs or hardware operation described in [validation status](validation-status.md).

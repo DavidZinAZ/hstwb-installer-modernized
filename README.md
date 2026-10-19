@@ -6,7 +6,7 @@ This continuation is maintained by **[DavidZinAZ](https://github.com/DavidZinAZ)
 
 The existing setup, media and ROM selection, bundled image templates, and installation process remain the foundation. See [changes and validation](CHANGELOG.md), [acknowledgments](ACKNOWLEDGMENTS.md), and [current test status](docs/validation-status.md). Internal `hstwb-installer` filenames are retained for compatibility.
 
-See the [publication privacy review](docs/privacy-review.md) before changing repository visibility. Current documentation has been sanitized; older development commits still require a publication decision.
+See the [publication readiness report](docs/publication-readiness.md) and [privacy review](docs/privacy-review.md) before changing repository visibility. Historical private paths and component redistribution checks remain unresolved. The existing repository is not cleared for public release.
 
 HstWB Installer is an application, which can automate installation of Amiga OS, Kickstarts roms and packages with additional content. 
 
@@ -56,7 +56,13 @@ The original name "HstWB" comes from Henrik Nørfjand Stengaard. The original pr
 
 # License
 
-HstWB Installer is licensed under MIT license, see LICENSE.txt file.
+The installer source is licensed under the [MIT license](LICENSE.txt).
+Bundled third-party software, firmware, fonts and artwork retain their own
+licenses; see [third-party notices](THIRD_PARTY_NOTICES.md). The MIT license does
+not grant redistribution rights over commercial AmigaOS or Kickstart media.
+
+For contributions and redacted bug reports, see [CONTRIBUTING.md](CONTRIBUTING.md).
+For sensitive reports, see [SECURITY.md](SECURITY.md).
 
 # Requirements
 

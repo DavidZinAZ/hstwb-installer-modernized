@@ -28,6 +28,7 @@ Param(
 Import-Module (Resolve-Path('..\modules\version.psm1')) -Force
 Import-Module (Resolve-Path('..\modules\config.psm1')) -Force
 Import-Module (Resolve-Path('..\modules\data.psm1')) -Force
+Import-Module (Join-Path $PSScriptRoot 'release-staging.psm1') -Force
 
 
 # convert markdown to html
@@ -65,7 +66,7 @@ $wixToolsetLightFile = Join-Path $wixToolsetDir -ChildPath 'light.exe'
 $rootDir = Resolve-Path '..'
 $releaseDir = Join-Path $rootDir -ChildPath '.release'
 $buildDir = Join-Path $releaseDir -ChildPath '.build'
-$components = @("Amiga", "Data", "Fonts", "Fs-Uae", "Images", "Licenses", "Modules", "Readme", "Scripts", "Support", "Winuae", "User-Packages")
+$components = @("Amiga", "Data", "Docs", "Fonts", "Fs-Uae", "Images", "Licenses", "Modules", "Readme", "Scripts", "Support", "Winuae", "User-Packages")
 $packagesText = if ($packages) { ' with packages' } else { '' }
 $packagesFileName = if ($packages) { '_packages' } else { '' }
 
@@ -114,17 +115,16 @@ Write-Output "---------------------"
 # copy application
 Write-Output "- Copying application files..."
 
-Copy-Item -Path (Resolve-Path '..\install.*') -Recurse -Destination $buildDir
-Copy-Item -Path (Resolve-Path '..\launcher.*') -Recurse -Destination $buildDir
-Copy-Item -Path (Resolve-Path '..\setup.*') -Recurse -Destination $buildDir
-Copy-Item -Path (Resolve-Path '..\run.*') -Recurse -Destination $buildDir
+foreach ($pattern in @('install.*', 'launcher.*', 'setup.*', 'run.*')) {
+    CopyTrackedReleaseTree $rootDir $pattern $buildDir
+}
 Copy-Item -Path (Resolve-Path '..\LICENSE.txt') -Recurse -Destination $buildDir
 Copy-Item -Path (Resolve-Path '..\hstwb_installer.ico') -Recurse -Destination $buildDir
 
-# update year in license txt file
-$licenseTxtFile = Join-Path $buildDir -ChildPath 'LICENSE.txt'
-$licenseTxtText = [System.IO.File]::ReadAllText($licenseTxtFile) -replace 'Copyright \(c\) \d+', ("Copyright (c) {0}" -f [System.DateTime]::Now.Year)
-[System.IO.File]::WriteAllText($licenseTxtFile, $licenseTxtText)
+# Preserve the original copyright notice verbatim and ship continuation notices.
+foreach ($document in @('ACKNOWLEDGMENTS.md', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md', 'SECURITY.md')) {
+    Copy-Item -LiteralPath (Join-Path $rootDir $document) -Destination $buildDir -ErrorAction Stop
+}
 
 # copy componenet directories
 foreach($component in $components)
@@ -136,7 +136,7 @@ foreach($component in $components)
 		continue
 	}
 
-	Copy-Item -Path $componentDir -Recurse -Destination $buildDir
+	CopyTrackedReleaseTree $rootDir $component $buildDir
 }
 
 # create packages build directory
@@ -300,10 +300,7 @@ Write-Output "- Copying wix files..."
 Copy-Item -Path (Resolve-Path '..\wix\license.rtf') -Recurse -Destination $buildDir
 Copy-Item -Path (Resolve-Path ('..\wix\hstwb-installer{0}.wxs' -f $packagesFileName)) -Recurse -Destination $buildDir
 
-# update year in license rtf file
-$licenseRtfFile = Join-Path $buildDir -ChildPath 'license.rtf'
-$licenseRtfText = [System.IO.File]::ReadAllText($licenseRtfFile) -replace 'Copyright \(c\) \d+', ("Copyright (c) {0}" -f [System.DateTime]::Now.Year)
-[System.IO.File]::WriteAllText($licenseRtfFile, $licenseRtfText)
+# Keep the original RTF copyright notice unchanged as well.
 
 
 # compile wxs files
@@ -311,7 +308,7 @@ Write-Output "- Compiling wxs files..."
 Write-Output ""
 
 $packagesDirectoryArg = if ($packages) { ' -dPackagesDir="Packages"' } else { '' }
-$wixToolsetCandleArgs = ('-dVersion="{0}" -dAmigaDir="Amiga" -dDataDir="Data" -dFontsDir="Fonts" -dFsUaeDir="Fs-Uae" -dImagesDir="Images" -dLicensesDir="Licenses" -dModulesDir="Modules" -dReadmeDir="Readme" -dScriptsDir="Scripts" -dSupportDir="Support" -dWinuaeDir="Winuae"{1} "*.wxs"' -f ($hstwbInstallerVersion -replace '-[^\-]+$', ''), $packagesDirectoryArg)
+$wixToolsetCandleArgs = ('-dVersion="{0}" -dAmigaDir="Amiga" -dDataDir="Data" -dDocsDir="Docs" -dFontsDir="Fonts" -dFsUaeDir="Fs-Uae" -dImagesDir="Images" -dLicensesDir="Licenses" -dModulesDir="Modules" -dReadmeDir="Readme" -dScriptsDir="Scripts" -dSupportDir="Support" -dWinuaeDir="Winuae"{1} "*.wxs"' -f ($hstwbInstallerVersion -replace '-[^\-]+$', ''), $packagesDirectoryArg)
 $candleProcess = Start-Process $wixToolsetCandleFile -ArgumentList $wixToolsetCandleArgs -WorkingDirectory $buildDir -Wait -NoNewWindow -PassThru
 
 if ($candleProcess.ExitCode -ne 0)

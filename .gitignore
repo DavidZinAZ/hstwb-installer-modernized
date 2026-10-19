@@ -31,3 +31,7 @@ id_rsa
 id_ed25519
 /user-packages/.updates/
 /user-packages/**/_update-state.json
+*.hstwb-profile.json
+*.bundle
+__pycache__/
+*.pyc

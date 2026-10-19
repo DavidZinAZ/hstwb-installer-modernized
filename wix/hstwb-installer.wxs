@@ -37,6 +37,7 @@
     <DirectoryRef Id="INSTALLDIR">
       <Directory Id="AmigaComponentDir"/>
       <Directory Id="DataComponentDir"/>
+      <Directory Id="DocsComponentDir"/>
       <Directory Id="FontsComponentDir"/>
       <Directory Id="FsUaeComponentDir"/>
       <Directory Id="ImagesComponentDir"/>
@@ -58,6 +59,11 @@
         <File Id="setup.lnk" Source="setup.lnk"/>
         <File Id="setup.ps1" Source="setup.ps1"/>
         <File Id="license.txt" Source="LICENSE.txt"/>
+        <File Id="acknowledgments.md" Source="ACKNOWLEDGMENTS.md"/>
+        <File Id="changelog.md" Source="CHANGELOG.md"/>
+        <File Id="third_party_notices.md" Source="THIRD_PARTY_NOTICES.md"/>
+        <File Id="contributing.md" Source="CONTRIBUTING.md"/>
+        <File Id="security.md" Source="SECURITY.md"/>
         <File Id="hstwb_installer.ico" Source="hstwb_installer.ico"/>
       </Component>
     </DirectoryRef>
@@ -76,6 +82,7 @@
       <ComponentRef Id="ApplicationShortcuts"/>
       <ComponentGroupRef Id="AmigaComponentGroup"/>
       <ComponentGroupRef Id="DataComponentGroup"/>
+      <ComponentGroupRef Id="DocsComponentGroup"/>
       <ComponentGroupRef Id="FontsComponentGroup"/>
       <ComponentGroupRef Id="FsUaeComponentGroup"/>
       <ComponentGroupRef Id="LicensesComponentGroup"/>
