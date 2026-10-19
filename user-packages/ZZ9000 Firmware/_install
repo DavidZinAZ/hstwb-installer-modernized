@@ -2,7 +2,43 @@
 ; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
 Stack 65536
 MakePath >NIL: "$INSTALLDIR"
-MakeIcon >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Tools"
+  IF NOT EXISTS "SYSTEMDIR:Tools.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Hardware"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Hardware.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Hardware/ZZ9000"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Hardware/ZZ9000.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware/ZZ9000" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware/ZZ9000"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
 echo "Installing ZZ9000 Firmware..."
 Copy >NIL: "USERPACKAGEDIR:a500-2mb.zip" "$INSTALLDIR" CLONE
 Copy >NIL: "USERPACKAGEDIR:a500.zip" "$INSTALLDIR" CLONE
@@ -13,6 +49,79 @@ Copy >NIL: "USERPACKAGEDIR:zorro3-aga.zip" "$INSTALLDIR" CLONE
 Copy >NIL: "USERPACKAGEDIR:zorro3.zip" "$INSTALLDIR" CLONE
 MakePath >NIL: "$INSTALLDIR/Variants"
 Copy >NIL: "USERPACKAGEDIR:Variants/#?" "$INSTALLDIR/Variants" ALL CLONE
+; Make the copied firmware variants visible in Workbench.
+IF EXISTS "$INSTALLDIR/Variants"
+  IF NOT EXISTS "$INSTALLDIR/Variants.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/a500"
+  IF NOT EXISTS "$INSTALLDIR/Variants/a500.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/a500-2mb"
+  IF NOT EXISTS "$INSTALLDIR/Variants/a500-2mb.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500-2mb" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500-2mb"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/a500plus"
+  IF NOT EXISTS "$INSTALLDIR/Variants/a500plus.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500plus" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/a500plus"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/zorro2"
+  IF NOT EXISTS "$INSTALLDIR/Variants/zorro2.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro2" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro2"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/zorro2-2mb"
+  IF NOT EXISTS "$INSTALLDIR/Variants/zorro2-2mb.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro2-2mb" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro2-2mb"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/zorro3"
+  IF NOT EXISTS "$INSTALLDIR/Variants/zorro3.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro3" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro3"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR/Variants/zorro3-aga"
+  IF NOT EXISTS "$INSTALLDIR/Variants/zorro3-aga.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro3-aga" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR/Variants/zorro3-aga"
+    ENDIF
+  ENDIF
+ENDIF
 echo "Select firmware for the actual board. No firmware has been flashed."
 Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
 Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE

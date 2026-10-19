@@ -1,0 +1,215 @@
+; Repair missing drawer icons at default package destinations.
+; Run in Amiga Shell: Execute <path>/Repair-User-Package-Icons
+; Only existing drawers are touched. Existing icons are preserved.
+IF EXISTS "SYS:Prefs/Env-Archive/Sys/def_drawer.info"
+  Set HstWBIconTemplate "SYS:Prefs/Env-Archive/Sys/def_drawer.info"
+ELSE
+  IF EXISTS "SYS:Tools.info"
+    Set HstWBIconTemplate "SYS:Tools.info"
+  ELSE
+    Echo "No drawer icon template found. No changes made."
+    Quit 20
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools"
+  IF NOT EXISTS "SYS:Tools.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools.info"
+    IF WARN
+      Echo "Could not create SYS:Tools.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware"
+  IF NOT EXISTS "SYS:Tools/Hardware.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Diagnostics"
+  IF NOT EXISTS "SYS:Tools/Diagnostics.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Diagnostics.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Diagnostics.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Diagnostics.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/KickSmash"
+  IF NOT EXISTS "SYS:Tools/Hardware/KickSmash.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/KickSmash.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/KickSmash.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/KickSmash.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Diagnostics/xSysInfo"
+  IF NOT EXISTS "SYS:Tools/Diagnostics/xSysInfo.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Diagnostics/xSysInfo.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Diagnostics/xSysInfo.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Diagnostics/xSysInfo.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Diagnostics/DevTest"
+  IF NOT EXISTS "SYS:Tools/Diagnostics/DevTest.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Diagnostics/DevTest.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Diagnostics/DevTest.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Diagnostics/DevTest.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Diagnostics/SDMAC"
+  IF NOT EXISTS "SYS:Tools/Diagnostics/SDMAC.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Diagnostics/SDMAC.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Diagnostics/SDMAC.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Diagnostics/SDMAC.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/A4091"
+  IF NOT EXISTS "SYS:Tools/Hardware/A4091.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/A4091.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/A4091.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/A4091.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/ZZ9000Installer"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/ZZ9000Installer.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/ZZ9000Installer.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/ZZ9000Installer.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/ZZ9000Installer.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Utilities/ZZ9000"
+  IF NOT EXISTS "SYS:Utilities/ZZ9000.info"
+    Copy "$HstWBIconTemplate" "SYS:Utilities/ZZ9000.info"
+    IF WARN
+      Echo "Could not create SYS:Utilities/ZZ9000.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Utilities/ZZ9000.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500-2mb"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500-2mb.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500-2mb.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500-2mb.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500-2mb.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500plus"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500plus.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500plus.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500plus.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/a500plus.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2-2mb"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2-2mb.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2-2mb.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2-2mb.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro2-2mb.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3.info"
+  ENDIF
+ENDIF
+IF EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3-aga"
+  IF NOT EXISTS "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3-aga.info"
+    Copy "$HstWBIconTemplate" "SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3-aga.info"
+    IF WARN
+      Echo "Could not create SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3-aga.info"
+      Quit 20
+    ENDIF
+    Echo "Created SYS:Tools/Hardware/ZZ9000/Firmware/Variants/zorro3-aga.info"
+  ENDIF
+ENDIF
+Unset HstWBIconTemplate
+Echo "Drawer icon repair complete. Reopen the Workbench windows."
