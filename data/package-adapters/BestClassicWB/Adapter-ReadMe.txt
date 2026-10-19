@@ -21,3 +21,15 @@ The supplied upstream startup and installer are retained for reference.
 
 Automatic conversion is pinned to the reviewed 2.1.12 archive SHA256.
 Future releases require adapter review before being offered for download.
+
+HstWB adapter revision 2 restores Execute permission on every bundled Amiga
+HUNK executable/library after ZIP extraction, including WBDock and the apps
+it launches. The upstream ZIP stores these files without Unix execute bits.
+Older adapted installations can therefore display the dock but fail to launch
+programs. Application file contents have not been removed or replaced.
+
+For an existing installation, copy Repair-Executable-Protection to an Amiga
+readable location and run it with the target volume, for example:
+  Execute RAM:Repair-Executable-Protection SYS:
+The script only changes Execute permission on existing bundled HUNK paths.
+It does not reinstall programs, overwrite preferences or modify startup files.

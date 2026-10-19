@@ -2,6 +2,15 @@
 
 ## Observed results
 
+- Installer 1.6.12: read-only examination of an affected BestClassicWB image
+  found Execute disabled on WBDock and several launcher targets, while compared
+  payload bytes were unchanged. Adapter revision 2 adds a generated permission
+  repair for 1,042 bundled HUNK files and refreshes older adapted packages.
+  Host conversion/coverage/replacement checks passed. On October 19, 2026, the
+  maintainer reported that the corrected test installation works, resolving
+  the reported launcher issue in that test. Broader qualification remains
+  outstanding. See [package notes](bestclassicwb-package.md).
+
 - Installer 1.6.11 adds named settings/assigns profiles and additional-package drawer icon repairs. Windows PowerShell profile round-trip, overwrite, invalid input rejection, backup, cancellation, failure recovery, real discovery/UI refresh and INI persistence checks passed, as did the existing local-settings/package regression. Interactive file-picker testing and native Amiga drawer-icon validation remain pending.
 
 - Installer 1.6.10 adds a reviewed BestClassicWB 2.1.12 adapter to the normal standard-package flow. Official live download, conversion, package detection, normal Run staging/execution generation, startup exclusion, repeat-download skip and invalid-upstream preservation passed. Native installation/boot and OS 3.2.3 compatibility remain pending; see [package notes](bestclassicwb-package.md).

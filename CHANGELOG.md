@@ -9,7 +9,19 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
-## Pending publication preparation — October 18, 2026
+## 1.6.12 — BestClassicWB executable permissions
+
+- Restore Execute permission after extraction for all 1,042 bundled Amiga HUNK
+  program/library files, fixing the missing permission found on an installed
+  image's dock and launcher applications. Retain original payload bytes and
+  the selected AmigaOS startup files.
+- Add an existing-installation repair script. Mark the adapted package as
+  revision 2 and refresh older revisions despite the unchanged upstream 2.1.12
+  version. On October 19, the maintainer reported that the corrected test
+  installation works. This confirms the reported launcher issue was resolved
+  in that test, rather than qualifying every bundled application or hardware setup.
+
+## Publication preparation — October 18, 2026
 
 - Expand original-creator acknowledgments and consolidate feature branches into
   master while preserving history; the tested 1.6.11 contents remain the baseline.

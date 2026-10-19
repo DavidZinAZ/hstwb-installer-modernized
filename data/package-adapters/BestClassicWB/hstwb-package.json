@@ -1,6 +1,7 @@
 {
   "Name": "BestClassicWB",
   "Version": "2.1.12",
+  "AdapterRevision": 2,
   "Priority": 1,
   "ContentIds": ["bestclassicwb", "amigaos"],
   "Assigns": [{"Name": "SYSTEMDIR"}],

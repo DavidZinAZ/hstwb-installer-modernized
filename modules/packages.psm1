@@ -136,6 +136,7 @@ Class PackageManager
                 try {$metadata=$reader.ReadToEnd() | ConvertFrom-Json -ErrorAction Stop} finally {$reader.Dispose()}
                 $expected=($name.ToLower() -replace '-package$','') -replace '[^a-z0-9]',''
                 $actual=([string]$metadata.Name).ToLower() -replace '[^a-z0-9]',''
+                if ($expected -eq 'bestclassicwb' -and ([int]$metadata.AdapterRevision -lt (GetBestClassicWbAdapterRevision) -or !$archive.GetEntry('Repair-Executable-Protection'))) { return $false }
                 return ($actual -eq $expected -and [version]$metadata.Version -eq [version]$version)
             } finally {$archive.Dispose()}
         } catch {return $false}

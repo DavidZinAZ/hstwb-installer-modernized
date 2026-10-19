@@ -75,9 +75,13 @@ IF WARN
   echo "BestClassicWB extraction failed. Stop and retry with a fresh image."
   SKIP end
 ENDIF
-Protect SYSTEMDIR:C/FBlit +e
-Protect SYSTEMDIR:C/FText +e
-Protect SYSTEMDIR:C/FPPrefs +e
+; ZIP extraction disables Execute on upstream files stored with Unix mode 0644.
+; Restore it for every bundled HUNK file, including the dock and launch targets.
+Execute PACKAGEDIR:Repair-Executable-Protection SYSTEMDIR:
+IF WARN
+  echo "BestClassicWB executable permission repair failed. Installation stopped."
+  Quit 20
+ENDIF
 
 Search >NIL: SYSTEMDIR:S/Startup-Sequence ";BEGIN BestClassicWB" QUIET
 IF WARN
@@ -97,6 +101,7 @@ ENDIF
 MakePath >NIL: SYSTEMDIR:Locale/Help/BestClassicWB
 Copy PACKAGEDIR:BCWB.readme.txt SYSTEMDIR:Locale/Help/BestClassicWB/
 Copy PACKAGEDIR:Adapter-ReadMe.txt SYSTEMDIR:Locale/Help/BestClassicWB/
+Copy PACKAGEDIR:Repair-Executable-Protection SYSTEMDIR:Locale/Help/BestClassicWB/
 echo "BestClassicWB installed. Reboot after the installer finishes."
 SKIP end
 

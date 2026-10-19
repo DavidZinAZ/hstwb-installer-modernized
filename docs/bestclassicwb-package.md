@@ -18,6 +18,41 @@ Use a **fresh bundled hard-disk image for every native test**. Confirm installat
 
 Upstream background and EaglePlayer preferences refer to `OS3.2:`. A boot-time assign maps that name to `SYS:` without renaming the system volume.
 
+## Dock icons do not launch applications
+
+Installer 1.6.12 introduces adapter revision 2 for the same upstream 2.1.12
+release. A read-only examination of an affected installed image found Execute
+permission disabled on WBDock, SnoopDos, Directory Opus, iGame and other bundled
+programs. Their bytes still matched the payload. The upstream files are stored
+with Unix mode 0644; the previous adapter restored Execute permission on only
+FBlit, FText and FPPrefs after ZIP extraction.
+
+The revised adapter generates a permission-repair script from the actual HUNK
+headers in the pinned archive and executes it after extraction. It covers
+1,042 bundled HUNK program/library files, adding Execute permission only to
+paths that exist. It does not mark configuration or text files executable.
+The downloader recognizes the adapter revision and replaces revision 1 even
+though the upstream version is unchanged.
+
+For an existing image, copy
+`support/Repair-BestClassicWB-Executables` to a location readable inside the
+Amiga, for example `RAM:`, then run in Amiga Shell:
+
+```text
+Execute RAM:Repair-BestClassicWB-Executables SYS:
+```
+
+Reboot and retest the dock. The script changes only Execute permission on the
+known existing payload paths, preserving programs, preferences and startup
+files. Updated installs also retain it at
+`SYS:Locale/Help/BestClassicWB/Repair-Executable-Protection`.
+
+Host checks cover permission-script coverage, payload preservation and refresh
+of old adapter revisions. On October 19, 2026, the maintainer reported that the
+corrected test installation works. This records resolution of the reported
+launcher issue in that test; broader application and hardware qualification
+remains outstanding.
+
 ## Attribution
 
 Thanks to kouts/samplist for BestClassicWB, Bloodwych for ClassicWB, Gulliver for BestWB and KKR75 for icons. Bundled software retains upstream notices. HstWB Installer was created by [Henrik Nørfjand Stengaard](https://github.com/henrikstengaard/hstwb-installer). The adapter was added by DavidZinAZ with Scout (OpenAI Codex). Upstream payloads are downloaded from their original release and are not committed to this continuation repository.
