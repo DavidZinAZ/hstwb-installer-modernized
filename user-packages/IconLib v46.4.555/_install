@@ -33,7 +33,7 @@ lha -m1 -q x "USERPACKAGEDIR:IconLib_46.4.lha" "SYSTEMDIR:Temp/_IconLib/"
 
 ; install IconLib files
 If "$cpu" EQ 1 VAL
-  Copy >NIL: "SYSTEMDIR:Temp/_IconLib/IconLib_46.4/Libs/68020/icon.library" "$libsdir" CLONE
+  Copy >NIL: "SYSTEMDIR:Temp/_IconLib/IconLib_46.4/Libs/icon.library" "$libsdir" CLONE
 Else
   Copy >NIL: "SYSTEMDIR:Temp/_IconLib/IconLib_46.4/Libs/68000/icon.library" "$libsdir" CLONE
 EndIf

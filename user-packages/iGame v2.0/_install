@@ -37,25 +37,25 @@ set cpu `RequestChoice "iGame CPU version" "Select iGame CPU version to install*
 lha -m1 -q x "USERPACKAGEDIR:iGame-v2.0-20201016.lha" "SYSTEMDIR:Temp/_iGame/"
 
 ; install igame files
-Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.0.info" "$igameicon" CLONE
-Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.0/#?" "$igamedir" CLONE ALL
+Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.6.1.info" "$igameicon" CLONE
+Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.6.1/#?" "$igamedir" CLONE ALL
 Delete >NIL: "$igamedir/Install-iGame#?"
 
 ; 68060 cpu
 If "$cpu" EQ 1 VAL
-  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.0/iGame.060" "$igamedir/iGame" CLONE
+  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.6.1/iGame.060" "$igamedir/iGame" CLONE
   Skip muiprefs
 EndIf
 
 ; 68040 cpu
 If "$cpu" EQ 2 VAL
-  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.0/iGame.040" "$igamedir/iGame" CLONE
+  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.6.1/iGame.040" "$igamedir/iGame" CLONE
   Skip muiprefs
 EndIf
 
 ; 68030 cpu
 If "$cpu" EQ 3 VAL
-  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.0/iGame.030" "$igamedir/iGame" CLONE
+  Copy >NIL: "SYSTEMDIR:Temp/_iGame/iGame-v2.6.1/iGame.030" "$igamedir/iGame" CLONE
   Skip muiprefs
 EndIf
 

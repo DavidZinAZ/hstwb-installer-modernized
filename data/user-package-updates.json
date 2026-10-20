@@ -25,14 +25,14 @@
       "Id": "amiga-test-kit-v1-18",
       "Directory": "Amiga Test Kit v1.18",
       "Name": "Amiga Test Kit",
-      "PackageVersion": "1.0.0",
+      "PackageVersion": "1.0.1",
       "Components": [
         {
           "Id": "testkit",
           "Name": "Amiga Test Kit",
           "LocalFile": "AmigaTestKit",
-          "Version": "1.18",
-          "BaselineSha256": "b28f7ef11e6a18b9e5a284a71ce9f8eef8f96843fdae3c80c1e9ddf6ca97962d",
+          "Version": "1.21",
+          "BaselineSha256": "03c3f64fc25d54ee73c6c48e682ba146775769f6ba08ccd0df21d677b01ca2a5",
           "Provider": "GitHub",
           "Mode": "ZipFiles",
           "RequiredMembers": [],
@@ -250,14 +250,14 @@
       "Id": "iconlib-v46-4-555",
       "Directory": "IconLib v46.4.555",
       "Name": "IconLib",
-      "PackageVersion": "1.0.0",
+      "PackageVersion": "1.0.1",
       "Components": [
         {
           "Id": "iconlib",
           "Name": "IconLib",
           "LocalFile": "IconLib_46.4.lha",
-          "Version": "46.4.555",
-          "BaselineSha256": "7ee71d9081faadfbfc5789d06a9eec2cc620a087a3ba10e6d491cbb416088331",
+          "Version": "46.4.602",
+          "BaselineSha256": "428b48959867d02da04d4cb8154d4d15c0ec053d5c5d0e4d437782bb4e136d37",
           "Provider": "Aminet",
           "Mode": "Archive",
           "RequiredMembers": [
@@ -300,14 +300,14 @@
       "Id": "igame-v2-0",
       "Directory": "iGame v2.0",
       "Name": "iGame",
-      "PackageVersion": "1.0.0",
+      "PackageVersion": "1.0.1",
       "Components": [
         {
           "Id": "igame",
           "Name": "iGame",
           "LocalFile": "iGame-v2.0-20201016.lha",
-          "Version": "2.0",
-          "BaselineSha256": "930eedd2747bfa58abb22b0551bf02b0406f10b54b41f1990d1db413b9994e53",
+          "Version": "2.6.1",
+          "BaselineSha256": "964462bf7c431c86122288634c16464f1ea34cbdfa9d9439328db4f27ba83421",
           "Provider": "GitHub",
           "Mode": "Archive",
           "RequiredMembers": [
@@ -321,7 +321,7 @@
           "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
           "AssetPattern": "^iGame-v[0-9.]+-[0-9]+\\.lha$",
           "RootTemplate": "iGame-v{version}",
-          "InstalledRoot": "iGame-v2.0"
+          "InstalledRoot": "iGame-v2.6.1"
         }
       ]
     },
@@ -406,14 +406,14 @@
       "Id": "mmu-libs-v47-1",
       "Directory": "MMU Libs v47.1",
       "Name": "MMU Libs",
-      "PackageVersion": "1.0.0",
+      "PackageVersion": "1.0.1",
       "Components": [
         {
           "Id": "mmulib",
           "Name": "MMU Libs",
           "LocalFile": "MMULib.lha",
-          "Version": "47.1",
-          "BaselineSha256": "68c110d2f5bf54ad1ee8eb889afa681e0b78755c40f951ecc7286d3a6b5b0a3d",
+          "Version": "47.11.2",
+          "BaselineSha256": "b296281142fb99ec645a530f285d16a9a95b381ec0b6d21666d27ea4c6d68af8",
           "Provider": "Aminet",
           "Mode": "Archive",
           "RequiredMembers": [
@@ -605,14 +605,14 @@
       "Id": "whdload-v18-8",
       "Directory": "WHDLoad v18.8",
       "Name": "WHDLoad",
-      "PackageVersion": "1.0.0",
+      "PackageVersion": "1.0.1",
       "Components": [
         {
           "Id": "whdload",
           "Name": "WHDLoad",
           "LocalFile": "WHDLoad_usr.lha",
-          "Version": "18.8",
-          "BaselineSha256": "288f41b73fc87df6c4702002a721a3b5e6d4aace91df504ee74ff19ef286d059",
+          "Version": "20.1",
+          "BaselineSha256": "725b9255e6f55c57a57b2dd52dec221b223df5560d29153607088ffff6ae1bc1",
           "Provider": "Web",
           "Mode": "Archive",
           "RequiredMembers": [

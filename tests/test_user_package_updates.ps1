@@ -57,3 +57,13 @@ $directories=@(Get-ChildItem (Join-Path $repo 'user-packages') -Directory | Wher
 Assert ($entries.Count -eq $directories.Count) 'A bundled user package is missing from the catalog'
 foreach($entry in $entries){Assert ($entry.PackageVersion -match '^\d+\.\d+\.\d+$') 'Non-numeric package revision';foreach($c in $entry.Components){if($c.Provider -ne 'Manual'){Assert (Test-Path (Join-Path (Join-Path $repo 'user-packages') ($entry.Directory+'/'+$c.LocalFile))) ('Catalog payload missing: '+$c.LocalFile)}}}
 Write-Host 'PASS: source version comparison, verified update/backup, metadata, preserved customization, incompatible/traversal archive rejection, and catalog coverage'
+foreach($entry in $entries){foreach($component in $entry.Components){
+ if($component.Provider -eq 'Manual' -or !$component.BaselineSha256){continue}
+ $payload=Join-Path (Join-Path $repo 'user-packages') ($entry.Directory+'/'+$component.LocalFile)
+ Assert ((Get-FileHash -LiteralPath $payload -Algorithm SHA256).Hash -eq $component.BaselineSha256) ('Bundled payload differs from published version metadata: '+$entry.Name)
+ if($component.Mode -eq 'Archive' -and $entry.Directory -in @('IconLib v46.4.555','MMU Libs v47.1','WHDLoad v18.8','iGame v2.0')){
+  $members=@(GetLhaArchiveMembers $payload)
+  foreach($required in $component.RequiredMembers){$required=$required.Replace('{root}',[string]$component.InstalledRoot);Assert ($required -in $members) ('Required bundled archive member missing: '+$entry.Name+' / '+$required)}
+ }
+}}
+Write-Host 'PASS: committed bundle baselines match payload hashes and required archive members.'

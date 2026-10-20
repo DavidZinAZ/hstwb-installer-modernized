@@ -37,6 +37,6 @@ The EXE is unsigned. This is a portable preview, not a single-file app or MSI in
 
 ## Validation
 
-The build workflow runs `test_desktop_media.ps1`, `test_desktop_library.ps1`, `test_desktop_games.ps1`, `test_desktop_image_builder.ps1`, and `test_desktop_installer_plan.ps1`, then verifies the packaged WPF application with `--smoke`.
+The build workflow checks bundled payload versions and hashes with `test_user_package_updates.ps1`, then runs `test_desktop_media.ps1`, `test_desktop_library.ps1`, `test_desktop_games.ps1`, `test_desktop_image_builder.ps1`, and `test_desktop_installer_plan.ps1`, then verifies the packaged WPF application with `--smoke`.
 
 These tests use synthetic media, local download fixtures and a fake installation engine. They verify cache persistence, settings roundtrips, themes, sorting, native settings backups/rollback, boot-ROM fallback, fresh image extraction and preservation, and success/failure reporting. They do not run a real Amiga installation or contact upstream package servers.
