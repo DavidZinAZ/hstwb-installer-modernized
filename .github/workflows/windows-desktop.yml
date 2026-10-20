@@ -35,7 +35,7 @@ jobs:
         run: |
           & powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/build_desktop_release.ps1
           if($LASTEXITCODE -ne 0){throw 'Desktop release failed.'}
-      - name: Upload portable ZIP and checksum
+      - name: Upload GUI and CLI ZIPs and checksums
         uses: actions/upload-artifact@v4
         with:
           name: hstwb-desktop-windows

@@ -61,5 +61,23 @@ try{if(@($entries.Entries | Where-Object {$_.FullName -match '/(settings|\.git|\
 Move-Item -LiteralPath $temporary -Destination $artifact -Force
 $hash=(Get-FileHash -LiteralPath $artifact -Algorithm SHA256).Hash.ToLowerInvariant()
 [IO.File]::WriteAllText(($artifact+'.sha256'),($hash+'  '+[IO.Path]::GetFileName($artifact)+"`n"))
+$cli=Join-Path $output ('hstwb-cli-'+$short+'.zip')
+$cliTemp=Join-Path $build 'cli.zip'
+$cliZip=[IO.Compression.ZipFile]::Open($cliTemp,'Create')
+try{
+ foreach($file in Get-ChildItem -LiteralPath $stage -Recurse -File){
+  $relative=$file.FullName.Substring($stage.Length+1).Replace('\','/')
+  if($relative -match '^(\.output|settings|packages|desktop)/|^(HstwbDesktop\.exe|desktop\.cmd|START-HERE\.txt)$'){continue}
+  [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($cliZip,$file.FullName,('HstwbCli/'+$relative),[IO.Compression.CompressionLevel]::Optimal) | Out-Null
+ }
+ $entry=$cliZip.CreateEntry('HstwbCli/START-HERE.txt');$writer=New-Object IO.StreamWriter($entry.Open())
+ try{$writer.Write("HstWB CLI / original setup`r`nSource commit: $commit`r`n`r`nExtract the complete ZIP. On Windows open setup.cmd to configure, then run.cmd to run the saved configuration. launcher.cmd opens the original launcher.`r`nRead docs/cli/README.md for the original workflow. Supply your own licensed OS/ROM media and installed emulator.`r`nThe native run scripts use the configured image; they do not automatically create a fresh image each time. The Windows GUI is a separate download.`r`n")}finally{$writer.Dispose()}
+}finally{$cliZip.Dispose()}
+$cliCheck=[IO.Compression.ZipFile]::OpenRead($cliTemp)
+try{foreach($required in @('setup.cmd','run.cmd','launcher.cmd','docs/cli/README.md')){if(!$cliCheck.GetEntry('HstwbCli/'+$required)){throw ('CLI package missing: '+$required)}};if($cliCheck.GetEntry('HstwbCli/HstwbDesktop.exe')){throw 'CLI package unexpectedly includes GUI executable.'}}finally{$cliCheck.Dispose()}
+Move-Item -LiteralPath $cliTemp -Destination $cli -Force
+$cliHash=(Get-FileHash -LiteralPath $cli -Algorithm SHA256).Hash.ToLowerInvariant()
+[IO.File]::WriteAllText(($cli+'.sha256'),($cliHash+'  '+[IO.Path]::GetFileName($cli)+"`n"))
 Write-Output ('Release ready: '+$artifact)
 Write-Output ('SHA256: '+$hash)
+Write-Output ('CLI release ready: '+$cli)

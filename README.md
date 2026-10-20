@@ -1,5 +1,33 @@
 # hstwb-updated
 
+## Download and run
+
+**[Download Windows GUI ZIP](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/download/desktop-preview-2026-10-20/hstwb-gui-windows.zip)** · **[Download CLI ZIP](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/download/desktop-preview-2026-10-20/hstwb-cli.zip)** · [Release details and checksums](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/tag/desktop-preview-2026-10-20)
+
+These links download ready-to-use packages. You do not need to find a build artifact or compile the GUI. This repository is private: sign in to a GitHub account with repository access before downloading. A 404 while signed out does not mean the file has been removed.
+
+### Windows GUI
+
+1. Click **Download Windows GUI ZIP** above and save **hstwb-gui-windows.zip**.
+2. Right-click the ZIP and choose **Extract All…** into a writable folder.
+3. Open the extracted **HstwbDesktop** folder and double-click **HstwbDesktop.exe**. Keep all supporting folders beside the EXE.
+4. Follow the [GUI user guide](docs/gui/README.md). An offline edition opens from **Settings → Open GUI user guide**.
+
+The GUI requires Windows with .NET Framework 4.8. The ZIP includes the compiled EXE, installer runtime, image templates, bundled user packages, and documentation. Each installation creates a fresh image in a new subfolder.
+
+### CLI / original setup
+
+1. Click **Download CLI ZIP** above and save **hstwb-cli.zip**.
+2. Extract the entire ZIP into a writable folder and open its **HstwbCli** folder.
+3. On Windows, double-click **setup.cmd** to configure the original installer, then **run.cmd** to run the saved configuration. **launcher.cmd** opens the original launcher.
+4. Follow the separate [CLI setup documentation](docs/cli/README.md). Native run uses the image directory in its settings; it does not automatically create a fresh image as the GUI does.
+
+The CLI package includes the original scripts and support files; it does not include the Windows desktop EXE. The instructions above describe its Windows entry points.
+
+**For either download:** supply your own licensed AmigaOS media and Kickstart ROMs, an installed WinUAE or FS-UAE emulator, and any personal game/demo collections. Optional standard packages can be downloaded separately. Neither ZIP contains personal settings, commercial media, emulators, or personal game libraries. The GUI is an unsigned preview.
+
+For newer preview builds, see [Windows desktop builds](https://github.com/DavidZinAZ/hstwb-installer-updated/actions/workflows/windows-desktop.yml). The direct downloads above are the dated release; build artifacts are separate testing snapshots.
+
 An independently maintained continuation of **[HstWB Installer](https://github.com/henrikstengaard/hstwb-installer)**, created by **Henrik Nørfjand Stengaard**. Henrik built the original installer, AmigaDOS workflow, prepared image system, package framework, and documentation on which this project depends. Thank you, Henrik, and everyone who contributed to the original project.
 
 This continuation is maintained by **[DavidZinAZ](https://github.com/DavidZinAZ)**. The new modernization work was developed by David with AI assistance, including **Scout (OpenAI Codex)** for code changes, investigation, documentation, and testing. These additions are our responsibility; they do not imply Henrik's involvement in or endorsement of this continuation.
