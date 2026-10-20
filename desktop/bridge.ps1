@@ -41,14 +41,16 @@ if($Action -in @('ValidateInstaller','ApplyInstaller','RunInstaller')){
   $runLock=[IO.File]::Open((Join-Path $root 'settings/.desktop-run.lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
   try{
    if(!$draft.CreateNewImage){throw 'Run installation requires a fresh image from a template.'}
-   if(!$plan.Valid -or $plan.Token -ne [string]$ids[1]){throw 'Choices changed. Validate again before creating an image.'}
+   if(!$plan.Valid){throw ('Resolve installation choices: '+(($plan.Issues | ForEach-Object {$_.Area+': '+$_.Message}) -join ' '))}
+   if($ids[1] -and $plan.Token -ne [string]$ids[1]){throw 'Choices changed. Validate again before creating an image.'}
+   $ids[1]=$plan.Token
    Import-Module (Join-Path $PSScriptRoot 'image-builder.psm1')
    $newImage=NewDesktopImage $root ([string]$draft.ImageTemplate) ([string]$draft.NewImageFolder)
    $backup=SaveDesktopInstallerPlan $plan ([string]$ids[1])
    $runSettings=NewDesktopRunSettings $root $plan $draft
    $log=Join-Path $root ('.output/desktop/installation-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N')+'.log')
    $null=New-Item -ItemType Directory -Path (Split-Path $log) -Force
-   try{& (Join-Path $root 'run.ps1') -settingsDir $runSettings -Desktop *> $log}catch{throw ('Installation failed. Log: '+$log+'. '+$_.Exception.Message)}
+   try{& (Join-Path $root 'run.ps1') -settingsDir $runSettings -Desktop -DesktopValidation $plan.Runtime *> $log}catch{throw ('Installation failed. Log: '+$log+'. '+$_.Exception.Message)}
    ConvertTo-Json -InputObject @(@{Status='Completed';Log=$log;Backup=$backup;ImageFolder=$newImage;RunSettingsDirectory=$runSettings}) -Compress;return
   }finally{$runLock.Dispose()}
  }

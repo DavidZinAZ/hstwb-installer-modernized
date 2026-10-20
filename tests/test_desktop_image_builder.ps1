@@ -1,6 +1,8 @@
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 Import-Module (Join-Path $repo 'desktop/image-builder.psm1') -Force
+$largeProgress=& (Get-Module image-builder) {GetDesktopImageProgress 15200000000 30400000000}
+if($largeProgress -ne 50){throw 'Large disk image progress failed'}
 $fixture=Join-Path $repo ('.output/image-builder-'+[guid]::NewGuid().ToString('N'))
 $null=New-Item -ItemType Directory (Join-Path $fixture 'images') -Force
 $payload=Join-Path $fixture 'payload';$null=New-Item -ItemType Directory $payload

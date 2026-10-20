@@ -59,7 +59,7 @@ Choose **Scan folders** after selecting a folder or changing its files. The tabl
 | Match | Recognition method, such as an MD5 match. |
 | File | Local file found by the scan. |
 
-**Show missing catalog entries** includes undetected rows. The table can show entries for OS versions and machines you are not installing. The overall missing count is not a checklist of everything you must obtain. Use validation for the requirements of your actual selection.
+**Show missing catalog entries** includes undetected rows and unavailable choices in both media dropdowns. Uncheck it to show detected Kickstart sets and OS targets with the required media. Rescan once after updating the app to refresh OS target availability in older remembered scans. The table can show entries for OS versions and machines you are not installing. The overall missing count is not a checklist of everything you must obtain. Use validation for the requirements of your actual selection.
 
 If no compatible boot ROM is found, check the folder includes a catalog-supported A1200/A500 ROM for the selected OS family. Include the correct key file with encrypted media when required. The app does not download ROMs or bypass media recognition.
 
@@ -164,7 +164,7 @@ The app restores saved media/ROM scans, pack inventories, and compatible package
 
 Results are associated with their library folder. Switching media folders clears results from the previous folder and restores a matching saved scan if available. Online package checks are not repeated simply to display remembered information. A fresh local catalog read can discard an incompatible saved package result when the local version has changed.
 
-After changing files, choose the relevant scan or check button. Installation validates the files again regardless of the remembered display.
+After changing files, choose the relevant scan or check button. Installation validates the selected OS, Kickstart set, packages, and required installer boot ROM regardless of the remembered display. It checks package dependencies and conflicts within the selection. The installer reuses that fresh validation instead of scanning everything again, and checks for changed files after image creation. Unselected package archives are skipped.
 
 ## Review & Install
 

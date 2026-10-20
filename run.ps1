@@ -10,7 +10,8 @@
 Param(
 	[Parameter(Mandatory=$false)]
 	[string]$settingsDir,
-    [switch]$Desktop
+    [switch]$Desktop,
+    [hashtable]$DesktopValidation
 )
 
 
@@ -3850,7 +3851,7 @@ try
             'UserPackagesPath' = $userPackagesPath
         };
         'Models' = @('A1200', 'A500');
-        'Packages' = ReadPackages $packagesPath;
+        'Packages' = $(if($Desktop -and $DesktopValidation){$DesktopValidation.Packages}else{ReadPackages $packagesPath});
         'Settings' = ReadIniFile $settingsFile;
         'Assigns' = ReadIniFile $assignsFile;
         'UI' = @{
@@ -3863,11 +3864,17 @@ try
     UpgradeSettings $hstwb
     UpgradeAssigns $hstwb
     
-    # update amiga os entries
-    UpdateAmigaOsEntries $hstwb
-
-    # update kickstart entries
-    UpdateKickstartEntries $hstwb
+    if($Desktop -and $DesktopValidation){
+        Import-Module (Join-Path $PSScriptRoot 'desktop/runtime-validation.psm1') -Force
+        AssertDesktopRuntimeValidation $DesktopValidation
+        $hstwb.AmigaOsEntries=$DesktopValidation.AmigaOsEntries
+        $hstwb.KickstartEntries=$DesktopValidation.KickstartEntries
+        $hstwb.DesktopSelectedUserNames=$DesktopValidation.SelectedUserNames
+        Write-Host 'Using selected media and packages verified by the desktop installer.'
+    }else{
+        UpdateAmigaOsEntries $hstwb
+        UpdateKickstartEntries $hstwb
+    }
 
     # detect user packages
     $hstwb.UserPackages = DetectUserPackages $hstwb
@@ -3877,7 +3884,7 @@ try
     UpdateInstallUserPackages $hstwb
     UpdateAssigns $hstwb
 
-    if ($hstwb.Settings.Installer.Mode -match "^(Install|BuildSelfInstall|Test)$")
+    if (!($Desktop -and $DesktopValidation) -and $hstwb.Settings.Installer.Mode -match "^(Install|BuildSelfInstall|Test)$")
     {
         # find best matching amiga os set, if amiga os set is not defined. otherwise find amiga os files
         Write-Host "Finding Amiga OS sets in Amiga OS dir..."

@@ -20,13 +20,16 @@ function GetDesktopImageTemplate($root,$template){
   return @{Image=$image;Text=$text;Template=$template}
  }finally{$zip.Dispose()}
 }
+function GetDesktopImageProgress([long]$copied,[long]$length){
+ return [int][Math]::Min([double]99,100.0*$copied/[Math]::Max([double]1,[double]$length))
+}
 function CopyDesktopImageEntry($entry,$destination,$label){
  $null=New-Item -ItemType Directory -Path (Split-Path $destination) -Force
  $inputStream=$entry.Open();$outputStream=$null
  try{
   $outputStream=[IO.File]::Open($destination,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None)
   $buffer=New-Object byte[] 1048576;$total=[long]0;$next=[datetime]::MinValue
-  while(($count=$inputStream.Read($buffer,0,$buffer.Length)) -gt 0){$outputStream.Write($buffer,0,$count);$total+=$count;if([datetime]::UtcNow -ge $next){Write-Progress -Activity 'Creating new image' -Status ('{0}: {1:N1} / {2:N1} MB' -f $label,($total/1MB),($entry.Length/1MB)) -PercentComplete ([Math]::Min(99,100*$total/[Math]::Max(1,$entry.Length)));$next=[datetime]::UtcNow.AddMilliseconds(300)}}
+  while(($count=$inputStream.Read($buffer,0,$buffer.Length)) -gt 0){$outputStream.Write($buffer,0,$count);$total+=$count;if([datetime]::UtcNow -ge $next){Write-Progress -Activity 'Creating new image' -Status ('{0}: {1:N1} / {2:N1} MB' -f $label,($total/1MB),($entry.Length/1MB)) -PercentComplete (GetDesktopImageProgress $total $entry.Length);$next=[datetime]::UtcNow.AddMilliseconds(300)}}
   if($total -ne $entry.Length){throw 'Image extraction was incomplete.'}
  }finally{if($outputStream){$outputStream.Dispose()};$inputStream.Dispose()}
 }

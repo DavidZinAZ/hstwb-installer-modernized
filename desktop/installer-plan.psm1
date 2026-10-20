@@ -1,6 +1,7 @@
 # Build and apply native installer configuration without running installation.
 Import-Module (Join-Path $PSScriptRoot '../modules/config.psm1')
 Import-Module (Join-Path $PSScriptRoot 'image-builder.psm1')
+Import-Module (Join-Path $PSScriptRoot 'runtime-validation.psm1')
 Import-Module (Join-Path $PSScriptRoot '../modules/data.psm1')
 Import-Module (Join-Path $PSScriptRoot '../modules/amigaos-release.psm1')
 Import-Module (Join-Path $PSScriptRoot '../modules/settings-profiles.psm1')
@@ -46,6 +47,13 @@ function NewDesktopInstallerPlan($root,$draft){
  if([string]::IsNullOrWhiteSpace([string]$draft.MediaFolder) -or !(Test-Path -LiteralPath ([string]$draft.MediaFolder) -PathType Container)){[void]$issues.Add(@{Area='Media';Message='Choose an existing media folder.'})}else{
   try{
    UpdateAmigaOsEntries $hstwb;UpdateKickstartEntries $hstwb
+   $hstwb.AmigaOsEntries=@($hstwb.AmigaOsEntries | Where-Object {$_.Set -eq $draft.OsSet})
+   if($draft.OsSet -eq 'Amiga OS 3.2'){
+    $prefix='amiga-os-'+([string]$draft.TargetVersion).Replace('.','')+'-'
+    $hstwb.AmigaOsEntries=@($hstwb.AmigaOsEntries | Where-Object {$_.Filename -match '^amiga-os-32-[^.]+\.adf$' -or ($draft.TargetVersion -and $_.Filename.StartsWith($prefix))})
+   }
+   $family=($hstwb.AmigaOsEntries | Select-Object -First 1).AmigaOsVersion
+   $hstwb.KickstartEntries=@($hstwb.KickstartEntries | Where-Object {$_.Set -eq $draft.KickstartSet -or ($_.RunSupported -eq 'True' -and $_.Model -in $hstwb.Models -and ($_.AmigaOsVersionsSupported -split ',') -contains $family)})
    FindAmigaOsFiles $hstwb 6>$null;FindKickstartFiles $hstwb 6>$null
    $osEntries=@($hstwb.AmigaOsEntries | Where-Object {$_.Set -eq $draft.OsSet})
    if(!$osEntries.Count){[void]$issues.Add(@{Area='AmigaOS';Message='The selected OS media set is unknown.'})}
@@ -92,8 +100,16 @@ function NewDesktopInstallerPlan($root,$draft){
  if([string]::IsNullOrWhiteSpace([string]$draft.EmulatorFile) -or !(Test-Path -LiteralPath ([string]$draft.EmulatorFile) -PathType Leaf)-or [IO.Path]::GetFileName([string]$draft.EmulatorFile) -notin @('winuae.exe','winuae64.exe','fs-uae.exe')){[void]$issues.Add(@{Area='Emulator';Message='Choose an existing WinUAE or FS-UAE executable.'})}
  $selected=@($draft.Selected | Select-Object -Unique);$versions=@();if($draft.CreateNewImage){$versions+=('ImageTemplate@'+(GetDesktopSettingsHash ([string]$draft.ImageTemplate)))};$packageNames=@();$userNames=@();$bundleNotes=@();if($osEntries.Count){$bootRom=$null;foreach($model in $hstwb.Models){$bootRom=$hstwb.KickstartEntries | Where-Object {$_.File -and $_.RunSupported -eq 'True' -and $_.Model -eq $model -and ($_.AmigaOsVersionsSupported -split ',') -contains $osEntries[0].AmigaOsVersion} | Select-Object -First 1;if($bootRom){break}};if($bootRom){$bundleNotes+=('Installer boot ROM: '+$bootRom.Name+'. Selected ROM set: '+$draft.KickstartSet+'.')}}
  try{
-  $hstwb.Packages=& (Get-Module config) {param($folder,$dependency) Import-Module $dependency; ReadPackages $folder} (Join-Path $root 'packages') (Join-Path $PSScriptRoot '../modules/data.psm1')
   $official=Get-Content (Join-Path $root 'data/hstwb-packages.json') -Raw | ConvertFrom-Json
+  $cache=Join-Path $root 'settings/desktop-package-catalog.json'
+  if(Test-Path -LiteralPath $cache){try{$official=Get-Content -LiteralPath $cache -Raw | ConvertFrom-Json -ErrorAction Stop}catch{}}
+  $files=@(foreach($entry in @($official.Packages | Where-Object {('package/'+$_.Name) -in $selected})){
+   foreach($release in $entry.Releases){[string]$release.FileName}
+   # Legacy/local catalogs can omit release filenames.
+   $normal=($entry.Name -replace '-package$','') -replace '[^a-zA-Z0-9]',''
+   $normal+'.zip'
+  })
+  $hstwb.Packages=& (Get-Module config) {param($folder,$dependency,$files) Import-Module $dependency; ReadPackages $folder -AllowedFiles $files} (Join-Path $root 'packages') (Join-Path $PSScriptRoot '../modules/data.psm1') $files
   $users=Get-Content (Join-Path $root 'data/user-package-updates.json') -Raw | ConvertFrom-Json
   foreach($id in $selected){
    if($id -eq 'gamepack/whdload-packs'){
@@ -137,6 +153,7 @@ function NewDesktopInstallerPlan($root,$draft){
   if(!(ValidateAssigns $assigns 6>$null)){[void]$issues.Add(@{Area='Assigns';Message='Installer assigns require correction in existing setup.'})}
  }catch{[void]$issues.Add(@{Area='Packages';Message=$_.Exception.Message})}
  $plan=@{Valid=($issues.Count -eq 0);Issues=@($issues.ToArray());Settings=$settings;Assigns=$assigns;SettingsPath=$settingsPath;AssignsPath=$assignsPath;SettingsHash=(GetDesktopSettingsHash $settingsPath);AssignsHash=(GetDesktopSettingsHash $assignsPath);PackageVersions=$versions;PackageNames=$packageNames;UserPackageNames=$userNames;Notes=@($bundleNotes | Sort-Object -Unique)}
+ if($plan.Valid){$plan.Runtime=NewDesktopRuntimeValidation $hstwb $userNames}
  $plan.Token=GetDesktopPlanToken $plan
  return $plan
 }

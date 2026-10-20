@@ -397,13 +397,13 @@ function ReadImages($imagesPath)
 
 
 # read packages
-function ReadPackages($packagesPath)
+function ReadPackages($packagesPath, $AllowedFiles = $null)
 {
     $packages = @{}
     if (!(Test-Path -LiteralPath $packagesPath -PathType Container)) { return $packages }
 
     # get package files
-    $packageFiles = Get-ChildItem -Path $packagesPath -Filter '*.zip' | Where-Object { !$_.PSIsContainer }
+    $packageFiles = Get-ChildItem -Path $packagesPath -Filter '*.zip' | Where-Object { !$_.PSIsContainer -and ($null -eq $AllowedFiles -or $_.Name -in $AllowedFiles) }
 
     # read package ini from package files
     foreach ($packageFile in $packageFiles)
@@ -457,7 +457,7 @@ function DetectUserPackages($hstwb)
     }
 
     # get user packages dirs
-    $userPackageDirs += Get-ChildItem -Path $hstwb.Settings.UserPackages.UserPackagesDir | Where-Object { $_.PSIsContainer }
+    $userPackageDirs += Get-ChildItem -Path $hstwb.Settings.UserPackages.UserPackagesDir | Where-Object { $_.PSIsContainer -and (!$hstwb.ContainsKey('DesktopSelectedUserNames') -or $_.Name -in $hstwb.DesktopSelectedUserNames) }
     $catalogFile = Join-Path (Split-Path $PSScriptRoot -Parent) 'data/user-package-updates.json'
     $catalog = if (Test-Path -LiteralPath $catalogFile) { (Get-Content -LiteralPath $catalogFile -Raw | ConvertFrom-Json).Packages } else { @() }
 

@@ -3,6 +3,7 @@ $repo=Split-Path $PSScriptRoot -Parent
 $fixture=Join-Path $repo ('.output/desktop-apply-test-'+[guid]::NewGuid().ToString('N'))
 foreach($folder in @('settings','media/nested','image','packages','user-packages/Demo tools','data')){$null=New-Item -ItemType Directory (Join-Path $fixture $folder) -Force}
 Import-Module (Join-Path $repo 'desktop/installer-plan.psm1') -Force
+Import-Module (Join-Path $repo 'desktop/runtime-validation.psm1') -Force
 Import-Module (Join-Path $repo 'modules/config.psm1') -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Assert($ok,$message){if(!$ok){throw $message}}
@@ -19,6 +20,8 @@ $os=Join-Path $fixture 'media/nested/os.adf';$rom=Join-Path $fixture 'media/nest
 '; synthetic installer, never executed' | Set-Content (Join-Path $fixture 'user-packages/Demo tools/_install')
 function AddPackage($name,$dependencies,$content=@()){$path=Join-Path $fixture ('packages/'+$name+'.zip');$zip=[IO.Compression.ZipFile]::Open($path,'Create');try{$entry=$zip.CreateEntry('hstwb-package.json');$writer=New-Object IO.StreamWriter($entry.Open());try{$writer.Write((@{Name=$name;Version='1.0';AmigaOsVersions=@('3.1');ContentIds=@($content);Dependencies=@($dependencies);Assigns=@(@{Name='Work';Path='DH1:Apps'})} | ConvertTo-Json -Depth 6))}finally{$writer.Dispose()}}finally{$zip.Dispose()}}
 AddPackage Demo @(@{Name='Helper'});AddPackage Helper @()
+# Broken archives outside the selection must not block installation.
+[IO.File]::WriteAllText((Join-Path $fixture 'packages/Unselected.zip'),'not a package')
 $settingsFile=Join-Path $fixture 'settings/hstwb-installer-settings.ini'
 $assignsFile=Join-Path $fixture 'settings/hstwb-installer-assigns.ini'
 WriteIniFile $settingsFile @{Installer=@{Mode='Test'};Custom=@{Keep='Preserved'}}
@@ -31,6 +34,13 @@ Assert ((Get-FileHash $settingsFile).Hash -eq $before) 'Validation changed nativ
 $draft.Selected=@('package/demo-package','package/helper-package','tools/one')
 $plan=NewDesktopInstallerPlan $fixture $draft
 if(!$plan.Valid){throw ('Valid fixture failed: '+($plan.Issues | ConvertTo-Json -Compress))}
+Assert ($plan.Runtime.Packages.Count -eq 2) 'Unselected packages entered the runtime snapshot.'
+AssertDesktopRuntimeValidation $plan.Runtime
+$stampFile=Get-Item -LiteralPath $os;$originalTime=$stampFile.LastWriteTimeUtc
+$stampFile.LastWriteTimeUtc=$originalTime.AddSeconds(5)
+$changedRejected=$false;try{AssertDesktopRuntimeValidation $plan.Runtime}catch{$changedRejected=$true}
+$stampFile.LastWriteTimeUtc=$originalTime
+Assert $changedRejected 'Changed validated media was accepted by the runtime handoff.'
 Assert ($plan.UserPackageNames.Count -eq 1 -and $plan.UserPackageNames[0] -eq 'Demo tools') 'Component did not map to complete user package.'
 Assert ($plan.Notes -match 'complete') 'Bundle scope was not explained.'
 $helperFile=Join-Path $fixture 'packages/Helper.zip'
@@ -97,7 +107,7 @@ Assert ($externalPlan.Valid -and $externalPlan.Settings.UserPackages.UserPackage
 # Exercise the GUI bridge contract across separate validation and apply processes.
 $draft.MediaFolder=Join-Path $fixture 'media'
 foreach($folder in @('desktop','modules')){$null=New-Item -ItemType Directory (Join-Path $fixture $folder) -Force}
-foreach($file in @('bridge.ps1','installer-plan.psm1','games-library.psm1','image-builder.psm1')){Copy-Item (Join-Path $repo ('desktop/'+$file)) (Join-Path $fixture ('desktop/'+$file))}
+foreach($file in @('bridge.ps1','installer-plan.psm1','games-library.psm1','image-builder.psm1','runtime-validation.psm1')){Copy-Item (Join-Path $repo ('desktop/'+$file)) (Join-Path $fixture ('desktop/'+$file))}
 foreach($file in @('config.psm1','data.psm1','amigaos-release.psm1','settings-profiles.psm1')){Copy-Item (Join-Path $repo ('modules/'+$file)) (Join-Path $fixture ('modules/'+$file))}
 $request=Join-Path $fixture 'request.json'
 $draftJson=$draft | ConvertTo-Json -Depth 8 -Compress
@@ -132,8 +142,9 @@ $draft | Add-Member NoteProperty CreateNewImage $true
 $draft | Add-Member NoteProperty ImageTemplate $template
 $draft | Add-Member NoteProperty NewImageFolder (Join-Path $draft.ImageFolder 'Install-test-one')
 @'
-param([string]$settingsDir,[switch]$Desktop)
+param([string]$settingsDir,[switch]$Desktop,[hashtable]$DesktopValidation)
 if(!$Desktop){throw 'Desktop engine mode missing'}
+if(!$DesktopValidation -or $DesktopValidation.Packages.Count -ne 2){throw 'Selected validation snapshot was not passed to the engine'}
 [IO.File]::WriteAllText((Join-Path $settingsDir 'fake-run-marker'),'started')
 Write-Host 'Synthetic installation completed'
 '@ | Set-Content (Join-Path $fixture 'run.ps1')
@@ -154,7 +165,7 @@ Assert ((ReadIniFile $settingsFile).UserPackages.UserPackagesDir -eq (Join-Path 
 Assert ($response[0].ImageFolder -eq $draft.NewImageFolder -and (Test-Path (Join-Path $draft.NewImageFolder 'disk.hdf'))) 'Fresh image was not created.'
 Assert ((Get-Item (Join-Path $fixture 'image/disk.hdf')).Length -eq 512) 'Existing image changed.'
 Write-Host 'PASS: boot-ROM fallback, existing image detection, and in-app run contract with a fake engine.'
-'param([string]$settingsDir,[switch]$Desktop); throw "Synthetic engine failure"' | Set-Content (Join-Path $fixture 'run.ps1')
+'param([string]$settingsDir,[switch]$Desktop,[hashtable]$DesktopValidation); throw "Synthetic engine failure"' | Set-Content (Join-Path $fixture 'run.ps1')
 $draft.NewImageFolder=Join-Path $draft.ImageFolder 'Install-test-two'
 $draftJson=$draft | ConvertTo-Json -Depth 8 -Compress
 [IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson)))
