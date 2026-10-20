@@ -1,5 +1,7 @@
 # Shared media library
 
+These instructions describe the original setup interface. For the Windows GUI, use [the GUI user guide](gui/README.md).
+
 In setup, select **Configure media library → Choose media folder** and choose the parent folder containing your licensed AmigaOS disks and Kickstart ROMs. Setup scans that folder and every subfolder. Files are recognized by the existing catalogs; they do not need to be moved or renamed.
 
 Illustrative example (choose your own folder; this is not a maintainer's machine path):

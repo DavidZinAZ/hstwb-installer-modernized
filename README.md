@@ -14,7 +14,17 @@ Creating new harddrive images for Amiga and installing Amiga OS, Kickstart roms,
 
 This is where HstWB Installer come to aid and can help simplifying installations and make it possible for almost anyone to do with very little knowledge about Amiga.
 
-## Basics
+## Choose your interface and documentation
+
+| Interface | Start here |
+| --- | --- |
+| Windows GUI — HstwbDesktop.exe | [Complete GUI user guide](docs/gui/README.md): every tab, fresh-image installation, packages, profiles, saved scans, and troubleshooting. An offline browser edition is included and opens from Settings. |
+| Original CLI / script-based setup | [CLI documentation](docs/cli/README.md): original setup menus, launcher/run scripts, native profiles, and advanced workflows. |
+| Desktop development and packaging | [Desktop build notes](desktop/README.md): source build, tests, portable ZIP, and automatic GitHub builds. |
+
+The remaining setup instructions below describe the original interface. The GUI has its own controls and always creates a fresh image when using Run installation.
+
+## Original setup basics
 
 Use **Configure media library** in setup to select one parent folder for AmigaOS media and Kickstart ROMs. All subfolders are scanned; existing set/version selection and file views remain available. See [media library setup](docs/media-library.md).
 

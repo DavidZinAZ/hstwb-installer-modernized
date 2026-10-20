@@ -1,5 +1,9 @@
 # HstWB Windows desktop preview
 
+**Using the Windows app? Read the [complete GUI user guide](../docs/gui/README.md), or open [the offline browser edition](../docs/gui/user-guide.html).** It covers the tab-by-tab workflow without requiring command-line setup. The [CLI documentation](../docs/cli/README.md) covers the original tools separately.
+
+This page contains desktop development, build, and packaging notes.
+
 Extract the complete portable ZIP to a writable folder and double-click **HstwbDesktop.exe**. Keep the support folders beside the executable. Windows with .NET Framework 4.8 and an installed WinUAE or FS-UAE emulator are required. Commercial AmigaOS and Kickstart media are supplied separately.
 
 From a source checkout, double-click `desktop.cmd` to compile and open the app using the installed Windows .NET Framework compiler. No additional SDK or package restore is required.

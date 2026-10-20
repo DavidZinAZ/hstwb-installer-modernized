@@ -1,5 +1,7 @@
 # Local settings and package updates
 
+Menu instructions on this page describe the original setup interface. The Windows application has separate [GUI settings, package, and review instructions](gui/README.md).
+
 ## Separate installations
 
 Setup, Run, and Launcher now default to the `settings` folder inside their own installation. Each copy owns `hstwb-installer-settings.ini`, `hstwb-installer-assigns.ini`, and its log. Windows launchers work from their own folder and forward command-line options. An explicit `-settingsDir` still overrides the default.

@@ -1,5 +1,7 @@
 # Named settings profiles
 
+This page describes native profiles in the original setup interface. For desktop profiles, use [Settings in the GUI user guide](gui/README.md#settings-and-appearance).
+
 In Setup, select **1: Configure Installer**, then **Save settings profile** or
 **Load settings profile**. Choose a name such as `A1200 ZZ9000` in the file picker.
 Settings and assigns are saved together in one `.hstwb-profile.json` file.

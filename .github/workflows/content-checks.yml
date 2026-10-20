@@ -22,6 +22,8 @@ jobs:
           python-version: '3.13'
       - name: Privacy scanner regression tests
         run: python -m unittest discover -s tests -p test_public_content_audit.py
+      - name: Verify GUI manual and offline edition
+        run: python tools/build_gui_docs.py --check
       - name: Check current tracked content
         run: python tools/audit_public_content.py --summary
       # History is intentionally a separate manual prepublication check:
