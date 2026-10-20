@@ -1,0 +1,41 @@
+name: Windows desktop build
+
+on:
+  push:
+    branches: [master, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Test desktop services
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          foreach($test in @('test_desktop_media.ps1','test_desktop_library.ps1','test_desktop_games.ps1','test_desktop_image_builder.ps1','test_desktop_installer_plan.ps1')){
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path 'tests' $test)
+            if($LASTEXITCODE -ne 0){throw ('Failed: '+$test)}
+          }
+      - name: Build and verify portable Windows release
+        shell: powershell
+        run: |
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/build_desktop_release.ps1
+          if($LASTEXITCODE -ne 0){throw 'Desktop release failed.'}
+      - name: Upload portable ZIP and checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: hstwb-desktop-windows
+          path: |
+            .release/desktop/*.zip
+            .release/desktop/*.sha256
+          if-no-files-found: error
+          retention-days: 30

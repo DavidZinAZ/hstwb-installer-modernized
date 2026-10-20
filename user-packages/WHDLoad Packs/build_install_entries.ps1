@@ -280,8 +280,10 @@ function FindEntries()
     
     $entries = New-Object System.Collections.Generic.List[System.Object]
     
+    $desktopEntryIndex=0
     foreach ($file in $files)
     {
+        $desktopEntryIndex++;if($env:HSTWB_DESKTOP_PROGRESS){Write-Progress -Activity "Building WHDLoad lists" -Status ("{0} of {1}: {2}" -f $desktopEntryIndex,$files.Count,$file.Name) -PercentComplete (100*$desktopEntryIndex/[Math]::Max(1,$files.Count))}
         $userPackageDirIndex = $userPackageDir.Length + 1
         $userPackageFile = $file.FullName.Substring($userPackageDirIndex, $file.FullName.Length - $userPackageDirIndex)
     

@@ -391,8 +391,10 @@ function GetFileHashes($path)
     # Hard disk images are installation targets, not Amiga OS distribution media.
     $files = Get-ChildItem -Path $path -Recurse | Where-Object { ! $_.PSIsContainer -and $_.Extension -ine '.hdf' }
 
+    $desktopFileIndex=0
     foreach ($file in $files)
     {
+        $desktopFileIndex++;if($env:HSTWB_DESKTOP_PROGRESS){Write-Progress -Activity "Scanning media files" -Status ("{0} of {1}: {2}" -f $desktopFileIndex,@($files).Count,$file.Name) -PercentComplete (100*$desktopFileIndex/[Math]::Max(1,@($files).Count))}
         $md5Hash = CalculateMd5FromFile $file.FullName
 
         $fileHashes += @{ "File" = $file.FullName; "Md5Hash" = $md5Hash }
@@ -531,8 +533,10 @@ function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
     # index file hashes
     $kickstartFileHashesIndex = @{}
 
+    $desktopRomIndex=0
     foreach($file in $files)
     {
+        $desktopRomIndex++;if($env:HSTWB_DESKTOP_PROGRESS){Write-Progress -Activity "Scanning Kickstart files" -Status ("{0} of {1}: {2}" -f $desktopRomIndex,@($files).Count,$file.Name) -PercentComplete (100*$desktopRomIndex/[Math]::Max(1,@($files).Count))}
         # read rom bytes
         [byte[]]$romBytes = [System.IO.File]::ReadAllBytes($file.FullName)
 

@@ -66,7 +66,7 @@ function GetUserPackageLocalState($directory) {
     return $null
 }
 
-function GetUserPackageUpdateResults($packagesRoot, $catalog) {
+function GetUserPackageUpdateResults($packagesRoot, $catalog, [switch]$LocalOnly) {
     if(!$packagesRoot -or !(Test-Path -LiteralPath $packagesRoot -PathType Container)){return}
     foreach($package in $catalog) {
         $directory=Join-Path $packagesRoot $package.Directory
@@ -76,6 +76,8 @@ function GetUserPackageUpdateResults($packagesRoot, $catalog) {
         foreach($component in $package.Components) {
             $result=@{Package=$package;Component=$component;Directory=$directory;LocalVersion=$component.Version;Release=$null;Status='Review required';Message=''}
             if($stateError){$result.Message='Unreadable local update metadata: '+$stateError;[pscustomobject]$result;continue}
+            $saved=$state.Components | Where-Object {$_.Id -eq $component.Id} | Select-Object -First 1
+            if($saved){$result.LocalVersion=$saved.Version}
             if($component.Provider -eq 'Manual') {
                 $result.Message=$component.Reason
                 [pscustomobject]$result
@@ -87,6 +89,11 @@ function GetUserPackageUpdateResults($packagesRoot, $catalog) {
                 $expectedHash=if($saved){$saved.Sha256}else{$component.BaselineSha256}
                 if($saved){$result.LocalVersion=$saved.Version}
                 $localKnown=$expectedHash -and (Test-Path -LiteralPath $file) -and ((Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash -eq $expectedHash)
+                if($LocalOnly){
+                    $result.Status=if($localKnown){'Local version verified'}else{'Local version unverified'}
+                    $result.Message=if($localKnown){'Payload matches local version metadata. Use Check for updates to compare with the latest release.'}else{'Payload is missing or differs from known metadata; no download was attempted.'}
+                    [pscustomobject]$result;continue
+                }
                 $result.Release=GetAvailableUserPackageRelease $component
                 if($component.AutoUpdate -eq $false){$result.Status='Compatibility review required';$result.Message=$component.Reason}
                 elseif(!$localKnown){$result.Status='Local version unverified';$result.Message='Local payload differs from known metadata; review before replacing.'}
@@ -154,7 +161,25 @@ function GetLhaArchiveMembers($path) {
 
 function SaveUserPackageDownload($url,$path) {
     if(([uri]$url).Scheme -ne 'https'){throw 'Update downloads must use HTTPS.'}
-    Invoke-WebRequest -Uri $url -OutFile $path -UseBasicParsing -TimeoutSec 120 -Headers @{'User-Agent'='hstwb-updated'} -ErrorAction Stop
+    $request=[Net.HttpWebRequest]::Create($url);$request.Timeout=120000;$request.ReadWriteTimeout=120000;$request.UserAgent='hstwb-updated'
+    $response=$request.GetResponse()
+    try{
+        $inputStream=$response.GetResponseStream();$outputStream=$null
+        try{
+            $outputStream=[IO.File]::Create($path);$buffer=New-Object byte[] 65536;$total=[long]0;$nextProgress=[datetime]::MinValue
+            while(($read=$inputStream.Read($buffer,0,$buffer.Length)) -gt 0){
+                $outputStream.Write($buffer,0,$read);$total+=$read
+                if([datetime]::UtcNow -ge $nextProgress){
+                    $percent=0;$message=('{0:N1} MB received' -f ($total/1MB))
+                    if($response.ContentLength -gt 0){$percent=[Math]::Min(99,100*$total/$response.ContentLength);$message=('{0:N1} / {1:N1} MB' -f ($total/1MB),($response.ContentLength/1MB))}
+                    Write-Progress -Activity 'Downloading user package' -Status $message -PercentComplete $percent
+                    $nextProgress=[datetime]::UtcNow.AddMilliseconds(300)
+                }
+            }
+            if($response.ContentLength -ge 0 -and $total -ne $response.ContentLength){throw 'Download ended before all bytes arrived.'}
+            Write-Progress -Activity 'Verifying user package' -Status 'Download received; checking archive and version' -PercentComplete 99
+        }finally{if($outputStream){$outputStream.Dispose()};$inputStream.Dispose()}
+    }finally{$response.Dispose()}
 }
 
 function InstallUserPackageSourceUpdate($result) {

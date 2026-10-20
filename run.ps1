@@ -9,7 +9,8 @@
 
 Param(
 	[Parameter(Mandatory=$false)]
-	[string]$settingsDir
+	[string]$settingsDir,
+    [switch]$Desktop
 )
 
 
@@ -2078,7 +2079,8 @@ function RunTest($hstwb)
     Write-Host ("Starting emulator '{0}' to test image..." -f $hstwb.Emulator)
 
     # fail, if emulator doesn't return error code 0
-    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow
+    Write-Progress -Activity "Installation running in emulator" -Status "Waiting for Amiga installation to finish; see the emulator window" -PercentComplete 50
+    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow -PassThru
     if ($emulatorProcess -and $emulatorProcess.ExitCode -ne 0)
     {
         Fail $hstwb ("Failed to run '" + $hstwb.Settings.Emulator.EmulatorFile + "' with arguments '$emulatorArgs'")
@@ -2855,7 +2857,8 @@ function RunInstall($hstwb)
     Write-Host ("Starting emulator '{0}' to run install..." -f $hstwb.Emulator)
 
     # start emulator to run install
-    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow
+    Write-Progress -Activity "Installation running in emulator" -Status "Waiting for Amiga installation to finish; see the emulator window" -PercentComplete 50
+    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow -PassThru
 
     # append temp hstwb installer log file to image hstwb installer log file
     if (Test-Path -Path $tempHstwbInstallerLogFile)
@@ -2969,7 +2972,8 @@ function RunInstall($hstwb)
     Write-Host ("Starting emulator '{0}' to run install {1}..." -f $hstwb.Emulator, $task)        
     
     # start emulator to run install boing bags, packages
-    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow
+    Write-Progress -Activity "Installation running in emulator" -Status "Waiting for Amiga installation to finish; see the emulator window" -PercentComplete 50
+    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow -PassThru
 
     # append temp hstwb installer log file to image hstwb installer log file
     if (Test-Path -Path $tempHstwbInstallerLogFile)
@@ -3556,7 +3560,8 @@ function RunBuildSelfInstall($hstwb)
 
 
     # start emulator to run build self install
-    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow
+    Write-Progress -Activity "Installation running in emulator" -Status "Waiting for Amiga installation to finish; see the emulator window" -PercentComplete 50
+    $emulatorProcess = Start-Process $hstwb.Settings.Emulator.EmulatorFile $emulatorArgs -Wait -NoNewWindow -PassThru
 
     # append temp hstwb installer log file to image hstwb installer log file
     if (Test-Path -Path $tempHstwbInstallerLogFile)
@@ -3770,6 +3775,7 @@ function Save($hstwb)
 # fail
 function Fail($hstwb, $message)
 {
+    if($Desktop){throw $message}
     Write-Error $message
     Write-Host ""
     if(test-path -path $hstwb.Paths.TempPath)
@@ -3778,7 +3784,7 @@ function Fail($hstwb, $message)
     }
 
     Write-Host "Press enter to continue"
-    Read-Host
+    if(!$Desktop){Read-Host}
     exit 1
 }
 
@@ -4099,6 +4105,7 @@ try
     }
 
 
+    Write-Progress -Activity "Preparing installation" -Status "Preparing media and selected packages" -PercentComplete 10
     # installer mode
     switch ($hstwb.Settings.Installer.Mode)
     {
@@ -4119,7 +4126,7 @@ try
     Write-Host "Done."
     Write-Host ""
     Write-Host "Press enter to continue"
-    Read-Host
+    if(!$Desktop){Read-Host}
 }
 catch
 {
@@ -4143,8 +4150,9 @@ catch
     $logFile = Join-Path $settingsDir -ChildPath "hstwb_installer.log"
     Add-Content $logFile ("{0} | ERROR | {1}" -f (Get-Date -Format s), $message) -Encoding UTF8
     Write-Host ""
+    if($Desktop){throw "HstWB installation failed: $message"}
     Write-Error "HstWB Installer Setup Failed: $message"
     Write-Host ""
     Write-Host "Press enter to continue"
-    Read-Host
+    if(!$Desktop){Read-Host}
 }
