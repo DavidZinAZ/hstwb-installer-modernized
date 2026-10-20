@@ -93,7 +93,7 @@ Copy-Item -LiteralPath (Join-Path $fixture 'user-packages') -Destination (Join-P
 $draft | Add-Member NoteProperty UserPackagesFolder (Join-Path $externalParent 'user-packages') -Force
 $draft | Add-Member NoteProperty GamePacksFolder (Join-Path $externalParent 'user-packages/WHDLoad Packs') -Force
 $externalPlan=NewDesktopInstallerPlan $fixture $draft
-Assert ($externalPlan.Valid -and $externalPlan.Settings.UserPackages.UserPackagesDir -eq $draft.UserPackagesFolder) 'External user library was not applied consistently.'
+Assert ($externalPlan.Valid -and $externalPlan.Settings.UserPackages.UserPackagesDir -eq (Join-Path $fixture 'user-packages')) 'External game selection changed the local application library.'
 # Exercise the GUI bridge contract across separate validation and apply processes.
 $draft.MediaFolder=Join-Path $fixture 'media'
 foreach($folder in @('desktop','modules')){$null=New-Item -ItemType Directory (Join-Path $fixture $folder) -Force}
@@ -146,7 +146,11 @@ $response=ConvertFrom-Json ($output -join "`n")
 $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action RunInstaller -RequestFile $request
 Assert ($LASTEXITCODE -eq 0) 'In-app run bridge failed'
 $response=ConvertFrom-Json ($output -join "`n")
-Assert ($response[0].Status -eq 'Completed' -and (Test-Path $response[0].Log) -and (Test-Path (Join-Path $fixture 'settings/fake-run-marker'))) 'Run result, log or engine invocation missing'
+Assert ($response[0].Status -eq 'Completed' -and (Test-Path $response[0].Log) -and (Test-Path (Join-Path $response[0].RunSettingsDirectory 'fake-run-marker'))) 'Run result, log or engine invocation missing'
+$runConfig=ReadIniFile (Join-Path $response[0].RunSettingsDirectory 'hstwb-installer-settings.ini')
+Assert ((Get-Item -LiteralPath (Join-Path $runConfig.UserPackages.UserPackagesDir 'Demo tools')).Target -eq [IO.Path]::GetFullPath((Join-Path $fixture 'user-packages/Demo tools'))) 'Run library did not use the local application bundle.'
+Assert ((Get-Item -LiteralPath (Join-Path $runConfig.UserPackages.UserPackagesDir 'WHDLoad Packs')).Target -eq [IO.Path]::GetFullPath($draft.GamePacksFolder)) 'Run library lost the external game selection.'
+Assert ((ReadIniFile $settingsFile).UserPackages.UserPackagesDir -eq (Join-Path $fixture 'user-packages')) 'Run changed the permanent application-library root.'
 Assert ($response[0].ImageFolder -eq $draft.NewImageFolder -and (Test-Path (Join-Path $draft.NewImageFolder 'disk.hdf'))) 'Fresh image was not created.'
 Assert ((Get-Item (Join-Path $fixture 'image/disk.hdf')).Length -eq 512) 'Existing image changed.'
 Write-Host 'PASS: boot-ROM fallback, existing image detection, and in-app run contract with a fake engine.'

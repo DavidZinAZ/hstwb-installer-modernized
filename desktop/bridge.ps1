@@ -45,10 +45,11 @@ if($Action -in @('ValidateInstaller','ApplyInstaller','RunInstaller')){
    Import-Module (Join-Path $PSScriptRoot 'image-builder.psm1')
    $newImage=NewDesktopImage $root ([string]$draft.ImageTemplate) ([string]$draft.NewImageFolder)
    $backup=SaveDesktopInstallerPlan $plan ([string]$ids[1])
+   $runSettings=NewDesktopRunSettings $root $plan $draft
    $log=Join-Path $root ('.output/desktop/installation-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N')+'.log')
    $null=New-Item -ItemType Directory -Path (Split-Path $log) -Force
-   try{& (Join-Path $root 'run.ps1') -settingsDir (Join-Path $root 'settings') -Desktop *> $log}catch{throw ('Installation failed. Log: '+$log+'. '+$_.Exception.Message)}
-   ConvertTo-Json -InputObject @(@{Status='Completed';Log=$log;Backup=$backup;ImageFolder=$newImage}) -Compress;return
+   try{& (Join-Path $root 'run.ps1') -settingsDir $runSettings -Desktop *> $log}catch{throw ('Installation failed. Log: '+$log+'. '+$_.Exception.Message)}
+   ConvertTo-Json -InputObject @(@{Status='Completed';Log=$log;Backup=$backup;ImageFolder=$newImage;RunSettingsDirectory=$runSettings}) -Compress;return
   }finally{$runLock.Dispose()}
  }
  $row=@{Valid=$plan.Valid;Issues=@($plan.Issues);Token=$plan.Token;PackageNames=@($plan.PackageNames);UserPackageNames=@($plan.UserPackageNames);Notes=@($plan.Notes);SettingsPath=$plan.SettingsPath;Backup=$backup}
@@ -92,7 +93,7 @@ if($Action -eq 'LoadSettings'){
  $names=@($settings.UserPackages.Keys | Where-Object {$_ -match '^InstallUserPackage\d+$'} | ForEach-Object {$settings.UserPackages[$_]})
  foreach($p in $users.Packages){if($p.Directory -in $names -or $p.Name -in $names){foreach($c in $p.Components){$selected+=$p.Id+'/'+$c.Id}}}
  if('WHDLoad Packs' -in $names){$selected+='gamepack/whdload-packs'}
- $row=@{UserPackagesFolder=[string]$settings.UserPackages.UserPackagesDir;GamePacksFolder=$(if($settings.UserPackages.UserPackagesDir){Join-Path $settings.UserPackages.UserPackagesDir 'WHDLoad Packs'}else{''});OsSet=[string]$settings.AmigaOs.AmigaOsSet;TargetVersion=[string]$settings.AmigaOs.TargetVersion;KickstartSet=[string]$settings.Kickstart.KickstartSet;MediaFolder=$(if($settings.Media.Dir){$settings.Media.Dir}else{[string]$settings.AmigaOs.AmigaOsDir});ImageFolder=[string]$settings.Image.ImageDir;ImageMode=1;EmulatorFile=[string]$settings.Emulator.EmulatorFile;Selected=@($selected);ImportNote='Imported into the desktop draft; original installer settings were not changed.'}
+ $row=@{UserPackagesFolder=(Join-Path $root 'user-packages');GamePacksFolder=$(if($settings.UserPackages.UserPackagesDir){Join-Path $settings.UserPackages.UserPackagesDir 'WHDLoad Packs'}else{''});OsSet=[string]$settings.AmigaOs.AmigaOsSet;TargetVersion=[string]$settings.AmigaOs.TargetVersion;KickstartSet=[string]$settings.Kickstart.KickstartSet;MediaFolder=$(if($settings.Media.Dir){$settings.Media.Dir}else{[string]$settings.AmigaOs.AmigaOsDir});ImageFolder=[string]$settings.Image.ImageDir;ImageMode=1;EmulatorFile=[string]$settings.Emulator.EmulatorFile;Selected=@($selected);ImportNote='Imported into the desktop draft; original installer settings were not changed.'}
  ConvertTo-Json -InputObject @($row) -Depth 6 -Compress;return
 }
 Import-Module (Join-Path $root 'modules/user-package-updates.psm1') -Force

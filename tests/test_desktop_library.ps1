@@ -81,8 +81,8 @@ $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fi
 if($LASTEXITCODE -ne 0){throw 'External user-library catalog failed.'}
 $rows=ConvertFrom-Json ($output -join "`n")
 $demo=$rows | Where-Object Id -eq 'demo/app'
-if($demo.Version -ne '8.0' -or $demo.Destination -ne 'SYS:ExternalTools' -or $demo.Directory -ne $externalDemo){throw 'User-package catalog mixed libraries.'}
-Write-Host 'PASS: user-package versions and destinations follow the configured external library.'# Offline scans must verify local bytes without calling release providers.
+if($demo.Version -ne '3.0' -or $demo.Destination -ne 'SYS:Utilities/Demo' -or $demo.Directory -ne (Join-Path $fixture 'user-packages/Demo')){throw 'Native settings redirected the installation-local package library.'}
+Write-Host 'PASS: user-package versions and destinations stay in the installation-local library.'# Offline scans must verify local bytes without calling release providers.
 Import-Module (Join-Path $repo 'modules/user-package-updates.psm1') -Force
 & (Get-Module user-package-updates) {
  param($fixture)

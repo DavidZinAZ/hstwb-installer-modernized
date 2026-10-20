@@ -43,10 +43,17 @@ Assert ((Get-FileHash (Join-Path $pack 'entries-all.csv')).Hash -eq $localHash) 
 $settings=Join-Path $root 'settings';$null=New-Item -ItemType Directory $settings -Force
 [IO.File]::WriteAllText((Join-Path $settings 'hstwb-installer-settings.ini'),("[UserPackages]`r`nUserPackagesDir="+(Split-Path $external -Parent)))
 $paths=GetDesktopLibraryPaths $root
-Assert ($paths.GamePacksFolder -eq $external) 'Native settings default not used.'
+Assert ($paths.UserPackagesFolder -eq (Join-Path $root 'user-packages') -and $paths.GamePacksFolder -eq $packRoot) 'Native settings overrode the installation-local default.'
 $rows=@(GetDesktopGamePacks $root)
-Assert ($rows[0].Archives -eq 1) 'Default scan did not use native settings.'
+Assert ($rows.Count -gt 0) 'Local game default could not be scanned.'
 @{UserPackagesFolder=(Split-Path $packRoot -Parent);GamePacksFolder=$packRoot} | ConvertTo-Json | Set-Content (Join-Path $settings 'desktop.json')
 Assert ((GetDesktopLibraryPaths $root).GamePacksFolder -eq $packRoot) 'Saved desktop folder not restored.'
 Assert ((GetDesktopLibraryPaths $root -IgnoreDesktop).GamePacksFolder -eq $external) 'Reset to installer settings ignored native folder.'
 Write-Host 'PASS: explicit external folders, trusted builder selection, source isolation, native defaults, saved overrides and restoring installer defaults.'
+Assert ((GetDesktopLibraryPaths $root $external).UserPackagesFolder -eq (Join-Path $root 'user-packages')) 'An external games folder changed the application library.'
+@{UserPackagesFolder=(Split-Path $external -Parent);GamePacksFolder=$external} | ConvertTo-Json | Set-Content (Join-Path $settings 'desktop.json')
+Assert ((GetDesktopLibraryPaths $root).UserPackagesFolder -eq (Join-Path $root 'user-packages')) 'An old desktop profile redirected the application library.'
+$moved=Join-Path $root 'moved-installation';$null=New-Item -ItemType Directory (Join-Path $moved 'settings') -Force
+Copy-Item (Join-Path $settings 'desktop.json') (Join-Path $moved 'settings/desktop.json')
+Assert ((GetDesktopLibraryPaths $moved).UserPackagesFolder -eq (Join-Path $moved 'user-packages')) 'Moved installation reused the old user-package root.'
+Write-Host 'PASS: stale native/profile roots and moved installations always use their own local user-packages.'

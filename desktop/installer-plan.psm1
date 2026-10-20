@@ -37,7 +37,7 @@ function NewDesktopInstallerPlan($root,$draft){
  $settings.Kickstart.KickstartSet=[string]$draft.KickstartSet
  $settings.Media.Dir=[string]$draft.MediaFolder;$settings.AmigaOs.AmigaOsDir=[string]$draft.MediaFolder;$settings.Kickstart.KickstartDir=[string]$draft.MediaFolder
  $settings.Image.ImageDir=[string]$draft.ImageFolder;$settings.Emulator.EmulatorFile=[string]$draft.EmulatorFile
- $userRoot=if($draft.UserPackagesFolder){[string]$draft.UserPackagesFolder}elseif($settings.UserPackages.UserPackagesDir){[string]$settings.UserPackages.UserPackagesDir}else{Join-Path $root 'user-packages'};$settings.UserPackages.UserPackagesDir=$userRoot;$settings.Packages.PackageFiltering='All'
+ $userRoot=Join-Path $root 'user-packages';$settings.UserPackages.UserPackagesDir=$userRoot;$settings.Packages.PackageFiltering='All'
  foreach($section in @('Packages','UserPackages')){foreach($key in @($settings[$section].Keys | Where-Object {$_ -match '^Install(?:User)?Package\d+$|^Install(?:User)?Packages$'})){$settings[$section].Remove($key)}}
  if(!$assigns.ContainsKey('Global')){DefaultAssigns $assigns}
  $hstwb=@{Settings=$settings;Assigns=$assigns;Paths=@{AmigaOsEntriesFile=(Join-Path $root 'data/amiga-os-entries.csv');KickstartEntriesFile=(Join-Path $root 'data/kickstart-entries.csv')};Models=@('A1200','A500')}
@@ -98,10 +98,10 @@ function NewDesktopInstallerPlan($root,$draft){
   foreach($id in $selected){
    if($id -eq 'gamepack/whdload-packs'){
     Import-Module (Join-Path $PSScriptRoot 'games-library.psm1')
-    $chosenGames=if($draft.GamePacksFolder){[string]$draft.GamePacksFolder}else{Join-Path $userRoot 'WHDLoad Packs'};if([IO.Path]::GetFullPath($chosenGames).TrimEnd('\') -ne [IO.Path]::GetFullPath((Join-Path $userRoot 'WHDLoad Packs')).TrimEnd('\')){[void]$issues.Add(@{Area='Games & Demos';Message='The game pack folder must belong to the selected user-package library.'})};$packs=@(GetDesktopGamePacks $root $chosenGames);$populated=@($packs | Where-Object {$_.Archives -gt 0})
+    $chosenGames=if($draft.GamePacksFolder){[string]$draft.GamePacksFolder}else{Join-Path $userRoot 'WHDLoad Packs'};$packs=@(GetDesktopGamePacks $root $chosenGames);$populated=@($packs | Where-Object {$_.Archives -gt 0})
     if(!$populated.Count){[void]$issues.Add(@{Area='Games & Demos';Message='Add local archives to a WHDLoad pack folder before selecting the bundle.'})}
     foreach($pack in $populated){if($pack.Status -ne 'Ready'){[void]$issues.Add(@{Area='Games & Demos';Message=('Build installation lists for '+$pack.Name)})};$versions+=$pack.Name+'@'+(GetDesktopSettingsHash (Join-Path $pack.Directory 'entries-all.csv'))}
-    $bundle=Join-Path $userRoot 'WHDLoad Packs'
+    $bundle=$chosenGames
     if(!(Test-Path -LiteralPath (Join-Path $bundle '_install')) -or !(Test-Path -LiteralPath (Join-Path $bundle '_installdir'))){[void]$issues.Add(@{Area='Games & Demos';Message='WHDLoad Packs bundle installer is missing.'})}
     $userNames+='WHDLoad Packs';$bundleNotes+='The complete WHDLoad Packs bundle will be installed. WHDLoad runtime and required ROMs must be installed or already present in the image.'
    }elseif($id -like 'package/*'){
@@ -165,4 +165,26 @@ function SaveDesktopInstallerPlan($plan,$expectedToken){
   return $backup
  }finally{foreach($path in @($stagedSettings,$stagedAssigns)){if(Test-Path -LiteralPath $path){[IO.File]::Delete($path)}};$lock.Dispose()}
 }
-Export-ModuleMember -Function NewDesktopInstallerPlan,SaveDesktopInstallerPlan
+function NewDesktopRunSettings($root,$plan,$draft){
+ $nativeSettings=Split-Path $plan.SettingsPath -Parent
+ if('WHDLoad Packs' -notin $plan.UserPackageNames){return $nativeSettings}
+ $local=Join-Path $root 'user-packages';$games=[string]$draft.GamePacksFolder
+ if(!$games -or [IO.Path]::GetFullPath($games).TrimEnd('\') -eq [IO.Path]::GetFullPath((Join-Path $local 'WHDLoad Packs')).TrimEnd('\')){return $nativeSettings}
+ # The native engine has one root. A per-run view keeps application bundles local
+ # while exposing the explicitly selected external games without copying archives.
+ $run=Join-Path $root ('.output/desktop/runs/'+[guid]::NewGuid().ToString('N'))
+ $library=Join-Path $run 'user-packages';$settings=Join-Path $run 'settings'
+ $null=New-Item -ItemType Directory -Path $library -Force
+ $null=New-Item -ItemType Directory -Path $settings -Force
+ foreach($name in $plan.UserPackageNames){
+  if([IO.Path]::GetFileName($name) -ne $name){throw 'Invalid user-package directory name.'}
+  $target=if($name -eq 'WHDLoad Packs'){$games}else{Join-Path $local $name}
+  if(!(Test-Path -LiteralPath $target -PathType Container)){throw ('User-package directory missing: '+$name)}
+  $null=New-Item -ItemType Junction -Path (Join-Path $library $name) -Target ([IO.Path]::GetFullPath($target)) -ErrorAction Stop
+ }
+ $config=ReadIniFile $plan.SettingsPath;$config.UserPackages.UserPackagesDir=$library
+ WriteIniFile (Join-Path $settings 'hstwb-installer-settings.ini') $config
+ Copy-Item -LiteralPath $plan.AssignsPath -Destination (Join-Path $settings 'hstwb-installer-assigns.ini')
+ return $settings
+}
+Export-ModuleMember -Function NewDesktopInstallerPlan,SaveDesktopInstallerPlan,NewDesktopRunSettings

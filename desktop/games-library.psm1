@@ -1,12 +1,14 @@
 function GetDesktopLibraryPaths($root,$gameFolder='',[switch]$IgnoreDesktop){
  $userRoot=Join-Path $root 'user-packages'
  $native=Join-Path $root 'settings/hstwb-installer-settings.ini'
- if(Test-Path -LiteralPath $native){$section='';foreach($line in Get-Content -LiteralPath $native){if($line -match '^\s*\[([^\]]+)\]'){$section=$Matches[1]}elseif($section -eq 'UserPackages' -and $line -match '^\s*UserPackagesDir\s*=(.+)$'){$userRoot=$Matches[1].Trim()}}}
+ $nativeGameFolder=''
+ if($IgnoreDesktop -and (Test-Path -LiteralPath $native)){$section='';foreach($line in Get-Content -LiteralPath $native){if($line -match '^\s*\[([^\]]+)\]'){$section=$Matches[1]}elseif($section -eq 'UserPackages' -and $line -match '^\s*UserPackagesDir\s*=(.+)$'){$nativeGameFolder=Join-Path $Matches[1].Trim() 'WHDLoad Packs'}}}
  $saved=$null;$state=Join-Path $root 'settings/desktop.json'
  if(!$IgnoreDesktop -and (Test-Path -LiteralPath $state)){try{$saved=Get-Content -LiteralPath $state -Raw | ConvertFrom-Json}catch{}}
- if($saved.UserPackagesFolder){$userRoot=[string]$saved.UserPackagesFolder}
+
  if(!$gameFolder -and $saved.GamePacksFolder){$gameFolder=[string]$saved.GamePacksFolder}
- if(!$gameFolder){$gameFolder=Join-Path $userRoot 'WHDLoad Packs'}else{$userRoot=Split-Path ([IO.Path]::GetFullPath($gameFolder).TrimEnd([IO.Path]::DirectorySeparatorChar)) -Parent}
+ if(!$gameFolder){$gameFolder=if($nativeGameFolder){$nativeGameFolder}else{Join-Path $userRoot 'WHDLoad Packs'}}
+ if(![IO.Path]::IsPathRooted($gameFolder)){$gameFolder=Join-Path $root $gameFolder}
  return [pscustomobject]@{UserPackagesFolder=$userRoot;GamePacksFolder=$gameFolder}
 }
 function GetDesktopGamePacks($root,$folder=''){

@@ -98,7 +98,7 @@ Matching verified archives are reused without downloading or rewriting them. A d
 
 ## User Packages
 
-User packages are application bundles in your configured user-package library. Its path appears at the top of this tab. Names link to their source webpages when a source is configured.
+User packages are application bundles in the **user-packages** folder beside the installed EXE. Its path appears at the top of this tab and follows the app when it is installed in another location. Older saved profiles or native settings cannot redirect this application library to the media folder. Names link to their source webpages when a source is configured.
 
 The **Destination Amiga folder** column shows where the bundle intends to install inside the Amiga system. It is not the Windows library path. This is an information field; the GUI does not provide an editor for it.
 
@@ -135,7 +135,7 @@ Supported updates retain backups beneath the user-package library's **.updates**
 
 This tab manages your existing local WHDLoad game, demo, beta, and magazine archives. It does not download game collections. WHDLoad runtime and ROM-support bundles remain in User Packages.
 
-Choose the **WHDLoad Packs** folder containing the pack subfolders, rather than an individual game archive or Games subfolder. **Use folder from installer settings** restores the folder derived from the native installer configuration. Choosing a packs folder also chooses its parent as the common user-package library, because the installer uses one user-package root. Check the User Packages library path after changing it.
+Choose the **WHDLoad Packs** folder containing the pack subfolders, rather than an individual game archive or Games subfolder. **Use folder from installer settings** restores the game folder derived from the native installer configuration. Choosing an external packs folder does not change the User Packages application library. During a GUI installation the app references the selected collection for that run without copying its archives into the local application library.
 
 1. Choose **Scan local packs** to count local LHA, LZX, and ZIP archives and inspect existing installation lists.
 2. Review **Archives**, **Entries in lists**, **Destination Amiga folder**, and **Status**.
