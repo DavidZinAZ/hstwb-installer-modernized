@@ -99,3 +99,7 @@ Import-Module (Join-Path $repo 'modules/user-package-updates.psm1') -Force
  if($result.Status -ne 'Local version unverified'){throw 'Changed payload was accepted'}
 } $fixture
 Write-Host 'PASS: offline local scans verify payload hashes and never query release providers.'
+# Optional emulator directories are absent in a clean installation.
+$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action Emulators
+if($LASTEXITCODE -ne 0){throw 'Emulator discovery failed when optional folders were absent.'}
+Write-Host 'PASS: emulator discovery tolerates missing optional directories.'

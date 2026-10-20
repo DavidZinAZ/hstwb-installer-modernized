@@ -1,5 +1,6 @@
 param([string]$Ref='HEAD')
 $ErrorActionPreference='Stop'
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 $root=Split-Path $PSScriptRoot -Parent
 $commit=(& git -C $root rev-parse --verify ($Ref+'^{commit}')).Trim()
 if($LASTEXITCODE -ne 0){throw 'Release source must be a committed Git revision.'}
@@ -10,10 +11,10 @@ $stage=Join-Path $build 'HstwbDesktop'
 $null=New-Item -ItemType Directory -Path $stage -Force
 # Export committed files, so local settings, payload updates and downloads cannot leak in.
 $sourceZip=Join-Path $build 'source.zip'
-$components=@('desktop','desktop.cmd','amiga','data','docs','fonts','fs-uae','images','licenses','modules','scripts','support','winuae','user-packages','README.md','LICENSE.txt','ACKNOWLEDGMENTS.md','hstwb_installer.ico','run.ps1','run.cmd','setup.ps1','setup.cmd','launcher.ps1','launcher.cmd')
+$components=@('desktop','desktop.cmd','amiga','data','docs','fonts','emulators','fs-uae','images','licenses','modules','scripts','support','winuae','user-packages','README.md','LICENSE.txt','ACKNOWLEDGMENTS.md','hstwb_installer.ico','run.ps1','run.cmd','setup.ps1','setup.cmd','launcher.ps1','launcher.cmd')
 & git -C $root archive --format=zip ('--output='+$sourceZip) $commit -- $components
 if($LASTEXITCODE -ne 0){throw 'Release source export failed.'}
-Expand-Archive -LiteralPath $sourceZip -DestinationPath $stage
+[IO.Compression.ZipFile]::ExtractToDirectory($sourceZip,$stage)
 if(!(Test-Path (Join-Path $stage 'desktop/start.ps1'))){throw 'This revision has no Windows desktop app.'}
 $buildOutput=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $stage 'desktop/start.ps1') -BuildOnly
 if($LASTEXITCODE -ne 0){throw 'Release executable build failed.'}
@@ -47,7 +48,7 @@ try{
  }
 }finally{$zip.Dispose()}
 # Test the packaged layout without adding generated screenshots/settings to the ZIP.
-$verification=Join-Path $build 'verification';Expand-Archive -LiteralPath $temporary -DestinationPath $verification
+$verification=Join-Path $build 'verification';[IO.Compression.ZipFile]::ExtractToDirectory($temporary,$verification)
 $app=Join-Path $verification 'HstwbDesktop'
 $process=Start-Process -FilePath (Join-Path $app 'HstwbDesktop.exe') -ArgumentList ('"'+$app+'" --smoke') -WorkingDirectory $app -WindowStyle Hidden -PassThru
 if(!$process.WaitForExit(60000)){throw 'Packaged application verification timed out.'}

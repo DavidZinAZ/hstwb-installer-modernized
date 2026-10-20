@@ -26,7 +26,7 @@ if($Action -eq 'MediaCatalog') {
 if($Action -eq 'Emulators') {
  Import-Module (Join-Path $root 'modules/config.psm1') -Force
  $paths=@(FindEmulators | ForEach-Object {$_.File})
- foreach($folder in @((Join-Path $root 'emulators'),(Join-Path $root 'winuae'),(Join-Path $root 'fs-uae'))){$paths+=@(Get-ChildItem -LiteralPath $folder -Filter *.exe -Recurse -File | Where-Object {$_.Name -in @('winuae.exe','winuae64.exe','fs-uae.exe')} | ForEach-Object FullName)}
+ foreach($folder in @((Join-Path $root 'emulators'),(Join-Path $root 'winuae'),(Join-Path $root 'fs-uae'))){if(!(Test-Path -LiteralPath $folder -PathType Container)){continue};$paths+=@(Get-ChildItem -LiteralPath $folder -Filter *.exe -Recurse -File | Where-Object {$_.Name -in @('winuae.exe','winuae64.exe','fs-uae.exe')} | ForEach-Object FullName)}
  $paths+=@($ids | Where-Object {Test-Path -LiteralPath $_ -PathType Leaf})
  $rows=@($paths | Sort-Object -Unique | ForEach-Object {$info=[Diagnostics.FileVersionInfo]::GetVersionInfo($_);[pscustomobject]@{Name=([IO.Path]::GetFileName($_)+' '+$(if($info.ProductVersion){$info.ProductVersion}else{'(version not reported)'})+' - '+$_);Path=$_}})
  ConvertTo-Json -InputObject @($rows) -Compress;return
