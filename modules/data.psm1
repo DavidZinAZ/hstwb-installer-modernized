@@ -379,7 +379,7 @@ function CalculateMd5FromText($text)
 
 
 # get file hashes
-function GetFileHashes($path)
+function GetFileHashes($path, $candidateFiles = $null)
 {
     $fileHashes = @()
 
@@ -389,7 +389,7 @@ function GetFileHashes($path)
     }
 
     # Hard disk images are installation targets, not Amiga OS distribution media.
-    $files = Get-ChildItem -Path $path -Recurse | Where-Object { ! $_.PSIsContainer -and $_.Extension -ine '.hdf' }
+    $files = if ($null -ne $candidateFiles) { @($candidateFiles | ForEach-Object { Get-Item -LiteralPath $_ -ErrorAction Stop }) } else { Get-ChildItem -Path $path -Recurse | Where-Object { ! $_.PSIsContainer -and $_.Extension -ine '.hdf' } }
 
     $desktopFileIndex=0
     foreach ($file in $files)
@@ -405,10 +405,10 @@ function GetFileHashes($path)
 
 
 # find matching file hashes
-function FindMatchingFileHashes($hashes, $path)
+function FindMatchingFileHashes($hashes, $path, $candidateFiles = $null)
 {
     # get file hashes from path
-    $fileHashes = GetFileHashes $path
+    $fileHashes = GetFileHashes $path $candidateFiles
 
     # index file hashes
     $fileHashesIndex = @{}
@@ -457,9 +457,9 @@ function ReadAdfVolumeName($bytes)
 
 
 # find matching amiga os adfs
-function FindMatchingAmigaOsEntriesByAdfVolumeName($amigaOsEntries, $dir)
+function FindMatchingAmigaOsEntriesByAdfVolumeName($amigaOsEntries, $dir, $candidateFiles = $null)
 {
-    $adfFiles = Get-ChildItem -LiteralPath $dir -Filter *.adf -Recurse -File
+    $adfFiles = if ($null -ne $candidateFiles) { @($candidateFiles | ForEach-Object { Get-Item -LiteralPath $_ -ErrorAction Stop } | Where-Object { $_.Extension -ieq '.adf' }) } else { Get-ChildItem -LiteralPath $dir -Filter *.adf -Recurse -File }
 
     $validAdfFiles = @()
 
@@ -523,12 +523,12 @@ function FindMatchingAmigaOsEntriesByFileName($amigaOsEntries, $dir)
     }
 }
 
-function FindMatchingKickstartFileHashes($kickstartEntries, $dir)
+function FindMatchingKickstartFileHashes($kickstartEntries, $dir, $candidateFiles = $null)
 {
     $romKeyPath = Join-Path $dir -ChildPath 'rom.key'
 
     # Scan recursively without loading large OS disk/ISO images as ROMs.
-    $files = Get-ChildItem -LiteralPath $dir -Recurse -File | Where-Object { $_.Length -le 2097163 }
+    $files = if ($null -ne $candidateFiles) { @($candidateFiles | ForEach-Object { Get-Item -LiteralPath $_ -ErrorAction Stop }) } else { Get-ChildItem -LiteralPath $dir -Recurse -File | Where-Object { $_.Length -le 2097163 } }
 
     # index file hashes
     $kickstartFileHashesIndex = @{}
@@ -620,7 +620,7 @@ function FindMatchingFileNames($kickstartEntries, $dir)
 }
 
 # find amiga os files
-function FindAmigaOsFiles($hstwb)
+function FindAmigaOsFiles($hstwb, $candidateFiles = $null)
 {
     # reset amiga os dir, if it doesn't exist
     if (!$hstwb.Settings.AmigaOs.AmigaOsDir -or $hstwb.Settings.AmigaOs.AmigaOsDir -match '^\s*$' -or !(Test-Path -Path $hstwb.Settings.AmigaOs.AmigaOsDir))
@@ -630,15 +630,15 @@ function FindAmigaOsFiles($hstwb)
     }
 
     # find files with hashes matching workbench adf hashes
-    FindMatchingFileHashes $hstwb.AmigaOsEntries $hstwb.Settings.AmigaOs.AmigaOsDir
+    FindMatchingFileHashes $hstwb.AmigaOsEntries $hstwb.Settings.AmigaOs.AmigaOsDir $candidateFiles
     
     # find matching amiga os entries by adf volume name
-    FindMatchingAmigaOsEntriesByAdfVolumeName $hstwb.AmigaOsEntries $hstwb.Settings.AmigaOs.AmigaOsDir
+    FindMatchingAmigaOsEntriesByAdfVolumeName $hstwb.AmigaOsEntries $hstwb.Settings.AmigaOs.AmigaOsDir $candidateFiles
 }
 
 
 # find kickstart roms
-function FindKickstartFiles($hstwb)
+function FindKickstartFiles($hstwb, $candidateFiles = $null)
 {
     # reset kickstart rom dir, if it doesn't exist
     if (!$hstwb.Settings.Kickstart.KickstartDir -or $hstwb.Settings.Kickstart.KickstartDir -match '^\s*$' -or !(Test-Path -Path $hstwb.Settings.Kickstart.KickstartDir))
@@ -648,7 +648,7 @@ function FindKickstartFiles($hstwb)
     }
 
     # find matching kickstart files by md5 hash of encrypted and unencrypted kickstart roms
-    FindMatchingKickstartFileHashes $hstwb.KickstartEntries $hstwb.Settings.Kickstart.KickstartDir
+    FindMatchingKickstartFileHashes $hstwb.KickstartEntries $hstwb.Settings.Kickstart.KickstartDir $candidateFiles
 }
 
 # find best matching kickstart set

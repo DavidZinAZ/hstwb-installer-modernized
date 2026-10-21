@@ -36,6 +36,22 @@ $plan=NewDesktopInstallerPlan $fixture $draft
 if(!$plan.Valid){throw ('Valid fixture failed: '+($plan.Issues | ConvertTo-Json -Compress))}
 Assert ($plan.Runtime.Packages.Count -eq 2) 'Unselected packages entered the runtime snapshot.'
 AssertDesktopRuntimeValidation $plan.Runtime
+# Unselected media must never be opened during selected-set validation.
+$unrelated=Join-Path $fixture 'media/other-workbench.adf'
+$otherRom=Join-Path $fixture 'media/other-kickstart.rom'
+[IO.File]::WriteAllBytes($unrelated,(New-Object byte[] 901120))
+[IO.File]::WriteAllBytes($otherRom,[byte[]](9,10,11,12))
+$osLock=[IO.File]::Open($unrelated,'Open','ReadWrite','None')
+$romLock=[IO.File]::Open($otherRom,'Open','ReadWrite','None')
+try{Assert ((NewDesktopInstallerPlan $fixture $draft).Valid) 'Validation opened unselected media.'}finally{$osLock.Dispose();$romLock.Dispose()}
+# Remembered paths retain renamed-file support without a whole-library scan.
+$renamed=Join-Path $fixture 'media/nested/renamed-selected.adf'
+[IO.File]::Move($os,$renamed)
+$scanKey='Media|'+[IO.Path]::GetFullPath($draft.MediaFolder).TrimEnd([IO.Path]::DirectorySeparatorChar).ToUpperInvariant()
+@{SchemaVersion=1;Scans=@{$scanKey=@{Rows=@(@{Kind='AmigaOS';Set=$draft.OsSet;Name='Synthetic OS';File=$renamed})}}} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $fixture 'settings/desktop-scans.json')
+try{Assert ((NewDesktopInstallerPlan $fixture $draft).Valid) 'Remembered renamed selected media was not validated.'}finally{[IO.File]::Move($renamed,$os)}
+Write-Host 'PASS: selected-set validation skips unrelated OS/ROM files and supports remembered renamed media.'
+
 # Public wrapper-only bundles must be supplied and verified before installation.
 $userCatalogPath=Join-Path $fixture 'data/user-package-updates.json'
 $userCatalogText=[IO.File]::ReadAllText($userCatalogPath)
@@ -154,6 +170,18 @@ $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fi
 Assert ($LASTEXITCODE -eq 0) 'Native validation bridge failed.'
 $response=ConvertFrom-Json ($output -join "`n")
 Assert $response[0].Valid 'Native validation bridge rejected a valid draft.'
+# Invalid selected settings must return actionable issues and leave native files intact.
+$invalidDraft=$draft | ConvertTo-Json -Depth 8 | ConvertFrom-Json
+$invalidDraft.OsSet='Unknown selected OS'
+$invalidJson=$invalidDraft | ConvertTo-Json -Depth 8 -Compress
+$settingsHash=(Get-FileHash $settingsFile).Hash;$assignsHash=(Get-FileHash $assignsFile).Hash
+[IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($invalidJson)))
+$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action ApplyInstaller -RequestFile $request
+Assert ($LASTEXITCODE -eq 0) 'Invalid apply did not return validation issues.'
+$invalidResponse=ConvertFrom-Json ($output -join "`n")
+Assert (!$invalidResponse[0].Valid -and $invalidResponse[0].Issues.Count -gt 0 -and !$invalidResponse[0].Backup) 'Invalid apply did not fail with actionable issues.'
+Assert ((Get-FileHash $settingsFile).Hash -eq $settingsHash -and (Get-FileHash $assignsFile).Hash -eq $assignsHash) 'Invalid apply changed native settings.'
+
 $request=Join-Path $fixture 'apply-request.json'
 [IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson)))
 $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action ApplyInstaller -RequestFile $request

@@ -25,6 +25,22 @@ function VisitDesktopDependency($name,$packages,$selected,$states){
  foreach($dependency in $packages[$name].Dependencies){if($dependency.Name -in $selected){VisitDesktopDependency $dependency.Name $packages $selected $states}}
  $states[$name]='done'
 }
+# Resolve only selected catalog filenames and remembered renamed media. Hashing
+# remains authoritative; remembered detection only narrows the candidate paths.
+function GetDesktopMediaCandidates($root,$folder,$entries,$kind){
+ $remembered=@()
+ try{
+  $cache=Get-Content -LiteralPath (Join-Path $root 'settings/desktop-scans.json') -Raw | ConvertFrom-Json
+  $key='Media|'+[IO.Path]::GetFullPath($folder).TrimEnd([IO.Path]::DirectorySeparatorChar).ToUpperInvariant()
+  if($cache.SchemaVersion -eq 1){$record=$cache.Scans.PSObject.Properties[$key].Value;$remembered=@($record.Rows | Where-Object {$_.Kind -eq $kind})}
+ }catch{}
+ $names=@($entries | ForEach-Object Filename | Where-Object {$_})
+ $paths=@(foreach($row in $remembered){
+  if(@($entries | Where-Object {$_.Set -eq $row.Set -and $_.Name -eq $row.Name}).Count -and $row.File -and (Test-Path -LiteralPath $row.File -PathType Leaf)){$row.File}
+ })
+ $paths+=@(Get-ChildItem -LiteralPath $folder -Recurse -File | Where-Object {$_.Name -in $names} | ForEach-Object FullName)
+ return @($paths | Sort-Object -Unique)
+}
 function NewDesktopInstallerPlan($root,$draft){
  $root=[IO.Path]::GetFullPath($root)
  $settingsPath=Join-Path $root 'settings/hstwb-installer-settings.ini';$assignsPath=Join-Path $root 'settings/hstwb-installer-assigns.ini'
@@ -54,7 +70,15 @@ function NewDesktopInstallerPlan($root,$draft){
    }
    $family=($hstwb.AmigaOsEntries | Select-Object -First 1).AmigaOsVersion
    $hstwb.KickstartEntries=@($hstwb.KickstartEntries | Where-Object {$_.Set -eq $draft.KickstartSet -or ($_.RunSupported -eq 'True' -and $_.Model -in $hstwb.Models -and ($_.AmigaOsVersionsSupported -split ',') -contains $family)})
-   FindAmigaOsFiles $hstwb 6>$null;FindKickstartFiles $hstwb 6>$null
+   $osFiles=@(GetDesktopMediaCandidates $root $draft.MediaFolder $hstwb.AmigaOsEntries 'AmigaOS')
+   $selectedRoms=@($hstwb.KickstartEntries | Where-Object {$_.Set -eq $draft.KickstartSet})
+   $romFiles=@(GetDesktopMediaCandidates $root $draft.MediaFolder $selectedRoms 'Kickstart')
+   FindAmigaOsFiles $hstwb $osFiles 6>$null;FindKickstartFiles $hstwb $romFiles 6>$null
+   if(!@($hstwb.KickstartEntries | Where-Object {$_.File -and $_.RunSupported -eq 'True' -and $_.Model -in $hstwb.Models -and ($_.AmigaOsVersionsSupported -split ',') -contains $family}).Count){
+    $bootCandidates=@($hstwb.KickstartEntries | Where-Object {$_.Set -ne $draft.KickstartSet})
+    $bootFiles=@(GetDesktopMediaCandidates $root $draft.MediaFolder $bootCandidates 'Kickstart')
+    if($bootFiles.Count){FindKickstartFiles $hstwb $bootFiles 6>$null}
+   }
    $osEntries=@($hstwb.AmigaOsEntries | Where-Object {$_.Set -eq $draft.OsSet})
    if(!$osEntries.Count){[void]$issues.Add(@{Area='AmigaOS';Message='The selected OS media set is unknown.'})}
    elseif($draft.OsSet -eq 'Amiga OS 3.2'){
@@ -64,12 +88,12 @@ function NewDesktopInstallerPlan($root,$draft){
     $settings.AmigaOs.Remove('TargetVersion')
     $validation=ValidateSet $hstwb.AmigaOsEntries $draft.OsSet
     foreach($entry in @($validation.Entries | Where-Object {$_.Required -eq 'True' -and !$_.File})){[void]$issues.Add(@{Area='AmigaOS';Message=('Required media missing: '+$entry.Name)})}
-    if(!$validation.FilesCount){[void]$issues.Add(@{Area='AmigaOS';Message='No files were detected for the selected OS set.'})}
+    if(!$validation.FilesCount){[void]$issues.Add(@{Area='AmigaOS';Message='No files were detected for the selected OS set. Use Scan folders in Media & ROMs if your media files have been renamed.'})}
    }
    $roms=@($hstwb.KickstartEntries | Where-Object {$_.Set -eq $draft.KickstartSet})
    $required=@($roms | Group-Object Name | Where-Object {@($_.Group | Where-Object {$_.Required -eq 'True'}).Count -and !@($_.Group | Where-Object {$_.File}).Count})
    foreach($group in $required){[void]$issues.Add(@{Area='Kickstart';Message=('Required ROM missing: '+$group.Name)})}
-   if(!@($roms | Where-Object {$_.File}).Count){[void]$issues.Add(@{Area='Kickstart';Message='No ROM was detected for the selected Kickstart set.'})}
+   if(!@($roms | Where-Object {$_.File}).Count){[void]$issues.Add(@{Area='Kickstart';Message='No ROM was detected for the selected Kickstart set. Use Scan folders in Media & ROMs if your ROM files have been renamed.'})}
    if($osEntries.Count){$family=$osEntries[0].AmigaOsVersion;if(!@($hstwb.KickstartEntries | Where-Object {$_.File -and $_.RunSupported -eq 'True' -and $_.Model -in $hstwb.Models -and ($_.AmigaOsVersionsSupported -split ',') -contains $family}).Count){[void]$issues.Add(@{Area='Kickstart';Message='No supported A1200/A500 installer boot ROM was found in the media folder for this OS family.'})}}
   }catch{[void]$issues.Add(@{Area='Media';Message=$_.Exception.Message})}
  }

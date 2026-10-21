@@ -204,7 +204,7 @@ After changing files, choose the relevant scan or check button. Installation val
 
 This tab summarizes the selected OS, ROM set, paths, packages, and user-package bundles. Installation currently uses the native **Install** mode.
 
-**Validate & apply settings** checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.
+**Validate & apply settings** reads only media for the chosen OS and Kickstart sets, plus a compatible installer boot ROM. It uses catalog filenames and remembered paths for renamed media; use **Scan folders** after renaming or moving media. It checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.
 
 Resolve each issue on its relevant tab and validate again. A checked package must be available locally before installation. If a package needs another package, select and download the named dependency too.
 
