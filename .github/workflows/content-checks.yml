@@ -17,11 +17,26 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.13'
       - name: Privacy scanner regression tests
-        run: python -m unittest discover -s tests -p test_public_content_audit.py
+        run: python -m unittest discover -s tests -p 'test_public*.py'
+      - name: Dependency audit regression tests (offline)
+        run: python -m unittest discover -s tests -p test_dependency_audit.py
+      - name: Archive audit regression tests (offline)
+        run: python -m unittest discover -s tests -p test_archive_audit.py
+      - name: Dedicated secret scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          scanner="$RUNNER_TEMP/hstwb-gitleaks"
+          mkdir -p "$scanner"
+          curl --fail --location --silent --show-error https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o "$scanner/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $scanner/gitleaks.tar.gz" | sha256sum --check --status
+          tar -xzf "$scanner/gitleaks.tar.gz" -C "$scanner"
+          "$scanner/gitleaks" git . --config .gitleaks.toml --log-opts=--all --redact=100 --no-banner
       - name: Verify GUI manual and offline edition
         run: python tools/build_gui_docs.py --check
       - name: Check current tracked content

@@ -17,3 +17,8 @@ promptly; removing a file or Git branch does not revoke the credential.
 The automated privacy check is a limited pattern scan. It is not a complete
 security audit, malware scan or license review. See the
 [publication review](docs/publication-readiness.md) for current limits.
+
+The inherited .NET/Electron imager under `src/` has known dependency advisories
+and is not the maintained desktop/CLI release. Its prerelease workflow is
+disabled. See the [dependency review](docs/dependency-review.md) for scope and
+affected versions. Do not treat source publication as imager qualification.

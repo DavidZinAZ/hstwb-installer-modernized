@@ -22,3 +22,9 @@ Keep Amiga scripts in LF format. Update the changelog for user-visible changes.
 Do not claim native compatibility from a host-only test.
 
 Publication requires the separate [readiness checklist](docs/publication-readiness.md).
+
+Publication checks also include a redacted Gitleaks scan using `.gitleaks.toml`,
+the [dependency review](docs/dependency-review.md), and archive inspection.
+Do not broadly suppress secret rules to obtain a passing result. Preserve a
+finding's location privately, verify it, and limit any exception to the exact
+non-secret value and applicable files. Do not paste secret values into issues.

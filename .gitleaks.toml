@@ -1,0 +1,14 @@
+title = "HstWB publication secret scan"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+  [[rules.allowlists]]
+  description = "Verified WinUAE keyboard bindings, including inherited filenames"
+  condition = "AND"
+  regexTarget = "match"
+  paths = ['''(^|[\\/])winuae[\\/](hstwb-installer_a1200|hstwb-installer_a500|install_os3\.9|test|install)\.uae$''']
+  regexes = ['''^KEY_ALT_LEFT\.0,KEY_CURSOR_LEFT\.0\r?$''']

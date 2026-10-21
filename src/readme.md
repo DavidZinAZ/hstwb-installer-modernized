@@ -1,4 +1,17 @@
-# image/harddisk tools
+# Inherited imager source
+
+This directory contains the original experimental .NET/Electron imager. It is
+separate from the maintained Windows desktop installer in `desktop/` and the
+PowerShell CLI. The desktop/CLI release builder does not include this tree.
+
+The October 20, 2026 dependency review identified known advisories in this
+inherited source. Its prerelease workflow is disabled pending dependency updates
+and separate validation. See [dependency review](../docs/dependency-review.md).
+Do not use its old build instructions as the supported desktop download path.
+
+## Original development references
+
+### image/harddisk tools
 
 https://github.com/discutils/discutils
 https://applegazette.com/mac/pro-terminal-commands-using-diskutil/

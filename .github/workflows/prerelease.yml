@@ -1,15 +1,22 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Prerelease
+name: Legacy imager prerelease (disabled)
 
 # Controls when the workflow will run
 # Allows you to run this workflow manually from the Actions tab
 on: [workflow_dispatch]
 
+permissions:
+  contents: read
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
+    # The inherited imager has unresolved dependency advisories. The maintained
+    # desktop/CLI release workflow is windows-desktop.yml. Keep this archived
+    # workflow inert until the imager is separately updated and qualified.
+    if: ${{ false }}
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
     strategy:
