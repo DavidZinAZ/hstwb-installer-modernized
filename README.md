@@ -1,8 +1,8 @@
-# hstwb-updated
+# HstWB Installer Modernized
 
 ## Download and run
 
-**[Download Windows GUI ZIP](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/download/desktop-preview/hstwb-gui-windows.zip)** · **[Download CLI ZIP](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/download/desktop-preview/hstwb-cli.zip)** · [Release details and checksums](https://github.com/DavidZinAZ/hstwb-installer-updated/releases/tag/desktop-preview)
+**[Download Windows GUI ZIP](https://github.com/DavidZinAZ/hstwb-installer-modernized/releases/download/desktop-preview/hstwb-gui-windows.zip)** · **[Download CLI ZIP](https://github.com/DavidZinAZ/hstwb-installer-modernized/releases/download/desktop-preview/hstwb-cli.zip)** · [Release details and checksums](https://github.com/DavidZinAZ/hstwb-installer-modernized/releases/tag/desktop-preview)
 
 These links download ready-to-use packages. You do not need to find a build artifact or compile the GUI. Public release downloads do not require repository membership.
 
@@ -26,7 +26,7 @@ The CLI package includes the original scripts and support files; it does not inc
 
 **For either download:** supply your own licensed AmigaOS media and Kickstart ROMs, an installed WinUAE or FS-UAE emulator, and any personal game/demo collections. Optional standard packages can be downloaded separately. Neither ZIP contains personal settings, commercial media, emulators, or personal game libraries. The GUI is an unsigned preview.
 
-These download links update automatically after a successful build on master. If a build fails, the previous verified downloads remain available. See [Windows desktop builds](https://github.com/DavidZinAZ/hstwb-installer-updated/actions/workflows/windows-desktop.yml) for build progress. Branch and pull-request artifacts are separate testing snapshots.
+These download links update automatically after a successful build on master. The first public downloads appear after the initial build succeeds; until then these release links may return 404. Later failed builds leave the previous verified downloads available. See [Windows desktop builds](https://github.com/DavidZinAZ/hstwb-installer-modernized/actions/workflows/windows-desktop.yml) for build progress. Branch and pull-request artifacts are separate testing snapshots.
 
 An independently maintained continuation of **[HstWB Installer](https://github.com/henrikstengaard/hstwb-installer)**, created by **Henrik Nørfjand Stengaard**. Henrik built the original installer, AmigaDOS workflow, prepared image system, package framework, and documentation on which this project depends. Thank you, Henrik, and everyone who contributed to the original project.
 

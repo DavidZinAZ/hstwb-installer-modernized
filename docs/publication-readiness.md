@@ -1,7 +1,7 @@
 # Public release readiness — October 20, 2026
 
-The maintainer approved publication of the existing repository after the targeted
-privacy cleanup. The original project credits, license and bundled component
+The maintainer approved publication in a new repository,
+`DavidZinAZ/hstwb-installer-modernized`, using the cleaned branch and tag history. The original project credits, license and bundled component
 notices are retained. This decision does not assert a complete security or legal
 audit of every inherited component.
 
@@ -47,9 +47,10 @@ history before contributing; merging old history can reintroduce removed data.
 GitHub-managed pull-request references, cached pages and old release assets are
 outside the branch/tag rewrite. A follow-up check confirmed that retained
 pull-request #14 still reaches the five old private text blob versions and all
-29 removed screenshot paths. Automatic approval review blocked the visibility
-change pending an explicit maintainer decision about that remaining exposure
-or removal by GitHub. The repository remains private at this preparation stage.
+29 removed screenshot paths. The old development repository remains private. The public repository is
+created separately and receives only the cleaned master branch and tags. Old
+pull requests, their managed references, app checkpoints and recovery evidence
+are not transferred. This avoids exposing the retained old PR history.
 Private recovery backups and app checkpoints are not part of the public push.
 
 ## Focused publication checks
