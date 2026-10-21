@@ -21,6 +21,12 @@ Installer settings and assigns are backed up before application. Image creation 
 
 User-package installation approvals record a local choice; they do not bypass source, checksum, or compatibility restrictions. Component selections can map to complete installer bundles, which are listed during review. WHDLoad list generation uses the maintained builder and backs up generated lists without changing game archives.
 
+The optional PrismRTG and PrismNet user packages extract their original
+installation files and pause for Enter after each package. Complete setup later
+from their Amiga drawers using the upstream installers. Their system components
+and configuration are managed there. See the [package notes](../docs/additional-user-packages.md)
+and [creator acknowledgments](../ACKNOWLEDGMENTS.md).
+
 ## Build a portable release
 
 The desktop app uses the installer version from `modules/version.psm1`. The build reads that shared value for the main heading, window title, and executable version details. Every change must increment `HstwbInstallerVersion` (normally the patch number); rebuilding automatically refreshes the desktop version so both stay in sync.

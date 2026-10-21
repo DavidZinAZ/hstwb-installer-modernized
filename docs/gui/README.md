@@ -108,6 +108,24 @@ Search and heading sorting work as in Packages. **Select all** checks every entr
 
 Some bundles contain several components. Choosing a component can map to installation of the complete bundle. Review & Install lists the resulting bundles before running.
 
+### PrismRTG and PrismNet
+
+Select **PrismRTG** or **PrismNet** to include its complete upstream installation
+files. Their default Amiga drawers are `SYS:Tools/Hardware/PrismRTG` and
+`SYS:Tools/Network/PrismNet`. HstWB extracts the files, shows the result and waits
+for Enter after each package. It does not launch or check for Amiga Installer.
+
+After HstWB finishes, open the drawer in Workbench and run `Install_PrismRTG` or
+`Install_PrismNet` using the standard Amiga Installer. PrismRTG requires Kickstart
+3.1+, a 68020+ and supported RTG hardware; its installer manages the existing
+Picasso96 setup. PrismNet requires AmigaOS 3.1+, a 68000+ and a suitable network
+driver; disable an existing TCP/IP stack's startup before activating it. Complete
+hardware setup on the final machine when preparing an image in an emulator.
+
+Both packages report **Compatibility review required** for source updates.
+Their inclusion does not enable automatic bundle replacement. See the
+[package notes](../additional-user-packages.md) for details.
+
 ### Review and approval
 
 Click a row and choose **Review highlighted package…**, or use its **Review…** action. The dialog shows its local version, available version, destination, PC folder, source, and notes.

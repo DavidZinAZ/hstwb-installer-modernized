@@ -21,6 +21,15 @@ The GUI's Settings tab can open the original setup, but the GUI does not require
 
 These existing guides retain their original paths so links and prior instructions continue to work. References to Configure Installer, Configure media library, or numbered setup menus describe the original setup interface, not the Windows GUI tabs.
 
+## Prism user-package setup
+
+In **Configure user packages → Select user packages**, choose PrismRTG and/or
+PrismNet. During the Amiga package phase each extracts its files, displays the
+destination and waits for Enter before continuing. No Amiga Installer lookup or
+automatic application setup runs. After HstWB completes, open the package drawer
+in Workbench and run its original installer to configure the target machine.
+See [package destinations and requirements](../additional-user-packages.md#prismrtg-and-prismnet-setup-1615).
+
 ## Profiles and image behavior
 
 Native **.hstwb-profile.json** profiles include native settings and assigns. GUI **.hstwb-desktop.json** profiles cover the fields exposed by the Windows app. Importing supported native fields into the GUI does not expose every legacy mode or option.

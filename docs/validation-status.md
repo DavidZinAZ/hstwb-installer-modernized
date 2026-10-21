@@ -1,6 +1,17 @@
-# Validation status — October 18, 2026
+# Validation status — October 20, 2026
 
 ## Observed results
+
+- Versions 1.6.14–1.6.15 add PrismRTG 1.1 and PrismNet 1.0.1. The maintainer's
+  Amiga screenshot confirms successful PrismRTG extraction in 1.6.14 and the
+  missing Amiga Installer message. Version 1.6.15 removes automatic setup and
+  the Installer lookup, and adds an Enter pause after each Prism package.
+  Windows PowerShell checks pass for package discovery, release hashes, archive
+  members, LF scripts, extraction-only behavior, pause placement and source-update
+  preservation. The installed 1.6.15 desktop startup check passed. Native testing
+  of the new pauses and manual Prism setup remains pending.
+- Version 1.6.16 updates the README, GUI/offline and CLI guides, package/update
+  notes, creator acknowledgments and third-party inventory to describe this flow.
 
 - Installer 1.6.12: read-only examination of an affected BestClassicWB image
   found Execute disabled on WBDock and several launcher targets, while compared

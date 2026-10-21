@@ -9,6 +9,13 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.16 — Prism documentation and attribution
+
+- Update the README, GUI and offline guide, CLI guide, package/update notes and
+  validation record for extract-only Prism packages and their Enter pauses.
+- Credit the PrismRTG, PrismNet and lwIP creators and contributors; document
+  retained upstream licenses, archive provenance and corresponding-source links.
+
 ## 1.6.15 — Prism extraction results
 
 - Extract PrismRTG and PrismNet without launching or checking for Amiga Installer.

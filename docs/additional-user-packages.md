@@ -1,4 +1,4 @@
-# Additional user packages in 1.6.5
+# Additional user packages
 
 Select these independently in **Configure user packages → Select user packages**. Point **Change user packages dir** at this installation's `user-packages` directory if settings still reference an older portable copy. Existing selections are not changed automatically.
 
@@ -106,6 +106,8 @@ A4091 and both ZZ9000 bundles report **Compatibility review required**. A4091's 
 - [ZZ9000 firmware](https://github.com/BlitterStudio/zz9000-firmware)
 - [ZZ9000 drivers](https://github.com/BlitterStudio/zz9000-drivers)
 - [DOpus5](https://github.com/BlitterStudio/dopus5)
+- [PrismRTG](https://github.com/lainejones/PrismRTG), by Laine Jones, Stefan Reinauer and contributors
+- [PrismNet](https://github.com/lainejones/PrismNet), by Laine Jones and contributors, using the lwIP networking core
 
 ## Validation scope
 

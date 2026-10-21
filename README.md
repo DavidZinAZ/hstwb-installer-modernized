@@ -123,4 +123,10 @@ Please start by reading [How to use HstWB Installer](https://github.com/henrikst
 
 ## Additional user packages
 
-Version 1.6.5 adds xSysInfo, KickSmash, DevTest, SDMAC, A4091 Tools, ZZ9000 Firmware/Drivers and DOpus5. See [destinations, installation and validation notes](docs/additional-user-packages.md).
+Optional bundles include xSysInfo, KickSmash, DevTest, SDMAC, A4091 Tools,
+ZZ9000 Firmware/Drivers, DOpus5, PrismRTG 1.1 and PrismNet 1.0.1.
+The Prism packages extract into their Amiga drawers and pause after each one
+until Enter is pressed. Run their original installers from Workbench afterward
+to configure graphics or networking. See [destinations, requirements and setup
+instructions](docs/additional-user-packages.md), [creator credits](ACKNOWLEDGMENTS.md)
+and [third-party notices](THIRD_PARTY_NOTICES.md).

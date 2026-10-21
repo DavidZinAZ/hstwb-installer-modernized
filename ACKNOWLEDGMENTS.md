@@ -32,6 +32,15 @@ deserve their own recognition.
 | Icons, artwork and desktop tools | **KKR75** for icons credited by BestClassicWB, and the artists and developers behind the included themes, icon sets, palettes, VisualPrefs, MagicMenu, WBDock, iGame and other desktop additions. |
 | AmigaOS, Workbench and Kickstart | The original Amiga hardware and operating-system teams, and the developers and vendors who have continued maintaining and supplying Amiga system software. |
 
+Thanks also to **Laine Jones**, **Stefan Reinauer** and the
+[PrismRTG contributors](https://github.com/lainejones/PrismRTG) for their RTG
+graphics software, drivers and documentation; and to **Laine Jones**, the
+[PrismNet contributors](https://github.com/lainejones/PrismNet) and the
+[lwIP project](https://savannah.nongnu.org/projects/lwip/) for the networking
+software and core. The original release archives, licenses and detailed upstream
+credits remain with these optional packages. HstWB supplies extraction wrappers
+and setup guidance; it does not claim authorship of the bundled software.
+
 This is a growing acknowledgment, not a complete list of every contributor.
 Package readmes, source headers, licenses and upstream project credits provide
 the more detailed attribution. Those notices remain with their respective

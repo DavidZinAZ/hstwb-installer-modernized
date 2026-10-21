@@ -30,6 +30,22 @@ listed component is cleared. Do not remove original notices while addressing a
 finding. If a component cannot be cleared, prefer an upstream download step or
 an installer-only distribution, subject to its terms, rather than bundling it.
 
+## Prism packages
+
+The optional PrismRTG 1.1 and PrismNet 1.0.1 bundles retain their original LhA
+archives, full GPLv3 text, release URLs, SHA256 hashes and matching source-tag
+links in their package `LICENSE.txt` and `SOURCE.txt` files. PrismRTG credits
+Laine Jones, Stefan Reinauer and its upstream contributors. PrismNet credits
+Laine Jones and its contributors; its lwIP core uses BSD-3-Clause terms, retained
+in `PrismNet/Docs/lwIP-COPYING` inside the unmodified release archive.
+
+These applications retain their own licenses; the installer's MIT license does
+not replace them. Include the original notices and review matching source and
+build material when distributing their binaries, as described below. Retaining
+source links and hashes records provenance; it is not a completed redistribution
+review. See the [package notes](docs/additional-user-packages.md) and
+[acknowledgments](ACKNOWLEDGMENTS.md).
+
 ## User-supplied media
 
 Commercial AmigaOS, Workbench and Kickstart media, ROM keys, completed installed

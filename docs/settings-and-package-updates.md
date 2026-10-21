@@ -38,6 +38,13 @@ Before replacement, the updater rechecks the source and local identity, download
 
 Custom/patched bundles, ROM-derived or licensed components, ambiguous versions, CPU-incompatible releases, and unavailable sources show their specific review reason. For example, the newer TextEditor requires a 68020+ and a changed archive layout; it is not automatically substituted into the legacy dependency bundle. An unavailable WBDock author site is reported, not treated as proof that the local version is current. Unknown custom packages are shown as unmanaged until source metadata is added.
 
+PrismRTG and PrismNet are optional bundles with automatic replacement disabled;
+source checks report **Compatibility review required**. Their extraction wrappers
+show results and pause for Enter. Complete their application setup manually on
+the Amiga using the original installers. Updating the Windows bundle does not
+install or reconfigure either application in an existing Amiga image. See
+[Prism package setup](additional-user-packages.md#prismrtg-and-prismnet-setup-1615).
+
 ## Validation on October 16, 2026
 
 Windows PowerShell tests cover local-setting isolation/import, package-directory creation, newest release selection, invalid/failed download preservation, backups, software-version ordering, app metadata, archive compatibility/path checks, and catalog coverage.
