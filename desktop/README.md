@@ -27,6 +27,10 @@ from their Amiga drawers using the upstream installers. Their system components
 and configuration are managed there. See the [package notes](../docs/additional-user-packages.md)
 and [creator acknowledgments](../ACKNOWLEDGMENTS.md).
 
+NetHarness, NilBBS, AmiFM, NilTerm, AmiDT, SCSIToolbox-Amiga, NoClick, AmiTime
+and AmiSSL-Tunnel use the same extraction-and-pause flow. Their original readmes
+describe manual activation and requirements. Existing staged drawers are retained.
+
 ## Build a portable release
 
 The desktop app uses the installer version from `modules/version.psm1`. The build reads that shared value for the main heading, window title, and executable version details. Every change must increment `HstwbInstallerVersion` (normally the patch number); rebuilding automatically refreshes the desktop version so both stay in sync.

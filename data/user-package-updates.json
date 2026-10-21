@@ -1015,6 +1015,382 @@
           "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
         }
       ]
+    },
+    {
+      "Id": "netharness",
+      "Directory": "NetHarness",
+      "Name": "NetHarness",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "pc-tools",
+          "Name": "NetHarness PC companion",
+          "LocalFile": "NetHarness-1.18-PC.zip",
+          "Version": "1.18",
+          "BaselineSha256": "1226d7a73648550b95161c240999191fb8034dd2c0b7905a89bebd4b7aaff7ff",
+          "Provider": "GitHub",
+          "Repository": "lainejones/NetHarness",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^NetHarness-[0-9.]+-PC\\.zip$",
+          "Mode": "ZipArchive",
+          "RequiredMembers": "NetHarness-PC/nhctl.py",
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        },
+        {
+          "Id": "netharness",
+          "Name": "NetHarness",
+          "LocalFile": "NetHarness-1.18.lha",
+          "Version": "1.18",
+          "BaselineSha256": "4600a34ebba3d3713d9e853523e5fb666dc832105cae130a9ede86d77896308c",
+          "Provider": "GitHub",
+          "Repository": "lainejones/NetHarness",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^NetHarness-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "NetHarness/Install",
+            "NetHarness/Install.info",
+            "NetHarness/LICENSE",
+            "NetHarness/netharness",
+            "NetHarness/nhctl.py",
+            "NetHarness/nhinspect.py",
+            "NetHarness/README.md"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "nilbbs",
+      "Directory": "NilBBS",
+      "Name": "NilBBS",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "nilbbs",
+          "Name": "NilBBS",
+          "LocalFile": "NilBBS-1.5.2.lha",
+          "Version": "1.5.2",
+          "BaselineSha256": "846cbb773e9d7213b746c093bcbc8df5728281cf35c254a3b88f8fb1e799c8d5",
+          "Provider": "GitHub",
+          "Repository": "lainejones/NilBBS",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^NilBBS-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "NilBBS/BBS.info",
+            "NilBBS/BBS/BBSConfig",
+            "NilBBS/BBS/BBSConfig.info",
+            "NilBBS/BBS/BBSControl",
+            "NilBBS/BBS/BBSControl.info",
+            "NilBBS/BBS/BBSCtl",
+            "NilBBS/BBS/BBSMail",
+            "NilBBS/BBS/BBSMaint",
+            "NilBBS/BBS/BBSNode",
+            "NilBBS/BBS/BBSSchedule",
+            "NilBBS/BBS/BBSSchedule.info",
+            "NilBBS/BBS/BBSToss",
+            "NilBBS/BBS/Config/BannedNames.cfg",
+            "NilBBS/BBS/Config/Bulletins.cfg",
+            "NilBBS/BBS/Config/Conferences.cfg",
+            "NilBBS/BBS/Config/Doors.cfg",
+            "NilBBS/BBS/Config/Events.cfg",
+            "NilBBS/BBS/Config/Fido.cfg",
+            "NilBBS/BBS/Config/FileAreas.cfg",
+            "NilBBS/BBS/Config/IPFilter.cfg",
+            "NilBBS/BBS/Config/MsgAreas.cfg",
+            "NilBBS/BBS/Config/NilBBS.cfg",
+            "NilBBS/BBS/Config/StripAds.cfg",
+            "NilBBS/BBS/DoorCheck",
+            "NilBBS/BBS/Doors/CNTest/CNTest",
+            "NilBBS/BBS/Doors/Guess/Guess",
+            "NilBBS/BBS/Doors/Hello/Hello.rexx",
+            "NilBBS/BBS/Doors/XIMTest/XIMTest",
+            "NilBBS/BBS/Local Logon",
+            "NilBBS/BBS/Local Logon.info",
+            "NilBBS/BBS/Menus/files.mnu",
+            "NilBBS/BBS/Menus/main.mnu",
+            "NilBBS/BBS/Menus/messages.mnu",
+            "NilBBS/BBS/NilBBS",
+            "NilBBS/BBS/NilTerm",
+            "NilBBS/BBS/NilTerm.info",
+            "NilBBS/BBS/Run Maintenance",
+            "NilBBS/BBS/Run Maintenance.info",
+            "NilBBS/BBS/Setup",
+            "NilBBS/BBS/Start NilBBS",
+            "NilBBS/BBS/Start NilBBS.info",
+            "NilBBS/BBS/Stop NilBBS",
+            "NilBBS/BBS/Stop NilBBS.info",
+            "NilBBS/BBS/Text/Bulletins/rules.asc",
+            "NilBBS/BBS/Text/connect.ans",
+            "NilBBS/BBS/Text/connect.asc",
+            "NilBBS/BBS/Text/diz.tmpl",
+            "NilBBS/BBS/Text/files.ans",
+            "NilBBS/BBS/Text/files.asc",
+            "NilBBS/BBS/Text/filesmenu.ans",
+            "NilBBS/BBS/Text/filesmenu.asc",
+            "NilBBS/BBS/Text/Language/English.lng",
+            "NilBBS/BBS/Text/logoff.ans",
+            "NilBBS/BBS/Text/logoff.asc",
+            "NilBBS/BBS/Text/main.ans",
+            "NilBBS/BBS/Text/main.asc",
+            "NilBBS/BBS/Text/mainmenu.ans",
+            "NilBBS/BBS/Text/mainmenu.asc",
+            "NilBBS/BBS/Text/messages.ans",
+            "NilBBS/BBS/Text/messages.asc",
+            "NilBBS/BBS/Text/messagesmenu.ans",
+            "NilBBS/BBS/Text/messagesmenu.asc",
+            "NilBBS/BBS/Text/userstatus.ans",
+            "NilBBS/BBS/Text/userstatus.asc",
+            "NilBBS/BBS/Text/wall.ans",
+            "NilBBS/BBS/Text/wall.asc",
+            "NilBBS/BBS/Text/welcome.ans",
+            "NilBBS/BBS/Text/welcome.asc",
+            "NilBBS/Install_NilBBS",
+            "NilBBS/Install_NilBBS.info",
+            "NilBBS/Libs/AEDoor.library",
+            "NilBBS/LICENSE",
+            "NilBBS/LICENSE.info",
+            "NilBBS/ReadMe",
+            "NilBBS/ReadMe.info",
+            "NilBBS/WBStartup/BBSControl.info"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "amifm",
+      "Directory": "AmiFM",
+      "Name": "AmiFM",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "amifm",
+          "Name": "AmiFM",
+          "LocalFile": "AmiFM-1.2.lha",
+          "Version": "1.2",
+          "BaselineSha256": "36540ff7f6c1c784ac014551deb47a54574732232d1e2185dc80df96f50c96e7",
+          "Provider": "GitHub",
+          "Repository": "lainejones/AmiFM",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^AmiFM-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiFM/AmiFM",
+            "AmiFM/AmiFM.info",
+            "AmiFM/README.md"
+          ],
+          "AutoUpdate": false,
+          "Reason": "User-supplied archive: download AmiFM-1.2.lha from upstream; no explicit redistribution license found. Automatic bundle replacement disabled.",
+          "UserSupplied": true
+        }
+      ]
+    },
+    {
+      "Id": "nilterm",
+      "Directory": "NilTerm",
+      "Name": "NilTerm",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "nilterm",
+          "Name": "NilTerm",
+          "LocalFile": "NilTerm-1.5.1.lha",
+          "Version": "1.5.1",
+          "BaselineSha256": "fddde950c62582643add12a9398803f4058bd0a58e37969b460978bfc95f4fef",
+          "Provider": "GitHub",
+          "Repository": "lainejones/NilTerm",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^NilTerm-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "NilTerm/Install_NilTerm",
+            "NilTerm/Install_NilTerm.info",
+            "NilTerm/NilTerm.info",
+            "NilTerm/NilTerm.readme",
+            "NilTerm/NilTerm.readme.info",
+            "NilTerm/NilTerm/LICENSE",
+            "NilTerm/NilTerm/LICENSE.info",
+            "NilTerm/NilTerm/NilTerm",
+            "NilTerm/NilTerm/NilTerm.guide",
+            "NilTerm/NilTerm/NilTerm.guide.info",
+            "NilTerm/NilTerm/NilTerm.info",
+            "NilTerm/NilTerm/ReadMe",
+            "NilTerm/NilTerm/ReadMe.info",
+            "NilTerm/ReadMe",
+            "NilTerm/ReadMe.info"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "amidt",
+      "Directory": "AmiDT",
+      "Name": "AmiDT",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "amidt",
+          "Name": "AmiDT",
+          "LocalFile": "AmiDT-1.0.lha",
+          "Version": "1.0",
+          "BaselineSha256": "62078176476d06e5a534daa80d67cbacb28f58a47b31ff74dc30df65dd9f3f24",
+          "Provider": "GitHub",
+          "Repository": "lainejones/AmiDT",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^AmiDT-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiDT/Classes/DataTypes/bmp.datatype",
+            "AmiDT/Classes/DataTypes/gif.datatype",
+            "AmiDT/Classes/DataTypes/ico.datatype",
+            "AmiDT/Classes/DataTypes/pcx.datatype",
+            "AmiDT/Classes/DataTypes/png.datatype",
+            "AmiDT/Classes/DataTypes/qoi.datatype",
+            "AmiDT/Classes/DataTypes/tga.datatype",
+            "AmiDT/DEVS/DataTypes/BMP",
+            "AmiDT/DEVS/DataTypes/GIF",
+            "AmiDT/DEVS/DataTypes/ICO",
+            "AmiDT/DEVS/DataTypes/PCX",
+            "AmiDT/DEVS/DataTypes/PNG",
+            "AmiDT/DEVS/DataTypes/QOI",
+            "AmiDT/DEVS/DataTypes/TGA",
+            "AmiDT/Install_AmiDT",
+            "AmiDT/Install_AmiDT.info",
+            "AmiDT/LICENSE",
+            "AmiDT/ReadMe",
+            "AmiDT/ReadMe.info"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "scsitoolbox-amiga",
+      "Directory": "SCSIToolbox-Amiga",
+      "Name": "SCSIToolbox-Amiga",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "scsitoolbox-amiga",
+          "Name": "SCSIToolbox-Amiga",
+          "LocalFile": "SCSIToolbox-1.8.2.lha",
+          "Version": "1.8.2",
+          "BaselineSha256": "64cc3c0a495d2847573bd08aee9f4447c1bd2fd42cec77421c3a6c23eeb47dab",
+          "Provider": "GitHub",
+          "Repository": "lainejones/SCSIToolbox-Amiga",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^SCSIToolbox-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "SCSIToolbox/BlueSCSIToolbox",
+            "SCSIToolbox/CDChanger",
+            "SCSIToolbox/CDChanger.info",
+            "SCSIToolbox/LICENSE.txt",
+            "SCSIToolbox/README.md",
+            "SCSIToolbox/SDTransfer",
+            "SCSIToolbox/SDTransfer.info",
+            "SCSIToolbox/SHARED-GVP.mountlist",
+            "SCSIToolbox/SHARED.mountlist",
+            "SCSIToolbox/sharedfs"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "noclick",
+      "Directory": "NoClick",
+      "Name": "NoClick",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "noclick",
+          "Name": "NoClick",
+          "LocalFile": "NoClick-1.0.1.lha",
+          "Version": "1.0.1",
+          "BaselineSha256": "a94076b50148635f1a3ae0f76595f185ccb63c0ca9a53f6cbfc1b022e6408c51",
+          "Provider": "GitHub",
+          "Repository": "lainejones/NoClick",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^NoClick-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "NoClick/NoClick",
+            "NoClick/README.md"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "amitime",
+      "Directory": "AmiTime",
+      "Name": "AmiTime",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "amitime",
+          "Name": "AmiTime",
+          "LocalFile": "AmiTime-1.1.1.lha",
+          "Version": "1.1.1",
+          "BaselineSha256": "b84a0d8c9384709866b13b8ee00e44358c1cf2c59a0eaff524498dceff75d672",
+          "Provider": "GitHub",
+          "Repository": "lainejones/AmiTime",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^AmiTime-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiTime/AmiTime",
+            "AmiTime/Install",
+            "AmiTime/Install.info",
+            "AmiTime/LICENSE",
+            "AmiTime/README.md"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
+    },
+    {
+      "Id": "amissl-tunnel",
+      "Directory": "AmiSSL-Tunnel",
+      "Name": "AmiSSL-Tunnel",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "amissl-tunnel",
+          "Name": "AmiSSL-Tunnel",
+          "LocalFile": "AmiSSL-Tunnel-2.0.1.lha",
+          "Version": "2.0.1",
+          "BaselineSha256": "cbaa2bcbd607b1aad1652b7dae831b0b9ef7f16e79db639349f8ba3ee9fbfea1",
+          "Provider": "GitHub",
+          "Repository": "lainejones/AmiSSL-Tunnel",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^AmiSSL-Tunnel-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiSSL-Tunnel/amissl.library",
+            "AmiSSL-Tunnel/amisslmaster.library",
+            "AmiSSL-Tunnel/Install",
+            "AmiSSL-Tunnel/install-daemon.sh",
+            "AmiSSL-Tunnel/Install.info",
+            "AmiSSL-Tunnel/README.md",
+            "AmiSSL-Tunnel/tls_proxy.py"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ]
     }
   ]
 }

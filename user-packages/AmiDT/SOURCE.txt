@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/AmiDT
+Release: https://github.com/lainejones/AmiDT/releases/tag/v1.0
+Corresponding source: https://github.com/lainejones/AmiDT/archive/refs/tags/v1.0.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+AmiDT-1.0.lha
+https://github.com/lainejones/AmiDT/releases/download/v1.0/AmiDT-1.0.lha
+SHA256 62078176476d06e5a534daa80d67cbacb28f58a47b31ff74dc30df65dd9f3f24

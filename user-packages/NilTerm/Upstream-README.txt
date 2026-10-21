@@ -1,0 +1,70 @@
+# NilTerm
+
+```
+NilTerm - an ANSI BBS terminal for the Amiga
+============================================
+
+NilTerm calls BBSes the way SyncTERM does on a PC: its own screen with 80
+columns of the IBM PC font in the 16 PC colours, a dialing directory with
+auto-login, a status bar, scrollback, session capture, and ZMODEM downloads
+that start by themselves.  Telnet, rlogin, raw TCP, or a modem on the serial
+port; an Amiga screen mode (Topaz, Latin-1) for Amiga BBSes; modem-speed
+emulation for ANSI animations; iCE colours.  The full manual is NilTerm.guide.
+
+NEEDS
+  AmigaOS 3.0+ on a 68020 or better, and a TCP/IP stack (Roadshow, AmiTCP,
+  Miami, or an emulator's bsdsocket emulation) - or just a modem.  A 640x400
+  screen mode: a graphics card, or the chipset's High Res Laced.
+
+INSTALLING
+  Double-click Install_NilTerm.  It copies the NilTerm drawer (the program,
+  its icon, this ReadMe and the manual) where you choose.  An update replaces
+  the program and the manual and keeps your dialing directory and settings
+  (they live in ENVARC:).
+
+  By hand: copy the NilTerm drawer anywhere.  That's all it needs.
+
+  Use the .lha: a .zip can't carry the AmigaDOS protection bits.  After
+  unpacking a .zip, run  Protect NilTerm/NilTerm +e  (the installer does it
+  for you).
+
+USING IT
+  Double-click NilTerm: the dialing directory opens.
+    A add a system  E edit  D delete  C quick connect host:port
+    S settings      Return call it     Q quit
+  A system's entry holds its connection (telnet / raw / rlogin / modem),
+  address or phone number, user name + password (auto-login), screen (PC or
+  Amiga), line speed, iCE colours and download folder.
+  On a call:
+    Alt+D directory   Alt+H hang up    Alt+B scrollback  Alt+C capture
+    Alt+L send login  Alt+U upload     Alt+R receive     Alt+S settings
+    Alt+Up/Down line speed             Alt+X quit
+    Amiga+C copy the screen   Amiga+V paste   Help the keys
+  (Capture moved from Alt+L to Alt+C in 1.2, as in SyncTERM.)
+  ZMODEM downloads start by themselves; Esc cancels a transfer.  Downloads go
+  to the system's own folder (set in its directory entry) or the one in
+  Settings.
+
+  From a Shell:  NilTerm HOST=bbs.example.org PORT=23   calls straight away.
+
+FILES
+  ENVARC:NilTerm.lst     the dialing directory (passwords in it are NOT
+                         encrypted)
+  ENVARC:NilTerm.prefs   the settings
+
+CREDITS
+  NilTerm is part of NilBBS, a telnet BBS for AmigaOS.  MIT licence (LICENSE).
+  Font: IBM VGA 8x16 from "The Ultimate Oldschool PC Font Pack" by VileR,
+  https://int10h.org/oldschool-pc-fonts/ - CC BY-SA 4.0,
+  https://creativecommons.org/licenses/by-sa/4.0/
+```
+
+## Building
+
+With the bebbo amiga-gcc toolchain (m68k-amigaos-gcc) on PATH: `make` -> `out/NilTerm`.
+
+NilTerm is developed as part of [NilBBS](https://github.com/lainejones/NilBBS), whose ZMODEM / X/YMODEM code it shares (`src/node`); this repo holds just the files it builds from.  The release `.lha` has the installer, the AmigaGuide manual and the icons.
+
+## Licence
+
+MIT - see LICENSE.  The built-in IBM VGA 8x16 font (VileR, int10h.org) is CC BY-SA 4.0.

@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/NilTerm
+Release: https://github.com/lainejones/NilTerm/releases/tag/v1.5.1
+Corresponding source: https://github.com/lainejones/NilTerm/archive/refs/tags/v1.5.1.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+NilTerm-1.5.1.lha
+https://github.com/lainejones/NilTerm/releases/download/v1.5.1/NilTerm-1.5.1.lha
+SHA256 fddde950c62582643add12a9398803f4058bd0a58e37969b460978bfc95f4fef

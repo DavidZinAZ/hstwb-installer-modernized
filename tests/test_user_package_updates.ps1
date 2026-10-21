@@ -55,11 +55,12 @@ foreach($path in @('MMU Libs v47.1/MMULib.lha','IconLib v46.4.555/IconLib_46.4.l
 $entries=GetUserPackageCatalog (Join-Path $repo 'data/user-package-updates.json')
 $directories=@(Get-ChildItem (Join-Path $repo 'user-packages') -Directory | Where-Object {Test-Path (Join-Path $_.FullName '_installdir')})
 Assert ($entries.Count -eq $directories.Count) 'A bundled user package is missing from the catalog'
-foreach($entry in $entries){Assert ($entry.PackageVersion -match '^\d+\.\d+\.\d+$') 'Non-numeric package revision';foreach($c in $entry.Components){if($c.Provider -ne 'Manual'){Assert (Test-Path (Join-Path (Join-Path $repo 'user-packages') ($entry.Directory+'/'+$c.LocalFile))) ('Catalog payload missing: '+$c.LocalFile)}}}
+foreach($entry in $entries){Assert ($entry.PackageVersion -match '^\d+\.\d+\.\d+$') 'Non-numeric package revision';foreach($c in $entry.Components){if($c.Provider -ne 'Manual' -and !$c.UserSupplied){Assert (Test-Path (Join-Path (Join-Path $repo 'user-packages') ($entry.Directory+'/'+$c.LocalFile))) ('Catalog payload missing: '+$c.LocalFile)}}}
 Write-Host 'PASS: source version comparison, verified update/backup, metadata, preserved customization, incompatible/traversal archive rejection, and catalog coverage'
 foreach($entry in $entries){foreach($component in $entry.Components){
  if($component.Provider -eq 'Manual' -or !$component.BaselineSha256){continue}
  $payload=Join-Path (Join-Path $repo 'user-packages') ($entry.Directory+'/'+$component.LocalFile)
+ if($component.UserSupplied -and !(Test-Path -LiteralPath $payload)){continue}
  Assert ((Get-FileHash -LiteralPath $payload -Algorithm SHA256).Hash -eq $component.BaselineSha256) ('Bundled payload differs from published version metadata: '+$entry.Name)
  if($component.Mode -eq 'Archive' -and $entry.Directory -in @('IconLib v46.4.555','MMU Libs v47.1','WHDLoad v18.8','iGame v2.0')){
   $members=@(GetLhaArchiveMembers $payload)

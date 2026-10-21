@@ -46,6 +46,23 @@ source links and hashes records provenance; it is not a completed redistribution
 review. See the [package notes](docs/additional-user-packages.md) and
 [acknowledgments](ACKNOWLEDGMENTS.md).
 
+## Additional application notices
+
+NetHarness, NilBBS, NilTerm, AmiDT, AmiTime and AmiSSL-Tunnel retain their
+upstream MIT license text, original release archives and source-tag references.
+NilTerm's built-in IBM VGA font is credited to VileR (int10h.org) under
+CC BY-SA 4.0; NilBBS also bundles NilTerm. Preserve those separate font credits
+and terms. NoClick's upstream README declares it public domain. SCSIToolbox-Amiga
+retains the GPL-3.0-or-later license text, source link and credit to Paul Hill
+and Laine Jones.
+
+No explicit license was found in AmiFM v1.2's tree or README. Its package notice
+records that fact; HstWB does not infer an MIT or other redistribution grant.
+Its binary archive is excluded from Git and public release ZIPs; users obtain
+it directly from the upstream release. For all of these
+bundles, retained source links and notices are provenance records, not a claim
+that every dependency has completed a redistribution review.
+
 ## User-supplied media
 
 Commercial AmigaOS, Workbench and Kickstart media, ROM keys, completed installed

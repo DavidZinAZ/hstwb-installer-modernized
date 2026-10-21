@@ -1,0 +1,11 @@
+Upstream: https://github.com/lainejones/AmiFM
+Release: https://github.com/lainejones/AmiFM/releases/tag/v1.2
+Corresponding source: https://github.com/lainejones/AmiFM/archive/refs/tags/v1.2.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+AmiFM-1.2.lha
+https://github.com/lainejones/AmiFM/releases/download/v1.2/AmiFM-1.2.lha
+SHA256 36540ff7f6c1c784ac014551deb47a54574732232d1e2185dc80df96f50c96e7
+
+The archive is user-supplied and excluded from Git and public ZIPs. No redistribution license is inferred.

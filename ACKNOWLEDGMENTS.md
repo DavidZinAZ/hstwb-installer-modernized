@@ -42,6 +42,15 @@ credits remain with these optional packages. HstWB supplies extraction wrappers
 and setup guidance; it does not claim authorship of the bundled software.
 
 This is a growing acknowledgment, not a complete list of every contributor.
+
+Thanks to **Laine Jones** and the contributors to NetHarness, NilBBS, AmiFM,
+NilTerm, AmiDT, NoClick, AmiTime and AmiSSL-Tunnel for their applications and
+documentation. **Paul Hill** created BlueSCSI-toolbox-Amiga; **Laine Jones**
+maintains the SCSIToolbox-Amiga fork included here. **VileR (int10h.org)** is
+credited upstream for NilTerm's built-in IBM VGA font under CC BY-SA 4.0; NilBBS
+also includes a NilTerm copy. The applications' detailed original notices remain
+in the release archives and upstream readmes. See the
+[source list and package notes](docs/additional-user-packages.md#upstream-projects).
 Package readmes, source headers, licenses and upstream project credits provide
 the more detailed attribution. Those notices remain with their respective
 components; this page supplements them. Additional user-package sources are

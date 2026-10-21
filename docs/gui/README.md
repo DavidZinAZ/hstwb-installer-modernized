@@ -126,6 +126,22 @@ Both packages report **Compatibility review required** for source updates.
 Their inclusion does not enable automatic bundle replacement. See the
 [package notes](../additional-user-packages.md) for details.
 
+### More extraction-only applications
+
+NetHarness, NilBBS, AmiFM, NilTerm, AmiDT, SCSIToolbox-Amiga, NoClick, AmiTime
+and AmiSSL-Tunnel are independent selections. Each extracts its original files,
+shows the next steps and waits for Enter. Existing staged drawers are retained
+to protect settings and other data. Follow `ReadMe.txt` and `Upstream-README.txt`
+in each drawer after HstWB finishes; some launch directly and others need setup.
+The NetHarness PC tools are included as a separate ZIP to transfer to your PC;
+AmiSSL-Tunnel requires a separate LAN daemon. Nothing starts automatically.
+See [destinations and requirements](../additional-user-packages.md#additional-application-bundles-1617).
+
+AmiFM's archive is supplied separately in public downloads. Obtain
+`AmiFM-1.2.lha` from its upstream release and place it in the Windows
+`user-packages/AmiFM` folder before installation. Review & Install checks that
+the file matches the supported release. A verified local copy may already exist.
+
 ### Review and approval
 
 Click a row and choose **Review highlighted package…**, or use its **Review…** action. The dialog shows its local version, available version, destination, PC folder, source, and notes.

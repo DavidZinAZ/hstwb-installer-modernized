@@ -1,0 +1,2 @@
+No explicit redistribution license was found in the upstream v1.2 tree or README.
+No license grant is inferred. Preserve original attribution and review redistribution permission before publishing this payload.

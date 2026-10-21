@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/SCSIToolbox-Amiga
+Release: https://github.com/lainejones/SCSIToolbox-Amiga/releases/tag/v1.8.2
+Corresponding source: https://github.com/lainejones/SCSIToolbox-Amiga/archive/refs/tags/v1.8.2.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+SCSIToolbox-1.8.2.lha
+https://github.com/lainejones/SCSIToolbox-Amiga/releases/download/v1.8.2/SCSIToolbox-1.8.2.lha
+SHA256 64cc3c0a495d2847573bd08aee9f4447c1bd2fd42cec77421c3a6c23eeb47dab

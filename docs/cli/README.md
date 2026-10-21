@@ -30,6 +30,12 @@ automatic application setup runs. After HstWB completes, open the package drawer
 in Workbench and run its original installer to configure the target machine.
 See [package destinations and requirements](../additional-user-packages.md#prismrtg-and-prismnet-setup-1615).
 
+The same extraction-and-Enter flow applies to NetHarness, NilBBS, AmiFM, NilTerm,
+AmiDT, SCSIToolbox-Amiga, NoClick, AmiTime and AmiSSL-Tunnel. Select them
+individually in the user-package menu, then complete their manual setup or launch
+steps after HstWB finishes. Existing staged drawers are retained. See
+[application bundle requirements](../additional-user-packages.md#additional-application-bundles-1617).
+
 ## Profiles and image behavior
 
 Native **.hstwb-profile.json** profiles include native settings and assigns. GUI **.hstwb-desktop.json** profiles cover the fields exposed by the Windows app. Importing supported native fields into the GUI does not expose every legacy mode or option.

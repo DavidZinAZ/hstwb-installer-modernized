@@ -130,3 +130,8 @@ until Enter is pressed. Run their original installers from Workbench afterward
 to configure graphics or networking. See [destinations, requirements and setup
 instructions](docs/additional-user-packages.md), [creator credits](ACKNOWLEDGMENTS.md)
 and [third-party notices](THIRD_PARTY_NOTICES.md).
+
+Version 1.6.17 adds NetHarness, NilBBS, AmiFM, NilTerm, AmiDT,
+SCSIToolbox-Amiga, NoClick, AmiTime and AmiSSL-Tunnel with the same
+extract-and-pause flow. Follow each drawer's setup instructions afterward;
+existing staged drawers are retained to protect configuration and user data.

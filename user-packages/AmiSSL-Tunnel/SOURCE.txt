@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/AmiSSL-Tunnel
+Release: https://github.com/lainejones/AmiSSL-Tunnel/releases/tag/v2.0.1
+Corresponding source: https://github.com/lainejones/AmiSSL-Tunnel/archive/refs/tags/v2.0.1.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+AmiSSL-Tunnel-2.0.1.lha
+https://github.com/lainejones/AmiSSL-Tunnel/releases/download/v2.0.1/AmiSSL-Tunnel-2.0.1.lha
+SHA256 cbaa2bcbd607b1aad1652b7dae831b0b9ef7f16e79db639349f8ba3ee9fbfea1

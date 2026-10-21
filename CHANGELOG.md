@@ -9,6 +9,21 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.17 — Additional optional application bundles
+
+- Add NetHarness 1.18 (with PC companion), NilBBS 1.5.2, AmiFM 1.2,
+  NilTerm 1.5.1, AmiDT 1.0, SCSIToolbox-Amiga 1.8.2, NoClick 1.0.1,
+  AmiTime 1.1.1 and AmiSSL-Tunnel 2.0.1 as independent user packages.
+- Extract original files, display manual setup instructions and pause for Enter
+  after each. Existing staged drawers are retained to protect configuration and
+  user data. No services, libraries, devices or startup entries are activated.
+- Retain release hashes, notices, source links and upstream readmes; update the
+  GUI/offline and CLI guides, package notes, credits and third-party inventory.
+  Automatic source replacement requires bundle compatibility review.
+- AmiFM's public package contains its wrapper and instructions; its archive is
+  user-supplied because no explicit upstream redistribution license was found.
+  GUI review validates the user-supplied release before installation.
+
 ## 1.6.16 — Prism documentation and attribution
 
 - Update the README, GUI and offline guide, CLI guide, package/update notes and

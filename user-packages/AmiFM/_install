@@ -1,0 +1,58 @@
+; AmiFM - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Utilities"
+  IF NOT EXISTS "SYSTEMDIR:Utilities.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Utilities" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Utilities"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
+echo "Extracting AmiFM..."
+IF EXISTS "$INSTALLDIR/Upstream-README.txt"
+  echo "Existing AmiFM drawer retained; no files overwritten."
+ELSE
+  IF NOT EXISTS "USERPACKAGEDIR:AmiFM-1.2.lha"
+    echo "AmiFM's archive is supplied separately. Download AmiFM-1.2.lha from:"
+    echo "https://github.com/lainejones/AmiFM/releases/tag/v1.2"
+    echo "Place it in the Windows user-packages/AmiFM folder, then rebuild the installation."
+    Ask "Press ENTER to continue"
+    Quit 10
+  ENDIF
+  MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-amifm/"
+  INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:AmiFM-1.2.lha" "SYSTEMDIR:Temp/_HstWB-amifm/"
+  IF WARN
+    echo "Archive extraction failed. Installation stopped."
+    Ask "Press ENTER to continue"
+    Quit 20
+  ENDIF
+  Copy >NIL: "SYSTEMDIR:Temp/_HstWB-amifm/AmiFM/#?" "$INSTALLDIR" ALL CLONE
+  IF WARN
+    echo "Package copy failed. Installation stopped."
+    Ask "Press ENTER to continue"
+    Quit 20
+  ENDIF
+
+  Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:Upstream-README.txt" "$INSTALLDIR" CLONE
+ENDIF
+echo "AmiFM files ready in:"
+echo "$INSTALLDIR"
+echo "Open AmiFM from this drawer to launch the file manager."
+echo "Read ReadMe.txt for requirements and Upstream-README.txt for full instructions."
+Ask "Press ENTER to continue"

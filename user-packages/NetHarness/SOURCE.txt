@@ -1,0 +1,13 @@
+Upstream: https://github.com/lainejones/NetHarness
+Release: https://github.com/lainejones/NetHarness/releases/tag/v1.18
+Corresponding source: https://github.com/lainejones/NetHarness/archive/refs/tags/v1.18.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+NetHarness-1.18-PC.zip
+https://github.com/lainejones/NetHarness/releases/download/v1.18/NetHarness-1.18-PC.zip
+SHA256 1226d7a73648550b95161c240999191fb8034dd2c0b7905a89bebd4b7aaff7ff
+
+NetHarness-1.18.lha
+https://github.com/lainejones/NetHarness/releases/download/v1.18/NetHarness-1.18.lha
+SHA256 4600a34ebba3d3713d9e853523e5fb666dc832105cae130a9ede86d77896308c

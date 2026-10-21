@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/AmiTime
+Release: https://github.com/lainejones/AmiTime/releases/tag/v1.1.1
+Corresponding source: https://github.com/lainejones/AmiTime/archive/refs/tags/v1.1.1.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+AmiTime-1.1.1.lha
+https://github.com/lainejones/AmiTime/releases/download/v1.1.1/AmiTime-1.1.1.lha
+SHA256 b84a0d8c9384709866b13b8ee00e44358c1cf2c59a0eaff524498dceff75d672

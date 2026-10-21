@@ -1,6 +1,13 @@
-# Validation status — October 20, 2026
+# Validation status — October 21, 2026
 
 ## Observed results
+
+- Installer 1.6.17 adds nine extraction-only application bundles and the
+  NetHarness PC companion. Published release hashes, LhA/ZIP members, catalog
+  discovery, guest line endings, result pauses and the existing-drawer guard
+  are checked on the host. These checks do not establish native app execution,
+  BBS/network operation, hardware access or manual installer behavior. Native
+  testing of these new bundles remains pending.
 
 - Versions 1.6.14–1.6.15 add PrismRTG 1.1 and PrismNet 1.0.1. The maintainer's
   Amiga screenshot confirms successful PrismRTG extraction in 1.6.14 and the

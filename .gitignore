@@ -35,3 +35,4 @@ id_ed25519
 *.bundle
 __pycache__/
 *.pyc
+/user-packages/AmiFM/AmiFM-1.2.lha

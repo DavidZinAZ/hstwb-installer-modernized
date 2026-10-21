@@ -1,0 +1,9 @@
+Upstream: https://github.com/lainejones/NilBBS
+Release: https://github.com/lainejones/NilBBS/releases/tag/v1.5.2
+Corresponding source: https://github.com/lainejones/NilBBS/archive/refs/tags/v1.5.2.zip
+
+Original authors retain copyright. Archives are unmodified; HstWB supplies extraction wrappers and setup guidance. Original notices remain in the archives; see LICENSE.txt and Upstream-README.txt.
+
+NilBBS-1.5.2.lha
+https://github.com/lainejones/NilBBS/releases/download/v1.5.2/NilBBS-1.5.2.lha
+SHA256 846cbb773e9d7213b746c093bcbc8df5728281cf35c254a3b88f8fb1e799c8d5

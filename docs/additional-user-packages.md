@@ -57,6 +57,70 @@ Upstream: [PrismRTG](https://github.com/lainejones/PrismRTG) and
 [PrismNet](https://github.com/lainejones/PrismNet). Release URLs, SHA256 hashes,
 corresponding source links and GPL license text are included in each package.
 
+## Additional application bundles (1.6.17)
+
+These selections use the same extraction-only flow as the Prism packages. HstWB
+copies the original release files into the chosen Amiga drawer, displays setup
+instructions and waits for Enter after each package. Application setup, startup
+entries, services, library replacement and device operations remain manual.
+If a destination already contains `Upstream-README.txt`, HstWB retains that drawer
+without overwriting it; use the original project's update procedure for an
+existing installation. Each bundle includes the full upstream readme, release
+hashes, source links and retained license/attribution notices.
+
+| Package | Release | Default Amiga drawer |
+|---|---|---|
+| NetHarness | 1.18 | `SYS:Tools/Network/NetHarness` |
+| NilBBS | 1.5.2 | `SYS:Tools/Network/NilBBS` |
+| AmiFM | 1.2 | `SYS:Utilities/AmiFM` |
+| NilTerm | 1.5.1 | `SYS:Tools/Network/NilTerm` |
+| AmiDT | 1.0 | `SYS:Tools/Hardware/AmiDT` |
+| SCSIToolbox-Amiga | 1.8.2 | `SYS:Tools/Hardware/SCSIToolbox` |
+| NoClick | 1.0.1 | `SYS:Tools/Hardware/NoClick` |
+| AmiTime | 1.1.1 | `SYS:Tools/Network/AmiTime` |
+| AmiSSL-Tunnel | 2.0.1 | `SYS:Tools/Network/AmiSSL-Tunnel` |
+
+- **NetHarness:** OS 3.0+, 68020+ and TCP/IP. Run `Execute Install` in its drawer,
+  then start it manually. The original `NetHarness-1.18-PC.zip` is copied beside
+  the Amiga files; transfer it to the controlling PC and follow its Python/Tk/
+  Pillow instructions. Configure `NetHarness.allow` before starting the listener:
+  without an allowlist, any connecting host is accepted.
+- **NilBBS:** OS 3.1+, 68020+ and TCP/IP. Run `Install_NilBBS`; configure your
+  sysop account, port and access settings before starting the BBS. The upstream
+  installer manages existing BBS settings, users and messages on updates.
+- **AmiFM:** Workbench 3.0+. Open `AmiFM` directly. Optional features need
+  MultiView/datatypes, an editor, XAD tools or LhA; HstWB does not install these
+  helpers automatically. Upstream v1.2 has no explicit redistribution license;
+  its included notice records that limitation rather than assigning a license.
+  Public downloads include its wrapper and instructions, with the archive
+  supplied separately: download `AmiFM-1.2.lha` from the upstream release and
+  place it in the Windows `user-packages/AmiFM` folder before building an image.
+  Your local copy may already contain the verified archive.
+- **NilTerm:** run `Install_NilTerm` or open `NilTerm/NilTerm`. Configure TCP/IP
+  or serial/modem settings for the intended connection. NilBBS includes a separate
+  NilTerm copy; both bundles are independent. Retain its IBM VGA font credits.
+- **AmiDT:** OS 3.0+, 68020+. Run `Install_AmiDT` to choose picture datatypes and
+  review existing system/RTG compatibility. Its installer handles backups and
+  removal; reboot after replacing active system datatypes.
+- **SCSIToolbox-Amiga:** CLI/sharedfs need OS 2.04+; the GUI tools need OS 3.5+
+  ReAction V44 classes. The supplied programs target 68000+. Configure your SCSI
+  device/unit and compatible BlueSCSI V2 or ZuluSCSI before use. Mounting volumes,
+  copying a handler into `L:` and hardware operations are manual.
+- **NoClick:** Kickstart 2.0+. Follow `README.md` to copy the Shell command to
+  `C:` and optionally add it to startup. HstWB does not run it or edit startup.
+- **AmiTime:** OS 2.0+, 68000+, TCP/IP and a reachable NTP server. Run
+  `Execute Install`; choose the timezone and startup behavior. Its 1.1.1 package
+  contains a binary reporting 1.1. Avoid duplicate clock-setting startup tasks
+  if PrismNet or another stack already sets your time.
+- **AmiSSL-Tunnel:** OS 2.04+, 68000+ and TCP/IP, plus a Python 3 daemon on a
+  separate LAN computer. Follow `README.md` and then run `Installer Install`.
+  Upstream setup backs up/replaces AmiSSL libraries. The Amiga-to-daemon hop is
+  plaintext; use a trusted LAN. HstWB does not start or install the host daemon.
+
+Source checks report **Compatibility review required** for these bundles.
+This does not prevent selecting the local bundle for installation; it prevents
+automatic replacement of its files with an unreviewed upstream layout.
+
 ## Missing drawers in Workbench
 
 The wrappers previously created an icon for the final install drawer only.
@@ -108,7 +172,16 @@ A4091 and both ZZ9000 bundles report **Compatibility review required**. A4091's 
 - [DOpus5](https://github.com/BlitterStudio/dopus5)
 - [PrismRTG](https://github.com/lainejones/PrismRTG), by Laine Jones, Stefan Reinauer and contributors
 - [PrismNet](https://github.com/lainejones/PrismNet), by Laine Jones and contributors, using the lwIP networking core
+- [NetHarness](https://github.com/lainejones/NetHarness)
+- [NilBBS](https://github.com/lainejones/NilBBS)
+- [AmiFM](https://github.com/lainejones/AmiFM)
+- [NilTerm](https://github.com/lainejones/NilTerm)
+- [AmiDT](https://github.com/lainejones/AmiDT)
+- [SCSIToolbox-Amiga](https://github.com/lainejones/SCSIToolbox-Amiga), a fork of Paul Hill's BlueSCSI-toolbox-Amiga
+- [NoClick](https://github.com/lainejones/NoClick)
+- [AmiTime](https://github.com/lainejones/AmiTime)
+- [AmiSSL-Tunnel](https://github.com/lainejones/AmiSSL-Tunnel)
 
 ## Validation scope
 
-Host checks cover detection of all ten selections, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
+Host checks cover detection of all nineteen maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.

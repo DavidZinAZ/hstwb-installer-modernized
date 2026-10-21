@@ -36,6 +36,44 @@ $plan=NewDesktopInstallerPlan $fixture $draft
 if(!$plan.Valid){throw ('Valid fixture failed: '+($plan.Issues | ConvertTo-Json -Compress))}
 Assert ($plan.Runtime.Packages.Count -eq 2) 'Unselected packages entered the runtime snapshot.'
 AssertDesktopRuntimeValidation $plan.Runtime
+# Public wrapper-only bundles must be supplied and verified before installation.
+$userCatalogPath=Join-Path $fixture 'data/user-package-updates.json'
+$userCatalogText=[IO.File]::ReadAllText($userCatalogPath)
+$userCatalog=$userCatalogText | ConvertFrom-Json
+$one=$userCatalog.Packages[0].Components[0]
+$one | Add-Member NoteProperty UserSupplied $true
+$one | Add-Member NoteProperty LocalFile 'app.lha'
+$one | Add-Member NoteProperty Repository 'example/app'
+$payloadPath=Join-Path $fixture 'user-packages/Demo tools/app.lha'
+[IO.File]::WriteAllText($payloadPath,'supported archive fixture')
+$one | Add-Member NoteProperty BaselineSha256 (Get-FileHash $payloadPath).Hash
+$userCatalog | ConvertTo-Json -Depth 8 | Set-Content $userCatalogPath
+Assert ((NewDesktopInstallerPlan $fixture $draft).Valid) 'Verified user-supplied archive rejected.'
+[IO.File]::AppendAllText($payloadPath,'modified')
+Assert (!(NewDesktopInstallerPlan $fixture $draft).Valid) 'Modified user-supplied archive accepted.'
+[IO.File]::Delete($payloadPath)
+$missing=NewDesktopInstallerPlan $fixture $draft
+Assert (!$missing.Valid -and @($missing.Issues | Where-Object Message -like '*Download app.lha*').Count) 'Missing user-supplied archive not reported.'
+[IO.File]::WriteAllText($userCatalogPath,$userCatalogText)
+# Public wrapper-only bundles must be supplied and verified before installation.
+$userCatalogPath=Join-Path $fixture 'data/user-package-updates.json'
+$userCatalogText=[IO.File]::ReadAllText($userCatalogPath)
+$userCatalog=$userCatalogText | ConvertFrom-Json
+$one=$userCatalog.Packages[0].Components[0]
+$one | Add-Member NoteProperty UserSupplied $true
+$one | Add-Member NoteProperty LocalFile 'app.lha'
+$one | Add-Member NoteProperty Repository 'example/app'
+$payloadPath=Join-Path $fixture 'user-packages/Demo tools/app.lha'
+[IO.File]::WriteAllText($payloadPath,'supported archive fixture')
+$one | Add-Member NoteProperty BaselineSha256 (Get-FileHash $payloadPath).Hash
+$userCatalog | ConvertTo-Json -Depth 8 | Set-Content $userCatalogPath
+Assert ((NewDesktopInstallerPlan $fixture $draft).Valid) 'Verified user-supplied archive rejected.'
+[IO.File]::AppendAllText($payloadPath,'modified')
+Assert (!(NewDesktopInstallerPlan $fixture $draft).Valid) 'Modified user-supplied archive accepted.'
+[IO.File]::Delete($payloadPath)
+$missing=NewDesktopInstallerPlan $fixture $draft
+Assert (!$missing.Valid -and @($missing.Issues | Where-Object Message -like '*Download app.lha*').Count) 'Missing user-supplied archive not reported.'
+[IO.File]::WriteAllText($userCatalogPath,$userCatalogText)
 $stampFile=Get-Item -LiteralPath $os;$originalTime=$stampFile.LastWriteTimeUtc
 $stampFile.LastWriteTimeUtc=$originalTime.AddSeconds(5)
 $changedRejected=$false;try{AssertDesktopRuntimeValidation $plan.Runtime}catch{$changedRejected=$true}

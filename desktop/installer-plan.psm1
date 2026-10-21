@@ -132,6 +132,18 @@ function NewDesktopInstallerPlan($root,$draft){
     if(!$entry){[void]$issues.Add(@{Area='User Packages';Message=('Unknown user-package selection: '+$id)});continue}
     $directory=Join-Path $userRoot $entry.Directory
     if(!(Test-Path -LiteralPath (Join-Path $directory '_installdir'))-or !(Test-Path -LiteralPath (Join-Path $directory '_install'))){[void]$issues.Add(@{Area='User Packages';Message=('Package installer files missing: '+$entry.Name)});continue}
+    foreach($component in @($entry.Components | Where-Object {$_.UserSupplied})){
+     $payload=Join-Path $directory $component.LocalFile
+     if(!(Test-Path -LiteralPath $payload -PathType Leaf)){[void]$issues.Add(@{Area='User Packages';Message=('Download '+$component.LocalFile+' from '+$component.Repository+' into '+$directory+' before installing '+$entry.Name)})}
+     elseif($component.BaselineSha256 -and (Get-FileHash -LiteralPath $payload -Algorithm SHA256).Hash -ne $component.BaselineSha256){[void]$issues.Add(@{Area='User Packages';Message=('User-supplied archive hash differs from the supported release: '+$component.LocalFile)})}
+     else{$versions+=$entry.Directory+'@'+(GetDesktopSettingsHash $payload)}
+    }
+    foreach($component in @($entry.Components | Where-Object {$_.UserSupplied})){
+     $payload=Join-Path $directory $component.LocalFile
+     if(!(Test-Path -LiteralPath $payload -PathType Leaf)){[void]$issues.Add(@{Area='User Packages';Message=('Download '+$component.LocalFile+' from '+$component.Repository+' into '+$directory+' before installing '+$entry.Name)})}
+     elseif($component.BaselineSha256 -and (Get-FileHash -LiteralPath $payload -Algorithm SHA256).Hash -ne $component.BaselineSha256){[void]$issues.Add(@{Area='User Packages';Message=('User-supplied archive hash differs from the supported release: '+$component.LocalFile)})}
+     else{$versions+=$entry.Directory+'@'+(GetDesktopSettingsHash $payload)}
+    }
     $versions+=$entry.Directory+'@'+(GetDesktopSettingsHash (Join-Path $directory '_update-state.json'))+'@'+(GetDesktopSettingsHash (Join-Path $directory '_install'))+'@'+(GetDesktopSettingsHash (Join-Path $directory '_installdir'))
     $userNames+=$entry.Directory
     if(@($entry.Components).Count -gt 1){$bundleNotes+=('Selecting a component installs the complete '+$entry.Name+' bundle.')}

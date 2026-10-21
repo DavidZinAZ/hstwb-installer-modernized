@@ -45,6 +45,11 @@ the Amiga using the original installers. Updating the Windows bundle does not
 install or reconfigure either application in an existing Amiga image. See
 [Prism package setup](additional-user-packages.md#prismrtg-and-prismnet-setup-1615).
 
+The nine application bundles added in 1.6.17 also require compatibility review
+before source replacement. Their host payload versions and package revisions are
+tracked independently. An extraction run retains an existing staged drawer;
+use the upstream update instructions to change the installed application.
+
 ## Validation on October 16, 2026
 
 Windows PowerShell tests cover local-setting isolation/import, package-directory creation, newest release selection, invalid/failed download preservation, backups, software-version ordering, app metadata, archive compatibility/path checks, and catalog coverage.

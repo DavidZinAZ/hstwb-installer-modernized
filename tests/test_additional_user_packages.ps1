@@ -5,7 +5,8 @@ Import-Module (Join-Path $repo 'modules/config.psm1') -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
 function Assert($value,$message){if(!$value){throw $message}}
-$names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5','PrismRTG','PrismNet')
+$newNames=@('NetHarness','NilBBS','AmiFM','NilTerm','AmiDT','SCSIToolbox-Amiga','NoClick','AmiTime','AmiSSL-Tunnel')
+$names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5','PrismRTG','PrismNet')+$newNames
 $catalog=GetUserPackageCatalog (Join-Path $repo 'data/user-package-updates.json')
 $detected=DetectUserPackages @{Settings=@{UserPackages=@{UserPackagesDir=(Join-Path $repo 'user-packages')}}}
 foreach($name in $names) {
@@ -17,6 +18,7 @@ foreach($name in $names) {
  foreach($file in @('LICENSE.txt','SOURCE.txt','ReadMe.txt','_installdir')){Assert (Test-Path (Join-Path $dir $file)) ('Missing package documentation: '+$name+'/'+$file)}
  foreach($c in $entry.Components) {
   $file=Join-Path $dir $c.LocalFile
+  if($c.UserSupplied -and !(Test-Path -LiteralPath $file)){continue}
   Assert ((Get-FileHash $file -Algorithm SHA256).Hash -eq $c.BaselineSha256) ('Payload hash mismatch: '+$file)
   if($c.Mode -eq 'Archive'){$members=@(GetLhaArchiveMembers $file)}
   elseif($c.Mode -eq 'ZipArchive') {
@@ -36,6 +38,14 @@ foreach($name in @('PrismRTG','PrismNet')) {
  Assert (!$script.Contains('PrismInstaller') -and !$script.Contains('MINUSER')) ('Package must only extract files: '+$name)
  Assert ($script.Contains('Run Install_'+$name+' from its drawer')) ('Manual setup guidance missing: '+$name)
  Assert ($script.IndexOf('Ask "Press ENTER to continue"') -gt $script.IndexOf('files installed successfully.')) ('Results must pause for Enter: '+$name)
+}
+foreach($name in $newNames) {
+ $entry=$catalog | Where-Object Directory -eq $name
+ $script=[IO.File]::ReadAllText((Join-Path $repo ('user-packages/'+$name+'/_install')))
+ Assert ($script.Contains('IF EXISTS "$INSTALLDIR/Upstream-README.txt"')) ('Existing package data must be retained: '+$name)
+ Assert ($script.LastIndexOf('Ask "Press ENTER to continue"') -gt $script.IndexOf('files ready in:')) ('Package results must pause: '+$name)
+ Assert (!$script.Contains('MINUSER') -and !$script.Contains('PrismInstaller') -and $script -notmatch '(?im)^\s*(Run |Execute |Mount |Installer |Copy.*"(?:LIBS|C|L|DEVS):)') ('Package must not activate components: '+$name)
+ foreach($component in $entry.Components){Assert ($component.AutoUpdate -eq $false) ('Bundle replacement needs review: '+$name)}
 }
 # Exercise complete RawFile and ZipArchive updates with network calls replaced by fixtures.
 $root=Join-Path $repo ('.output/additional-updates-'+[guid]::NewGuid().ToString('N'))
@@ -77,4 +87,4 @@ foreach($mode in @('RawFile','ZipArchive')) {
  Assert $rejected 'Malformed payload accepted'
  Assert ((Get-FileHash (Join-Path $dir 'payload')).Hash -eq $hash) 'Rejected update damaged active payload'
 }
-Write-Host 'PASS: ten selectable packages, payload hashes/layouts, LF scripts, extract-only Prism packages with results pause, raw/ZIP updates and rejected payload preservation'
+Write-Host 'PASS: nineteen selectable packages, payload hashes/layouts, LF scripts, extract-only behavior and pauses, retained package data, raw/ZIP updates and rejected payload preservation'
