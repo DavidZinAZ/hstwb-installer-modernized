@@ -155,7 +155,7 @@ Assert ($LASTEXITCODE -eq 0) 'Native validation bridge failed.'
 $response=ConvertFrom-Json ($output -join "`n")
 Assert $response[0].Valid 'Native validation bridge rejected a valid draft.'
 $request=Join-Path $fixture 'apply-request.json'
-[IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson,$response[0].Token)))
+[IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson)))
 $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action ApplyInstaller -RequestFile $request
 Assert ($LASTEXITCODE -eq 0) 'Native apply bridge rejected a validated token.'
 $response=ConvertFrom-Json ($output -join "`n")
@@ -188,13 +188,14 @@ Write-Host 'Synthetic installation completed'
 '@ | Set-Content (Join-Path $fixture 'run.ps1')
 $draftJson=$draft | ConvertTo-Json -Depth 8 -Compress
 [IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson)))
-$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action ValidateInstaller -RequestFile $request
+$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action ApplyInstaller -RequestFile $request
 Assert ($LASTEXITCODE -eq 0) 'Run validation failed'
 $response=ConvertFrom-Json ($output -join "`n")
-[IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson,$response[0].Token)))
+[IO.File]::WriteAllText($request,(ConvertTo-Json -InputObject @($draftJson,$response[0].ReuseToken)))
 $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action RunInstaller -RequestFile $request
 Assert ($LASTEXITCODE -eq 0) 'In-app run bridge failed'
 $response=ConvertFrom-Json ($output -join "`n")
+Assert $response[0].ReusedValidation 'Run did not reuse the applied validation.'
 Assert ($response[0].Status -eq 'Completed' -and (Test-Path $response[0].Log) -and (Test-Path (Join-Path $response[0].RunSettingsDirectory 'fake-run-marker'))) 'Run result, log or engine invocation missing'
 $runConfig=ReadIniFile (Join-Path $response[0].RunSettingsDirectory 'hstwb-installer-settings.ini')
 Assert ((Get-Item -LiteralPath (Join-Path $runConfig.UserPackages.UserPackagesDir 'Demo tools')).Target -eq [IO.Path]::GetFullPath((Join-Path $fixture 'user-packages/Demo tools'))) 'Run library did not use the local application bundle.'

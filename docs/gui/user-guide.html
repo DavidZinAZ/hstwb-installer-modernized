@@ -35,7 +35,7 @@ li{margin:.4rem 0}code{font-size:.94em;background:var(--soft);padding:.1em .3em}
 <li>In <strong>Media &amp; ROMs</strong>, choose your media folder, select the AmigaOS target and Kickstart set, then choose <strong>Scan folders</strong>.</li>
 <li>In <strong>Image &amp; Emulator</strong>, select a template, an output folder, and your installed emulator.</li>
 <li>Choose any packages, user packages, and local WHDLoad packs you want to install.</li>
-<li>In <strong>Review &amp; Install</strong>, choose <strong>Validate installer choices</strong>. Resolve the listed issues, then choose <strong>Run installation…</strong>.</li>
+<li>In <strong>Review &amp; Install</strong>, choose <strong>Validate &amp; apply settings</strong>. Resolve the listed issues, then choose <strong>Run installation…</strong>.</li>
 <li>Check the new destination in the confirmation and continue. The app creates a fresh image, opens the emulator, and reports the result.</li>
 </ol>
 <p>Every installation uses a new <strong>Install-…</strong> subfolder. An existing image in your output folder is preserved. Do not close the emulator before installation finishes.</p>
@@ -79,7 +79,7 @@ li{margin:.4rem 0}code{font-size:.94em;background:var(--soft);padding:.1em .3em}
 <p>The image-source menu also lets you inspect an existing image folder. Inspection checks its metadata and referenced drives. <strong>Run installation always creates a fresh image from the selected template</strong>, even if an existing image was inspected. The template remains selectable.</p>
 <p><strong>Choose image folder…</strong> selects the output location. A folder can already contain older images or other files because a run uses a new child folder. Basic validation may ask you to approve a nonempty folder; that approval does not authorize replacing its files.</p>
 <p>Use <strong>Available emulators (installed versions)</strong> to choose a detected version. <strong>Refresh emulator list</strong> repeats discovery. <strong>Choose emulator…</strong> selects a custom WinUAE or FS-UAE executable when discovery does not find it. The executable path remains visible.</p>
-<p><strong>Validate choices</strong> checks basic image and emulator paths. The final installation check is <strong>Review &amp; Install → Validate installer choices</strong>. If image creation fails, the separate run folder remains for inspection, with a creation-failure note where possible. The app does not continue installation from an incomplete image.</p>
+<p><strong>Validate choices</strong> checks basic image and emulator paths. The final installation check is <strong>Review &amp; Install → Validate &amp; apply settings</strong>. If image creation fails, the separate run folder remains for inspection, with a creation-failure note where possible. The app does not continue installation from an incomplete image.</p>
 <h2 id="packages">Packages</h2>
 <p>This tab contains standard installer packages. It is separate from User Packages. Package names open their source webpages; the <strong>Install</strong> checkbox selects a package for your installation draft.</p>
 <p>Use the search field to filter names. Click column headings to sort. Hover over a shortened Details cell to read its full message. Selecting a row is different from ticking its Install checkbox.</p>
@@ -149,12 +149,12 @@ li{margin:.4rem 0}code{font-size:.94em;background:var(--soft);padding:.1em .3em}
 <p>After changing files, choose the relevant scan or check button. Installation validates the selected OS, Kickstart set, packages, and required installer boot ROM regardless of the remembered display. It checks package dependencies and conflicts within the selection. The installer reuses that fresh validation instead of scanning everything again, and checks for changed files after image creation. Unselected package archives are skipped.</p>
 <h2 id="review-install">Review &amp; Install</h2>
 <p>This tab summarizes the selected OS, ROM set, paths, packages, and user-package bundles. Installation currently uses the native <strong>Install</strong> mode.</p>
-<p><strong>Validate installer choices</strong> checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.</p>
+<p><strong>Validate &amp; apply settings</strong> checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.</p>
 <p>Resolve each issue on its relevant tab and validate again. A checked package must be available locally before installation. If a package needs another package, select and download the named dependency too.</p>
-<p><strong>Apply settings to installer…</strong> is optional. It writes the validated configuration to native settings and assigns, with backups, but does not create an image or start installation. Do not mistake an applied configuration for a completed installation. <strong>Run installation…</strong> saves the required configuration as part of running, so you do not have to apply separately first.</p>
+<p><strong>Validate &amp; apply settings</strong> checks your choices once and writes the valid configuration to native settings and assigns, with backups. If there are issues, it lists them without applying settings. It does not create an image or start installation. Do not mistake an applied configuration for a completed installation. <strong>Run installation…</strong> saves the required configuration as part of running, so you do not have to apply separately first.</p>
 <h3 id="run-an-installation">Run an installation</h3>
 <ol>
-<li>Choose <strong>Run installation…</strong>. The app validates the current choices again.</li>
+<li>Choose <strong>Run installation…</strong>. The app reuses the successful Validate &amp; apply settings check when choices and input files are unchanged. Changed choices or files trigger a fresh validation.</li>
 <li>Read the confirmation showing the exact new <strong>Install-…</strong> image folder.</li>
 <li>Continue to create the image from the selected template. Existing images are not reused or overwritten.</li>
 <li>The app saves installer settings with a backup and starts the emulator. Watch the emulator for the Amiga installation process and any necessary prompts.</li>

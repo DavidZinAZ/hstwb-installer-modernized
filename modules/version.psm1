@@ -8,5 +8,5 @@
 
 function HstwbInstallerVersion()
 {
-    return '1.6.17'
+    return '1.6.18'
 }

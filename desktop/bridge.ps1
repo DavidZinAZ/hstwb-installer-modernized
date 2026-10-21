@@ -34,15 +34,40 @@ if($Action -eq 'Emulators') {
 if($Action -in @('ValidateInstaller','ApplyInstaller','RunInstaller')){
  Import-Module (Join-Path $PSScriptRoot 'installer-plan.psm1') -Force
  $draft=ConvertFrom-Json ([string]$ids[0])
- $plan=NewDesktopInstallerPlan $root $draft
+ # Reuse only a plan issued to this desktop draft, with unchanged input metadata.
+ function GetValidationInputs {
+  $paths=@((Join-Path $root 'data'),(Join-Path $root 'packages'),(Join-Path $root 'user-packages'),$draft.MediaFolder,$draft.GamePacksFolder,$draft.ImageTemplate,$draft.EmulatorFile,(Join-Path $root 'settings/hstwb-installer-settings.ini'),(Join-Path $root 'settings/hstwb-installer-assigns.ini'))
+  $lines=@(foreach($path in @($paths | Where-Object {$_} | Sort-Object -Unique)){
+   if(Test-Path -LiteralPath $path){Get-Item -LiteralPath $path | ForEach-Object {$_.FullName+'|'+$_.LastWriteTimeUtc.Ticks};Get-ChildItem -LiteralPath $path -Recurse -File -ErrorAction Stop | Sort-Object FullName | ForEach-Object {$_.FullName+'|'+$_.Length+'|'+$_.LastWriteTimeUtc.Ticks}}else{'missing|'+$path}
+  })
+  return ($lines -join "`n")
+ }
+ $cacheDir=Join-Path $root '.output/desktop/validation'
+ $cached=$null
+ if($Action -eq 'RunInstaller' -and $ids.Count -gt 1 -and [string]$ids[1] -match '^[a-f0-9]{32}$'){
+  try{
+   $candidate=Import-Clixml -LiteralPath (Join-Path $cacheDir ($ids[1]+'.xml'))
+   if($candidate.Draft -eq [string]$ids[0] -and $candidate.Inputs -eq (GetValidationInputs)){$cached=$candidate}
+  }catch{}
+ }
+ $plan=if($cached){$cached.Plan}else{NewDesktopInstallerPlan $root $draft}
  $backup=''
- if($Action -eq 'ApplyInstaller'){$backup=SaveDesktopInstallerPlan $plan ([string]$ids[1])}
+ # Validate and save the same plan without a second scan.
+ if($Action -eq 'ApplyInstaller' -and $plan.Valid){$backup=SaveDesktopInstallerPlan $plan $plan.Token}
+ $reuseToken=''
+ if($Action -eq 'ApplyInstaller' -and $plan.Valid){
+  $plan.SettingsHash=(Get-FileHash -LiteralPath $plan.SettingsPath -Algorithm SHA256).Hash
+  $plan.AssignsHash=(Get-FileHash -LiteralPath $plan.AssignsPath -Algorithm SHA256).Hash
+  $reuseToken=[guid]::NewGuid().ToString('N')
+  $null=New-Item -ItemType Directory -Path $cacheDir -Force
+  @{Draft=[string]$ids[0];Inputs=(GetValidationInputs);Plan=$plan} | Export-Clixml -LiteralPath (Join-Path $cacheDir ($reuseToken+'.xml')) -Depth 40
+ }
  if($Action -eq 'RunInstaller'){
   $runLock=[IO.File]::Open((Join-Path $root 'settings/.desktop-run.lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
   try{
    if(!$draft.CreateNewImage){throw 'Run installation requires a fresh image from a template.'}
    if(!$plan.Valid){throw ('Resolve installation choices: '+(($plan.Issues | ForEach-Object {$_.Area+': '+$_.Message}) -join ' '))}
-   if($ids[1] -and $plan.Token -ne [string]$ids[1]){throw 'Choices changed. Validate again before creating an image.'}
+   if($ids.Count -gt 1 -and $ids[1] -and [string]$ids[1] -notmatch '^[a-f0-9]{32}$' -and $plan.Token -ne [string]$ids[1]){throw 'Choices changed. Validate again before creating an image.'}
    $ids[1]=$plan.Token
    Import-Module (Join-Path $PSScriptRoot 'image-builder.psm1')
    $newImage=NewDesktopImage $root ([string]$draft.ImageTemplate) ([string]$draft.NewImageFolder)
@@ -51,10 +76,10 @@ if($Action -in @('ValidateInstaller','ApplyInstaller','RunInstaller')){
    $log=Join-Path $root ('.output/desktop/installation-'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N')+'.log')
    $null=New-Item -ItemType Directory -Path (Split-Path $log) -Force
    try{& (Join-Path $root 'run.ps1') -settingsDir $runSettings -Desktop -DesktopValidation $plan.Runtime *> $log}catch{throw ('Installation failed. Log: '+$log+'. '+$_.Exception.Message)}
-   ConvertTo-Json -InputObject @(@{Status='Completed';Log=$log;Backup=$backup;ImageFolder=$newImage;RunSettingsDirectory=$runSettings}) -Compress;return
+   ConvertTo-Json -InputObject @(@{Status='Completed';ReusedValidation=([bool]$cached);Log=$log;Backup=$backup;ImageFolder=$newImage;RunSettingsDirectory=$runSettings}) -Compress;return
   }finally{$runLock.Dispose()}
  }
- $row=@{Valid=$plan.Valid;Issues=@($plan.Issues);Token=$plan.Token;PackageNames=@($plan.PackageNames);UserPackageNames=@($plan.UserPackageNames);Notes=@($plan.Notes);SettingsPath=$plan.SettingsPath;Backup=$backup}
+ $row=@{Valid=$plan.Valid;Issues=@($plan.Issues);Token=$plan.Token;ReuseToken=$reuseToken;ReusedValidation=([bool]$cached);PackageNames=@($plan.PackageNames);UserPackageNames=@($plan.UserPackageNames);Notes=@($plan.Notes);SettingsPath=$plan.SettingsPath;Backup=$backup}
  ConvertTo-Json -InputObject @($row) -Depth 8 -Compress;return
 }
 if($Action -in @('GamePacks','BuildGameLists')){

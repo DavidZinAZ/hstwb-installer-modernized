@@ -11,7 +11,7 @@ For an offline copy, open **user-guide.html** in this folder. You can also open 
 3. In **Media & ROMs**, choose your media folder, select the AmigaOS target and Kickstart set, then choose **Scan folders**.
 4. In **Image & Emulator**, select a template, an output folder, and your installed emulator.
 5. Choose any packages, user packages, and local WHDLoad packs you want to install.
-6. In **Review & Install**, choose **Validate installer choices**. Resolve the listed issues, then choose **Run installation…**.
+6. In **Review & Install**, choose **Validate & apply settings**. Resolve the listed issues, then choose **Run installation…**.
 7. Check the new destination in the confirmation and continue. The app creates a fresh image, opens the emulator, and reports the result.
 
 Every installation uses a new **Install-…** subfolder. An existing image in your output folder is preserved. Do not close the emulator before installation finishes.
@@ -73,7 +73,7 @@ The image-source menu also lets you inspect an existing image folder. Inspection
 
 Use **Available emulators (installed versions)** to choose a detected version. **Refresh emulator list** repeats discovery. **Choose emulator…** selects a custom WinUAE or FS-UAE executable when discovery does not find it. The executable path remains visible.
 
-**Validate choices** checks basic image and emulator paths. The final installation check is **Review & Install → Validate installer choices**. If image creation fails, the separate run folder remains for inspection, with a creation-failure note where possible. The app does not continue installation from an incomplete image.
+**Validate choices** checks basic image and emulator paths. The final installation check is **Review & Install → Validate & apply settings**. If image creation fails, the separate run folder remains for inspection, with a creation-failure note where possible. The app does not continue installation from an incomplete image.
 
 ## Packages
 
@@ -204,15 +204,15 @@ After changing files, choose the relevant scan or check button. Installation val
 
 This tab summarizes the selected OS, ROM set, paths, packages, and user-package bundles. Installation currently uses the native **Install** mode.
 
-**Validate installer choices** checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.
+**Validate & apply settings** checks recognized required media, the OS update plan, a compatible installer boot ROM, the image template and destination, the emulator executable, downloaded package availability, advertised OS compatibility, dependencies, dependency cycles, and conflicting package content. A populated WHDLoad pack must have prepared installation lists.
 
 Resolve each issue on its relevant tab and validate again. A checked package must be available locally before installation. If a package needs another package, select and download the named dependency too.
 
-**Apply settings to installer…** is optional. It writes the validated configuration to native settings and assigns, with backups, but does not create an image or start installation. Do not mistake an applied configuration for a completed installation. **Run installation…** saves the required configuration as part of running, so you do not have to apply separately first.
+**Validate & apply settings** checks your choices once and writes the valid configuration to native settings and assigns, with backups. If there are issues, it lists them without applying settings. It does not create an image or start installation. Do not mistake an applied configuration for a completed installation. **Run installation…** saves the required configuration as part of running, so you do not have to apply separately first.
 
 ### Run an installation
 
-1. Choose **Run installation…**. The app validates the current choices again.
+1. Choose **Run installation…**. The app reuses the successful Validate & apply settings check when choices and input files are unchanged. Changed choices or files trigger a fresh validation.
 2. Read the confirmation showing the exact new **Install-…** image folder.
 3. Continue to create the image from the selected template. Existing images are not reused or overwritten.
 4. The app saves installer settings with a backup and starts the emulator. Watch the emulator for the Amiga installation process and any necessary prompts.
