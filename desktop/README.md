@@ -23,6 +23,8 @@ User-package installation approvals record a local choice; they do not bypass so
 
 ## Build a portable release
 
+The desktop app uses the installer version from `modules/version.psm1`. The build reads that shared value for the main heading, window title, and executable version details. Every change must increment `HstwbInstallerVersion` (normally the patch number); rebuilding automatically refreshes the desktop version so both stay in sync.
+
 Commit the source changes first, then run from the repository root:
 
 ```powershell

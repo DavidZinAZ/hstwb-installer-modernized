@@ -5,7 +5,7 @@ Import-Module (Join-Path $repo 'modules/config.psm1') -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
 function Assert($value,$message){if(!$value){throw $message}}
-$names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5')
+$names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5','PrismRTG','PrismNet')
 $catalog=GetUserPackageCatalog (Join-Path $repo 'data/user-package-updates.json')
 $detected=DetectUserPackages @{Settings=@{UserPackages=@{UserPackagesDir=(Join-Path $repo 'user-packages')}}}
 foreach($name in $names) {
@@ -28,6 +28,14 @@ foreach($name in $names) {
    Assert (@($members | Where-Object {$_ -like $pattern}).Count -gt 0) ('Missing archive member: '+$name+'/'+$pattern)
   }
  }
+}
+foreach($name in @('PrismRTG','PrismNet')) {
+ $entry=$catalog | Where-Object Directory -eq $name
+ $script=[IO.File]::ReadAllText((Join-Path $repo ('user-packages/'+$name+'/_install')))
+ Assert ($entry.Components[0].AutoUpdate -eq $false) ('System package update must require review: '+$name)
+ Assert (!$script.Contains('PrismInstaller') -and !$script.Contains('MINUSER')) ('Package must only extract files: '+$name)
+ Assert ($script.Contains('Run Install_'+$name+' from its drawer')) ('Manual setup guidance missing: '+$name)
+ Assert ($script.IndexOf('Ask "Press ENTER to continue"') -gt $script.IndexOf('files installed successfully.')) ('Results must pause for Enter: '+$name)
 }
 # Exercise complete RawFile and ZipArchive updates with network calls replaced by fixtures.
 $root=Join-Path $repo ('.output/additional-updates-'+[guid]::NewGuid().ToString('N'))
@@ -69,4 +77,4 @@ foreach($mode in @('RawFile','ZipArchive')) {
  Assert $rejected 'Malformed payload accepted'
  Assert ((Get-FileHash (Join-Path $dir 'payload')).Hash -eq $hash) 'Rejected update damaged active payload'
 }
-Write-Host 'PASS: eight selectable packages, payload hashes/layouts, LF scripts, raw/ZIP updates and rejected payload preservation'
+Write-Host 'PASS: ten selectable packages, payload hashes/layouts, LF scripts, extract-only Prism packages with results pause, raw/ZIP updates and rejected payload preservation'

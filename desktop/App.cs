@@ -15,6 +15,10 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 
+[assembly: System.Reflection.AssemblyVersion(DesktopVersion.Number)]
+[assembly: System.Reflection.AssemblyFileVersion(DesktopVersion.Number)]
+[assembly: System.Reflection.AssemblyInformationalVersion(DesktopVersion.Display)]
+
 public class Package : INotifyPropertyChanged {
  public string Destination {get;set;} public string Directory {get;set;} public string ReviewDecision {get;set;} public string Category {get;set;} public string Id {get;set;} public string Name {get;set;} public string PackageName {get;set;}
  public string Version {get;set;} public string Available {get;set;} public string Status {get;set;} public string Url {get;set;} public string Details {get;set;}
@@ -38,11 +42,11 @@ public class Desktop : Window {
  HashSet<string> selected=new HashSet<string>();
  public Desktop(string path){
  root=Path.GetFullPath(path);scanCachePath=Path.Combine(root,"settings","desktop-scans.json");userPackagesFolder=Path.Combine(root,"user-packages");gameFolder.Text=Path.Combine(userPackagesFolder,"WHDLoad Packs");statePath=Path.Combine(root,"settings","desktop.json");
- Title="HstWB — Amiga Installer";Width=1180;Height=780;MinWidth=850;MinHeight=600;FontSize=15;
+ Title="HstWB — Amiga Installer v"+DesktopVersion.Display;Width=1180;Height=780;MinWidth=850;MinHeight=600;FontSize=15;
  try{if(File.Exists(statePath)){var s=json.Deserialize<Dictionary<string,object>>(File.ReadAllText(statePath));foreach(var id in (System.Collections.IEnumerable)s["Selected"])selected.Add((string)id);}}catch(Exception){ }
  var page=new DockPanel{Margin=new Thickness(22)};Content=page;
  var heading=new StackPanel{Margin=new Thickness(0,0,0,18)};DockPanel.SetDock(heading,Dock.Top);page.Children.Add(heading);
- heading.Children.Add(new TextBlock{Text="HstWB / Amiga Installer",FontSize=29,FontWeight=FontWeights.Bold});
+ heading.Children.Add(new TextBlock{Text="HstWB / Amiga Installer v"+DesktopVersion.Display,FontSize=29,FontWeight=FontWeights.Bold,TextWrapping=TextWrapping.Wrap});
  heading.Children.Add(new TextBlock{Text="Build your Amiga environment. Browse software, explore its sources, and manage your local library.",Margin=new Thickness(0,6,0,15)});
  var appearance=new WrapPanel{Orientation=Orientation.Horizontal};heading.Children.Add(appearance);
  appearance.Children.Add(new Label{Content="Amiga theme"});theme.ItemsSource=new[]{"Workbench 1.3","AmigaOS 3.2"};theme.SelectedIndex=0;theme.Width=180;appearance.Children.Add(theme);AutomationProperties.SetName(theme,"Amiga theme");

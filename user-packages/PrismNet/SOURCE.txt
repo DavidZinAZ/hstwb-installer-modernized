@@ -1,0 +1,8 @@
+Upstream: https://github.com/lainejones/PrismNet
+Release: https://github.com/lainejones/PrismNet/releases/tag/v1.0.1
+Corresponding source: https://github.com/lainejones/PrismNet/archive/refs/tags/v1.0.1.zip
+Archive: https://github.com/lainejones/PrismNet/releases/download/v1.0.1/PrismNet-1.0.1.lha
+SHA256 c3753406fc5ae4d5e16309a319b18ff12a844078d71d98515c17d2ad4175a997
+
+Upstream release archive is unmodified. Original authors retain copyright.
+HstWB supplies the wrapper. See LICENSE.txt for GPL-3.0-only terms.

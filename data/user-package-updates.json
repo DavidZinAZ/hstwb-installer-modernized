@@ -961,6 +961,60 @@
           ]
         }
       ]
+    },
+    {
+      "Id": "prismrtg",
+      "Directory": "PrismRTG",
+      "Name": "PrismRTG",
+      "PackageVersion": "1.0.1",
+      "Components": [
+        {
+          "Id": "prismrtg",
+          "Name": "PrismRTG",
+          "LocalFile": "PrismRTG.lha",
+          "Version": "1.1",
+          "BaselineSha256": "7b637388172b88a9efe636bd17309845ea461b415cdb043fd5db46c55d79bbdb",
+          "Provider": "GitHub",
+          "Repository": "lainejones/PrismRTG",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^PrismRTG-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "PrismRTG/Install_PrismRTG",
+            "PrismRTG/PrismD",
+            "PrismRTG/Drivers/UAEGFX.driver"
+          ],
+          "AutoUpdate": false,
+          "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
+        }
+      ]
+    },
+    {
+      "Id": "prismnet",
+      "Directory": "PrismNet",
+      "Name": "PrismNet",
+      "PackageVersion": "1.0.1",
+      "Components": [
+        {
+          "Id": "prismnet",
+          "Name": "PrismNet",
+          "LocalFile": "PrismNet.lha",
+          "Version": "1.0.1",
+          "BaselineSha256": "c3753406fc5ae4d5e16309a319b18ff12a844078d71d98515c17d2ad4175a997",
+          "Provider": "GitHub",
+          "Repository": "lainejones/PrismNet",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^PrismNet-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "PrismNet/Install_PrismNet",
+            "PrismNet/C/PrismNet",
+            "PrismNet/Libs/bsdsocket.library"
+          ],
+          "AutoUpdate": false,
+          "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
+        }
+      ]
     }
   ]
 }

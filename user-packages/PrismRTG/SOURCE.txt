@@ -1,0 +1,8 @@
+Upstream: https://github.com/lainejones/PrismRTG
+Release: https://github.com/lainejones/PrismRTG/releases/tag/v1.1
+Corresponding source: https://github.com/lainejones/PrismRTG/archive/refs/tags/v1.1.zip
+Archive: https://github.com/lainejones/PrismRTG/releases/download/v1.1/PrismRTG-1.1.lha
+SHA256 7b637388172b88a9efe636bd17309845ea461b415cdb043fd5db46c55d79bbdb
+
+Upstream release archive is unmodified. Original authors retain copyright.
+HstWB supplies the wrapper. See LICENSE.txt for GPL-3.0-only terms.

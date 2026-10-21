@@ -1,0 +1,52 @@
+; PrismRTG - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Tools"
+  IF NOT EXISTS "SYSTEMDIR:Tools.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Hardware"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Hardware.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
+echo "Installing PrismRTG files..."
+MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-prismrtg/"
+INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:PrismRTG.lha" "SYSTEMDIR:Temp/_HstWB-prismrtg/"
+IF WARN
+  echo "Archive extraction failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "SYSTEMDIR:Temp/_HstWB-prismrtg/PrismRTG/#?" "$INSTALLDIR" ALL CLONE
+IF WARN
+  echo "Package copy failed. Installation stopped."
+  Quit 20
+ENDIF
+Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+echo "PrismRTG files installed successfully."
+echo "Run Install_PrismRTG from its drawer to complete setup:"
+echo "$INSTALLDIR"
+echo ""
+Ask "Press ENTER to continue"

@@ -9,6 +9,21 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.15 — Prism extraction results
+
+- Extract PrismRTG and PrismNet without launching or checking for Amiga Installer.
+  Show the manual setup instructions and pause after each package until Enter is
+  pressed so its results remain visible.
+
+## 1.6.14 — Prism user packages
+
+- Add optional PrismRTG 1.1 and PrismNet 1.0.1 user packages, including original
+  release archives, licenses, source links and verified SHA256 hashes. Copy the
+  full packages into their selected Amiga drawers and run the upstream installers
+  interactively during package setup, waiting for the user's configuration.
+- Keep source updates subject to compatibility review. Preserve original
+  installers for later setup and document system requirements and destinations.
+
 ## 1.6.12 — BestClassicWB executable permissions
 
 - Restore Execute permission after extraction for all 1,042 bundled Amiga HUNK
