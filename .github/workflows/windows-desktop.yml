@@ -65,9 +65,10 @@ jobs:
           name: hstwb-desktop-windows
           path: release-packages
       - name: Update permanent preview downloads
-        shell: powershell
+        shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/publish_desktop_release.ps1 -Directory (Join-Path $PWD 'release-packages')
-          if($LASTEXITCODE -ne 0){throw 'Automatic preview publication failed.'}
+          # Use modern .NET HTTP transport for large release uploads.
+          # Windows PowerShell's legacy transport can drop the connection mid-upload.
+          & ./tools/publish_desktop_release.ps1 -Directory (Join-Path $PWD 'release-packages')
