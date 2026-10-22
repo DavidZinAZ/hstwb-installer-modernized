@@ -9,6 +9,14 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.30 — WHDLoad Packs assigns
+
+- Both pack builders now create the Games, GamesBeta, Demos, DemosBeta and
+  Magazines assigns when installation is confirmed. Each assign uses its pack's
+  destination and is restored through User-Startup after reboot. Reinstalling
+  updates the destination without adding duplicate startup entries.
+- Rebuild installation lists to include this fix in existing pack folders.
+
 ## 1.6.17 — Additional optional application bundles
 
 - Add NetHarness 1.18 (with PC companion), NilBBS 1.5.2, AmiFM 1.2,

@@ -365,7 +365,7 @@ def build_user_package_install(entries_sets, user_package_name, entries_dir):
     # add user package install dir
     user_package_install_dir_file = os.path.join(user_package_dir, '_installdir')
     with open(user_package_install_dir_file) as f:
-        install_dir = f.read()
+        install_dir = f.read().strip()
     user_package_install_lines.append("set INSTALLDIR \"{0}\"".format(install_dir))
 
     user_package_install_lines.append("; reset")
@@ -582,6 +582,24 @@ def build_user_package_install(entries_sets, user_package_name, entries_dir):
         user_package_install_lines.append("IF \"$entriesinstalloption\" EQ {0} VAL".format(entries_install_option))
         user_package_install_lines.append("  set confirm `RequestChoice \"Start entries installation\" \"Do you want to start installation of $totalcount entries?\" \"Yes|No\"`")
         user_package_install_lines.append("  IF \"$confirm\" EQ \"1\"")
+        # Match the public EAB menu assigns, including packs installed without menus.
+        pack_assigns = {'EAB WHDLoad Games': 'Games', 'EAB WHDLoad Games Beta': 'GamesBeta',
+                        'EAB WHDLoad Demos': 'Demos', 'EAB WHDLoad Demos Beta': 'DemosBeta',
+                        'EAB WHDLoad Magazines': 'Magazines'}
+        if user_package_name in pack_assigns:
+            assign_lines = '''    ; Create the destination and update this pack's persistent assign.
+    MakePath "$INSTALLDIR" >NIL:
+    Echo "Assign >NIL: A-KIND: *"$INSTALLDIR*"" >SYSTEMDIR:S/WHDLoad-Packs-KIND
+    IF NOT EXISTS SYSTEMDIR:S/User-Startup
+      Echo "" >SYSTEMDIR:S/User-Startup
+    ENDIF
+    Search >NIL: SYSTEMDIR:S/User-Startup "Execute S:WHDLoad-Packs-KIND" QUIET
+    IF WARN
+      Echo "" >>SYSTEMDIR:S/User-Startup
+      Echo "Execute S:WHDLoad-Packs-KIND" >>SYSTEMDIR:S/User-Startup
+    ENDIF
+    Execute SYSTEMDIR:S/WHDLoad-Packs-KIND'''
+            user_package_install_lines.extend(assign_lines.replace('KIND', pack_assigns[user_package_name]).splitlines())
         user_package_install_lines.append("    execute \"USERPACKAGEDIR:{0}/Install/{1}/Install-Entries\"".format(user_package_name, entries_set.name))
         user_package_install_lines.append("    SKIP end")
         user_package_install_lines.append("  ENDIF")

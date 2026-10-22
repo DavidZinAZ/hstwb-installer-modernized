@@ -428,7 +428,7 @@ function BuildUserPackageInstall()
 
     # add user package add install dir
     $userPackageInstallDirFile = Join-Path $entriesDir -ChildPath '_installdir'
-    $installDir = Get-Content $userPackageInstallDirFile -Raw
+    $installDir = (Get-Content $userPackageInstallDirFile -Raw).Trim()
     $userPackageInstallLines.Add("set INSTALLDIR ""{0}""" -f $installDir)
     $userPackageInstallLines.Add("")
 
@@ -667,6 +667,28 @@ function BuildUserPackageInstall()
         $userPackageInstallLines.Add("IF ""`$entriesinstalloption"" EQ {0} VAL" -f $entriesInstallOption)
         $userPackageInstallLines.Add("  set confirm ``RequestChoice ""Start entries installation"" ""Do you want to start installation of `$totalcount entries?"" ""Yes|No""``")
         $userPackageInstallLines.Add("  IF ""`$confirm"" EQ ""1""")
+        # Packs need the same public assigns as the EAB menus, even without a menu package.
+        $packAssigns = @{'EAB WHDLoad Games'='Games'; 'EAB WHDLoad Games Beta'='GamesBeta'; 'EAB WHDLoad Demos'='Demos'; 'EAB WHDLoad Demos Beta'='DemosBeta'; 'EAB WHDLoad Magazines'='Magazines'}
+        if ($packAssigns.ContainsKey($userPackageName)) {
+            $kind = $packAssigns[$userPackageName]
+            $assignLines = @'
+    ; Create the destination and update this pack's persistent assign.
+    MakePath "$INSTALLDIR" >NIL:
+    Echo "Assign >NIL: A-KIND: *"$INSTALLDIR*"" >SYSTEMDIR:S/WHDLoad-Packs-KIND
+    IF NOT EXISTS SYSTEMDIR:S/User-Startup
+      Echo "" >SYSTEMDIR:S/User-Startup
+    ENDIF
+    Search >NIL: SYSTEMDIR:S/User-Startup "Execute S:WHDLoad-Packs-KIND" QUIET
+    IF WARN
+      Echo "" >>SYSTEMDIR:S/User-Startup
+      Echo "Execute S:WHDLoad-Packs-KIND" >>SYSTEMDIR:S/User-Startup
+    ENDIF
+    Execute SYSTEMDIR:S/WHDLoad-Packs-KIND
+'@
+            foreach ($line in ($assignLines.Replace('KIND', $kind) -split "`r?`n")) {
+                $userPackageInstallLines.Add($line)
+            }
+        }
         $userPackageInstallLines.Add(("    execute ""USERPACKAGEDIR:{0}/Install/{1}/Install-Entries""" -f $userPackageName, $entriesSet.Name))
         $userPackageInstallLines.Add("    SKIP end")
         $userPackageInstallLines.Add("  ENDIF")
