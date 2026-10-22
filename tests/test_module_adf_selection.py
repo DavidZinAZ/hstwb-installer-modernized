@@ -31,7 +31,7 @@ def selected(disk, adf, preference):
             if match:
                 value = match[2]
                 variables[match[1]] = (preference or '') if value.startswith('`Type ') else value
-            elif line == 'quit 0':
+            elif line == 'SKIP adfend':
                 return False, variables['modulesname']
     return True, variables['modulesname']
 
@@ -54,8 +54,10 @@ class ModuleSelectionTests(unittest.TestCase):
 
     def test_filter_precedes_disk_access(self):
         source = SCRIPT.read_text()
-        self.assertLess(source.index('quit 0'), source.index('diskwiz'))
-        self.assertLess(source.index('quit 0'), source.index('echo "{label}..."'))
+        self.assertNotIn('quit 0', source.lower())
+        self.assertTrue(source.rstrip().endswith('LAB adfend'))
+        self.assertLess(source.index('SKIP adfend'), source.index('diskwiz'))
+        self.assertLess(source.index('SKIP adfend'), source.index('echo "{label}..."'))
 
 
 if __name__ == '__main__':

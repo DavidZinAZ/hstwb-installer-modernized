@@ -128,7 +128,7 @@ IF NOT "$moduleprefix" EQ ""
     ENDIF
   ENDIF
   IF NOT "{adffile}" EQ "$selectedmoduleadf"
-    quit 0
+    SKIP adfend
   ENDIF
 ENDIF
 
@@ -160,3 +160,6 @@ diskwiz >NIL: "{adffile}" ff0:
 ; run install amiga os 3.2 disk
 echo "{label}..."
 Execute "INSTALLDIR:S/Amiga-OS-3.2/Install-{disk}"
+
+; Return to the caller without ending its Execute chain.
+LAB adfend
