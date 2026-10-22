@@ -12,6 +12,126 @@
 ; "disk" argument defines amiga os 3.2 adf to install.
 
 
+; Filter module ADFs before mounting, logging or copying files.
+; Reload the saved menu choice for both initial installs and updates.
+set moduleprefix ""
+IF "{disk}" EQ "Modules"
+  set moduleprefix "32"
+ENDIF
+IF "{disk}" EQ "Modules3.2.1"
+  set moduleprefix "321"
+ENDIF
+IF "{disk}" EQ "Modules3.2.3"
+  set moduleprefix "323"
+ENDIF
+IF NOT "$moduleprefix" EQ ""
+  set modulechoice ""
+  set selectedmoduleadf ""
+  setenv modulesname ""
+  IF EXISTS "INSTALLDIR:Prefs/Install-Amiga-OS-32-ADF"
+    set modulechoice "`Type INSTALLDIR:Prefs/Install-Amiga-OS-32-ADF`"
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A500-ADF"
+    setenv modulesname "A500"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a500.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a500.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a500.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A600-ADF"
+    setenv modulesname "A600"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a600.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a600.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a600.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A1200-ADF"
+    setenv modulesname "A1200"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a1200.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a1200.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a1200.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A2000-ADF"
+    setenv modulesname "A2000"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a2000.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a2000.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a2000.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A3000-ADF"
+    setenv modulesname "A3000"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a3000.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a3000.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a3000.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A4000D-ADF"
+    setenv modulesname "A4000D"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a4000d.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a4000d.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a4000d.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-A4000T-ADF"
+    setenv modulesname "A4000T"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-a4000t.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-a4000t.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-a4000t.adf"
+    ENDIF
+  ENDIF
+  IF "$modulechoice" EQ "Amiga-OS-32-CD32-ADF"
+    setenv modulesname "CD32"
+    IF "$moduleprefix" EQ "32"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-32-modules-cd32.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "321"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-321-modules-cd32.adf"
+    ENDIF
+    IF "$moduleprefix" EQ "323"
+      set selectedmoduleadf "INSTALLDIR:Temp/Amiga-OS/amiga-os-323-modules-cd32.adf"
+    ENDIF
+  ENDIF
+  IF NOT "{adffile}" EQ "$selectedmoduleadf"
+    quit 0
+  ENDIF
+ENDIF
+
 ; quit, if detect disk doesn't exist
 IF NOT EXISTS "{adffile}"
   echo "*e[1mError: Adf file '{adffile}' doesn't exist!*e[0m"
