@@ -1802,6 +1802,40 @@
           "Reason": "Complete browser/mail bundle; select the correct CPU build. Classic HTTPS needs AmiSSL v5. TLS server certificates are not verified. Review upstream layout and notices before replacement."
         }
       ]
+    },
+    {
+      "Id": "xpkguide",
+      "Directory": "XPKGuide",
+      "Name": "XPKGuide",
+      "PackageVersion": "1.0.0",
+      "Description": "View AmigaGuide documents, including supported compressed files.",
+      "Categories": [
+        "Files & Archives"
+      ],
+      "Components": [
+        {
+          "Id": "xpkguide",
+          "Name": "XPKGuide",
+          "LocalFile": "XPKGuide.lha",
+          "Version": "1.9",
+          "BaselineSha256": "6eb69884c4cf439d95db4dff3f109341827924e0bc883d605c0d08e0078eff5e",
+          "Provider": "Manual",
+          "MetadataUrl": "https://aminet.net/package/text/hyper/XPKGuide",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "XPKGuide/XPKGuide",
+            "XPKGuide/XPKGuide.info",
+            "XPKGuide/XPKGuidePrefs",
+            "XPKGuide/XPKGuide.guide",
+            "XPKGuide/Install",
+            "XPKGuide/AFD-COPYRIGHT",
+            "XPKGuide/libs/xpkmaster.library",
+            "XPKGuide/libs/xfdmaster.library"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Kickstart 2.04+ and amigaguide.library V34+. Original Mailware/AFD distribution. Preserve newer installed libraries; setup remains manual. Aminet readme has no Version field; source updates require manual review."
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,16 @@
+Upstream: https://aminet.net/package/text/hyper/XPKGuide
+Download: https://se.aminet.net/text/hyper/XPKGuide.lha
+Author: Simon Dick
+Application: XPKGuide 1.9 (26.2.95), verified from executable $VER string.
+Preferences: XPKGuidePrefs 1.2 (11.1.95).
+Archive: XPKGuide.lha
+SHA256: 6eb69884c4cf439d95db4dff3f109341827924e0bc883d605c0d08e0078eff5e
+
+Original archive retained unmodified, including its documentation, icons,
+libraries, catalogs, AFD-COPYRIGHT and embedded notices. HstWB supplies a
+separate extraction wrapper and setup notes; nothing is added to the original
+archive. XPKGuide is Mailware under its original AFD terms; see its guide's
+Copyright Information and AFD-COPYRIGHT. Bundled libraries retain their own
+notices. No automatic source update adapter is provided because the Aminet
+readme has no machine-readable Version field. Manual compatibility review
+is required for any replacement.

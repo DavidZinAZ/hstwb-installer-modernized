@@ -191,6 +191,26 @@ compatibility review.
 
 Upstream: [Amelinium](https://aminet.net/package/comm/www/Amelinium).
 
+## XPKGuide (1.6.29)
+
+Select **XPKGuide** under **Files & Archives**. The complete original 1.9
+archive is bundled and extracted to `SYS:Utilities/XPKGuide`, with the usual
+Enter pause and protection for an existing drawer. Launch `XPKGuide` directly;
+use its original `Install` script for optional setup. HstWB does not copy its
+historical libraries into LIBS: or change document associations.
+
+Requires Kickstart 2.04+ and amigaguide.library V34+. Decompressed documents
+need temporary space in T:. XPK formats require the matching compressor
+sublibrary; CrM.library is not supplied. Retain newer working XFD/XPK libraries.
+The upstream guide's 1.9 history removes built-in PCompress support despite
+the older Aminet readme; XFD support is needed for that format. The manual
+also names InstallLibs, while the actual archive supplies `Install`.
+
+The original unmodified archive and AFD-COPYRIGHT are retained. It is Mailware:
+the author requests a message from users; no messages are sent by HstWB.
+Version 1.9 is verified from the executable. Since the Aminet readme has no
+Version field, updates are manual. [Upstream XPKGuide](https://aminet.net/package/text/hyper/XPKGuide).
+
 ## Missing drawers in Workbench
 
 The wrappers previously created an icon for the final install drawer only.
@@ -254,4 +274,4 @@ A4091 and both ZZ9000 bundles report **Compatibility review required**. A4091's 
 
 ## Validation scope
 
-Host checks cover detection of all twenty-six maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
+Host checks cover detection of all twenty-seven maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
