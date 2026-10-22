@@ -19,6 +19,10 @@
           "RequiredMembers": [],
           "Reason": "Custom installation bundle; no verified versioned upstream source is configured."
         }
+      ],
+      "Description": "Choose between startup configurations when booting.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -50,6 +54,10 @@
             }
           ]
         }
+      ],
+      "Description": "Test Amiga memory, graphics, sound and input hardware.",
+      "Categories": [
+        "Diagnostics"
       ]
     },
     {
@@ -70,7 +78,8 @@
             "xad/Libs/xadmaster.library"
           ],
           "AminetPath": "util/arc/xadmaster000",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Extract many archive formats."
         },
         {
           "Id": "xad020",
@@ -84,7 +93,8 @@
             "xad/Libs/xadmaster.library"
           ],
           "AminetPath": "util/arc/xadmaster020",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Extract many archive formats."
         },
         {
           "Id": "xad060",
@@ -98,7 +108,8 @@
             "xad/Libs/xadmaster.library"
           ],
           "AminetPath": "util/arc/xadmaster060",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Extract many archive formats."
         },
         {
           "Id": "xfd",
@@ -112,7 +123,8 @@
             "xfd/Libs/xfdmaster.library"
           ],
           "AminetPath": "util/pack/xfdmaster",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Decompress packed files."
         },
         {
           "Id": "lha",
@@ -126,8 +138,13 @@
             "lha_68k"
           ],
           "AminetPath": "util/arc/lha",
-          "Extension": ".run"
+          "Extension": ".run",
+          "Description": "Create and extract LhA archives."
         }
+      ],
+      "Description": "Extract compressed archives and packed files.",
+      "Categories": [
+        "Files & Archives"
       ]
     },
     {
@@ -147,6 +164,10 @@
           "RequiredMembers": [],
           "Reason": "Date-based theme bundle with local presets. No verified versioned source adapter is available."
         }
+      ],
+      "Description": "Window border themes for RTG Workbench screens.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -167,7 +188,8 @@
             "CFD133/DEVS/compactflash.device"
           ],
           "AminetPath": "driver/media/CFD133",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "PCMCIA CompactFlash driver for A600 and A1200."
         },
         {
           "Id": "fat95",
@@ -181,8 +203,14 @@
             "fat95/l/fat95"
           ],
           "AminetPath": "disk/misc/fat95",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Read and write PC-formatted FAT disk volumes."
         }
+      ],
+      "Description": "Access PC-formatted CompactFlash cards and FAT volumes.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers"
       ]
     },
     {
@@ -202,6 +230,10 @@
           "RequiredMembers": [],
           "Reason": "Contains several CPU/OS compatibility versions and customized configuration; a replacement needs a dedicated layout adapter."
         }
+      ],
+      "Description": "Manage files with a two-panel file manager.",
+      "Categories": [
+        "Files & Archives"
       ]
     },
     {
@@ -221,6 +253,10 @@
           "RequiredMembers": [],
           "Reason": "Operating-system component: update from your licensed OS media and verify compatibility."
         }
+      ],
+      "Description": "Amiga FastFileSystem handler for disk volumes.",
+      "Categories": [
+        "Storage & Filesystems"
       ]
     },
     {
@@ -244,6 +280,10 @@
           "AminetPath": "util/wb/FullPalette22",
           "Extension": ".lha"
         }
+      ],
+      "Description": "Set and preserve the full Workbench color palette.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -275,6 +315,11 @@
             }
           ]
         }
+      ],
+      "Description": "Display modern Workbench icon formats.",
+      "Categories": [
+        "Workbench & Appearance",
+        "Libraries & Components"
       ]
     },
     {
@@ -294,6 +339,10 @@
           "RequiredMembers": [],
           "Reason": "Pinned legacy compatibility variant. Use the separately maintained iGame 2 package for current releases."
         }
+      ],
+      "Description": "Browse and launch installed WHDLoad games.",
+      "Categories": [
+        "Games & WHDLoad"
       ]
     },
     {
@@ -323,6 +372,10 @@
           "RootTemplate": "iGame-v{version}",
           "InstalledRoot": "iGame-v2.6.1"
         }
+      ],
+      "Description": "Browse and launch installed WHDLoad games.",
+      "Categories": [
+        "Games & WHDLoad"
       ]
     },
     {
@@ -342,6 +395,10 @@
           "RequiredMembers": [],
           "Reason": "Licensed, user-supplied ROMs are never downloaded by the application updater."
         }
+      ],
+      "Description": "Prepare user-supplied Kickstart ROMs for WHDLoad.",
+      "Categories": [
+        "Games & WHDLoad"
       ]
     },
     {
@@ -364,6 +421,10 @@
           "AminetPath": "util/shell/KingCON_1.3",
           "Extension": ".lha"
         }
+      ],
+      "Description": "Enhanced Shell console with history and completion.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -400,6 +461,10 @@
           "AminetPath": "util/wb/MagicMenu_2.35",
           "Extension": ".lha"
         }
+      ],
+      "Description": "Add configurable popup menus to Workbench.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -426,6 +491,10 @@
           "AminetPath": "util/libs/MMULib",
           "Extension": ".lha"
         }
+      ],
+      "Description": "MMU support libraries and tools for compatible CPUs.",
+      "Categories": [
+        "Libraries & Components"
       ]
     },
     {
@@ -448,6 +517,10 @@
           "AminetPath": "util/libs/mui38usr",
           "Extension": ".lha"
         }
+      ],
+      "Description": "User interface toolkit required by MUI applications.",
+      "Categories": [
+        "Libraries & Components"
       ]
     },
     {
@@ -470,7 +543,8 @@
           "AminetPath": "dev/mui/MCC_TextEditor-15.56",
           "Extension": ".lha",
           "AutoUpdate": false,
-          "Reason": "The newer author release requires a 68020+ and changes the MUI archive layout. Keep the legacy dependency until a CPU-specific migration is selected."
+          "Reason": "The newer author release requires a 68020+ and changes the MUI archive layout. Keep the legacy dependency until a CPU-specific migration is selected.",
+          "Description": "Text editor component for MUI applications."
         },
         {
           "Id": "guigfxmcc",
@@ -484,7 +558,8 @@
             "MCC_Guigfx/Libs/MUI/Guigfx.mcc"
           ],
           "AminetPath": "dev/mui/MCC_Guigfx",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "Description": "Image display component for MUI applications."
         },
         {
           "Id": "renderlib",
@@ -495,8 +570,13 @@
           "Provider": "Manual",
           "Mode": "Archive",
           "RequiredMembers": [],
-          "Reason": "This is a combined no-FPU compatibility bundle. Upstream archives must be adapted and validated before replacing it."
+          "Reason": "This is a combined no-FPU compatibility bundle. Upstream archives must be adapted and validated before replacing it.",
+          "Description": "Image rendering library used by graphics applications."
         }
+      ],
+      "Description": "User interface and graphics components used by iGame.",
+      "Categories": [
+        "Libraries & Components"
       ]
     },
     {
@@ -516,6 +596,11 @@
           "RequiredMembers": [],
           "Reason": "ROM-derived patched component; update requires model-specific licensed media and patch verification."
         }
+      ],
+      "Description": "Disk device driver for supported Amiga storage hardware.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers"
       ]
     },
     {
@@ -538,6 +623,10 @@
           "AminetPath": "util/moni/SysInfo",
           "Extension": ".lha"
         }
+      ],
+      "Description": "View system information and run performance benchmarks.",
+      "Categories": [
+        "Diagnostics"
       ]
     },
     {
@@ -557,6 +646,10 @@
           "RequiredMembers": [],
           "Reason": "Contains CPU-specific quick fixes and customized themes; the older Aminet base cannot replace this patched bundle."
         }
+      ],
+      "Description": "Customize Workbench window borders and interface appearance.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -580,6 +673,10 @@
           "VersionPattern": "Version\\s*(?:</?[^>]+>|[Vv: ])*([0-9]+\\.[0-9]+)",
           "DownloadUrl": "https://thomas-rapp.homepage.t-online.de/amiga/wbdock2.lha"
         }
+      ],
+      "Description": "Launch applications from a Workbench dock.",
+      "Categories": [
+        "Workbench & Appearance"
       ]
     },
     {
@@ -599,6 +696,10 @@
           "RequiredMembers": [],
           "Reason": "User-supplied game/demo collection, not a single versioned application."
         }
+      ],
+      "Description": "Install prepared WHDLoad game, demo and magazine collections.",
+      "Categories": [
+        "Games & WHDLoad"
       ]
     },
     {
@@ -623,6 +724,10 @@
           "VersionPattern": "New WHDLoad V([0-9]+\\.[0-9]+)(?:</font>)? released",
           "DownloadUrl": "https://www.whdload.de/whdload/WHDLoad_usr.lha"
         }
+      ],
+      "Description": "Run supported classic games and demos from hard disk.",
+      "Categories": [
+        "Games & WHDLoad"
       ]
     },
     {
@@ -649,6 +754,10 @@
           "RootTemplate": "xSysInfo-{version}",
           "InstalledRoot": "xSysInfo-0.12.0"
         }
+      ],
+      "Description": "Inspect system hardware, libraries and performance.",
+      "Categories": [
+        "Diagnostics"
       ]
     },
     {
@@ -676,6 +785,10 @@
           "RootTemplate": "kicksmash_{version}",
           "InstalledRoot": "kicksmash_2.0"
         }
+      ],
+      "Description": "Utilities for configuring supported KickSmash hardware.",
+      "Categories": [
+        "Hardware & Drivers"
       ]
     },
     {
@@ -701,6 +814,11 @@
           "RootTemplate": "devtest_{version}",
           "InstalledRoot": "devtest_1.9"
         }
+      ],
+      "Description": "Test block storage devices and diagnose transfer problems.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Diagnostics"
       ]
     },
     {
@@ -723,6 +841,12 @@
           "RequiredMembers": [],
           "MagicHex": "000003F3"
         }
+      ],
+      "Description": "Diagnose supported SDMAC storage controller hardware.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers",
+        "Diagnostics"
       ]
     },
     {
@@ -776,6 +900,12 @@
           "AutoUpdate": false,
           "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
         }
+      ],
+      "Description": "Drivers, diagnostics and ROM files for A4091 SCSI controllers.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers",
+        "Diagnostics"
       ]
     },
     {
@@ -910,6 +1040,10 @@
           "AutoUpdate": false,
           "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
         }
+      ],
+      "Description": "Board-specific firmware files for ZZ9000 hardware.",
+      "Categories": [
+        "Hardware & Drivers"
       ]
     },
     {
@@ -936,6 +1070,10 @@
           "AutoUpdate": false,
           "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
         }
+      ],
+      "Description": "Install graphics and hardware support for ZZ9000 cards.",
+      "Categories": [
+        "Hardware & Drivers"
       ]
     },
     {
@@ -960,6 +1098,11 @@
             "DOpus5/Libs/dopus5.library"
           ]
         }
+      ],
+      "Description": "File manager and optional Workbench replacement.",
+      "Categories": [
+        "Workbench & Appearance",
+        "Files & Archives"
       ]
     },
     {
@@ -987,6 +1130,10 @@
           "AutoUpdate": false,
           "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
         }
+      ],
+      "Description": "RTG graphics support for compatible graphics cards.",
+      "Categories": [
+        "Hardware & Drivers"
       ]
     },
     {
@@ -1014,6 +1161,10 @@
           "AutoUpdate": false,
           "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
         }
+      ],
+      "Description": "TCP/IP networking stack and network configuration tools.",
+      "Categories": [
+        "Network & Communications"
       ]
     },
     {
@@ -1035,7 +1186,8 @@
           "Mode": "ZipArchive",
           "RequiredMembers": "NetHarness-PC/nhctl.py",
           "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Description": "PC companion tools for controlling an Amiga through NetHarness."
         },
         {
           "Id": "netharness",
@@ -1060,6 +1212,10 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Connect an Amiga to companion remote-control tools on a PC.",
+      "Categories": [
+        "Network & Communications"
       ]
     },
     {
@@ -1160,6 +1316,10 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Host a bulletin board system on your Amiga.",
+      "Categories": [
+        "Network & Communications"
       ]
     },
     {
@@ -1188,6 +1348,10 @@
           "Reason": "User-supplied archive: download AmiFM-1.2.lha from upstream; no explicit redistribution license found. Automatic bundle replacement disabled.",
           "UserSupplied": true
         }
+      ],
+      "Description": "Browse, copy and organize files with a graphical file manager.",
+      "Categories": [
+        "Files & Archives"
       ]
     },
     {
@@ -1227,6 +1391,10 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Terminal client for network and serial connections.",
+      "Categories": [
+        "Network & Communications"
       ]
     },
     {
@@ -1270,6 +1438,10 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Picture datatypes for displaying additional image formats.",
+      "Categories": [
+        "Libraries & Components"
       ]
     },
     {
@@ -1304,6 +1476,11 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Tools for compatible BlueSCSI and ZuluSCSI devices.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers"
       ]
     },
     {
@@ -1330,6 +1507,11 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Suppress idle floppy drive clicking.",
+      "Categories": [
+        "Hardware & Drivers",
+        "Workbench & Appearance"
       ]
     },
     {
@@ -1359,6 +1541,10 @@
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
         }
+      ],
+      "Description": "Synchronize the Amiga clock with a network time server.",
+      "Categories": [
+        "Network & Communications"
       ]
     },
     {
@@ -1389,6 +1575,231 @@
           ],
           "AutoUpdate": false,
           "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+        }
+      ],
+      "Description": "Use a companion LAN computer for TLS connections.",
+      "Categories": [
+        "Network & Communications"
+      ]
+    },
+    {
+      "Id": "aminetxduo",
+      "Directory": "AmiNetXDuo",
+      "Name": "AmiNetXDuo",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "aminetxduo",
+          "Name": "AmiNetXDuo",
+          "LocalFile": "AmiNetXDuo-1.0.0-rc1.lha",
+          "Version": "1.0.0-rc1",
+          "BaselineSha256": "28dcec55023eb2807e7f2b795acaf9af00214d4db0f0d47e7a536e1784d7ab47",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiNetXDuo/Install-AmiNetXDuo",
+            "AmiNetXDuo/ReadMe"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "Aminet",
+          "AminetPath": "comm/net/AmiNetXDuo-1.0.0-rc1",
+          "Extension": ".lha"
+        }
+      ],
+      "Description": "IPv4/IPv6 networking stack and tools; release candidate.",
+      "Categories": [
+        "Network & Communications"
+      ]
+    },
+    {
+      "Id": "aminfsv3",
+      "Directory": "AmiNFSv3",
+      "Name": "AmiNFSv3",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "aminfsv3",
+          "Name": "AmiNFSv3",
+          "LocalFile": "AmiNFSv3.lha",
+          "Version": "0.2b2",
+          "BaselineSha256": "6cbcddc8ec2502ea53af0a9ce16796caf5d99bc4b25689b50d4dec141a2d111f",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiNFSv3/L/nfs-handler",
+            "AmiNFSv3/C/NFSDismount",
+            "AmiNFSv3/Storage/DOSDrivers/NFS0"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "Aminet",
+          "AminetPath": "comm/net/AmiNFSv3",
+          "Extension": ".lha"
+        }
+      ],
+      "Description": "Mount Linux or NAS NFSv3 shares as Amiga volumes; beta.",
+      "Categories": [
+        "Network & Communications",
+        "Storage & Filesystems"
+      ]
+    },
+    {
+      "Id": "thewire13",
+      "Directory": "TheWire13",
+      "Name": "TheWire13",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "thewire13",
+          "Name": "TheWire13",
+          "LocalFile": "TheWire13.lha",
+          "Version": "1.9.0",
+          "BaselineSha256": "fcab251e02a15032aa6c8a53abce26d095981c47e15a1ec8c5cd2202e4d7cd64",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "TheWire13/c/TheWire13",
+            "TheWire13/libs/bsdsocket.library",
+            "TheWire13/s/thewire13.conf"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "Aminet",
+          "AminetPath": "comm/tcp/TheWire13",
+          "Extension": ".lha"
+        }
+      ],
+      "Description": "Lightweight TCP/IP stack with AmigaOS 1.3 support.",
+      "Categories": [
+        "Network & Communications"
+      ]
+    },
+    {
+      "Id": "cfd-modern",
+      "Directory": "CFD Modern",
+      "Name": "CFD Modern",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "cfd-modern",
+          "Name": "CFD Modern",
+          "LocalFile": "cfd.v20261007.lha",
+          "Version": "20261007",
+          "BaselineSha256": "1221375868be6837cd92936530c2369c0d7fc2e0e0d88e51d2b1c3476c3df7bc",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "cfd/Install",
+            "cfd/Setup",
+            "cfd/small/68000/devs/compactflash.device",
+            "cfd/small/68020/libs/ptable.library",
+            "cfd/LICENSE"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "Aminet",
+          "AminetPath": "driver/media/cfd.v20261007",
+          "Extension": ".lha"
+        }
+      ],
+      "Description": "Modern PCMCIA CompactFlash driver for A600 and A1200.",
+      "Categories": [
+        "Storage & Filesystems",
+        "Hardware & Drivers"
+      ]
+    },
+    {
+      "Id": "fat95-modern",
+      "Directory": "FAT95 Modern",
+      "Name": "FAT95 Modern",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "fat95-modern",
+          "Name": "FAT95 Modern",
+          "LocalFile": "fat95.v20261007.lha",
+          "Version": "20261007",
+          "BaselineSha256": "606604c1d772660ba22a19e4ebeb7dda3595ebfc3cc4fcb9078aae82f8ef6084",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "fat95/Install",
+            "fat95/Language",
+            "fat95/l/68000/fat95",
+            "fat95/l/68020/fat95",
+            "fat95/LICENSE"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "Aminet",
+          "AminetPath": "disk/misc/fat95.v20261007",
+          "Extension": ".lha"
+        }
+      ],
+      "Description": "Read and write FAT12, FAT16 and FAT32 disk volumes.",
+      "Categories": [
+        "Storage & Filesystems"
+      ]
+    },
+    {
+      "Id": "odfilesystem",
+      "Directory": "ODFileSystem",
+      "Name": "ODFileSystem",
+      "PackageVersion": "1.0.0",
+      "Components": [
+        {
+          "Id": "odfilesystem",
+          "Name": "ODFileSystem",
+          "LocalFile": "ODFileSystem.lha",
+          "Version": "0.8.0",
+          "BaselineSha256": "53a514df8cb6c3e736857a284e7f01defd430b6828728726879d2ef83c931b02",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "ODFileSystem",
+            "ODFileSystem020",
+            "README.md"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Provider": "GitHub",
+          "Repository": "reinauer/ODFileSystem",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^ODFileSystem\\.lha$"
+        }
+      ],
+      "Description": "Read CDs and other supported optical-disc formats.",
+      "Categories": [
+        "Storage & Filesystems"
+      ]
+    },
+    {
+      "Id": "amelinium",
+      "Directory": "Amelinium",
+      "Name": "Amelinium",
+      "PackageVersion": "1.0.0",
+      "Description": "Web browser and HTML mail client; TLS certificates are not verified.",
+      "Categories": [
+        "Network & Communications"
+      ],
+      "Components": [
+        {
+          "Id": "amelinium",
+          "Name": "Amelinium",
+          "LocalFile": "Amelinium.lha",
+          "Version": "1.4.0",
+          "BaselineSha256": "5da739c397093df705461b3089c8b032716d271402e27b865f8355d3d1040851",
+          "Provider": "Aminet",
+          "AminetPath": "comm/www/Amelinium",
+          "Extension": ".lha",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "Amelinium",
+            "Amelinium_020",
+            "Amelinium_020_JS",
+            "Emalinium",
+            "Amelinium.readme",
+            "libavc-LICENSE.txt",
+            "mbedtls-LICENSE.txt",
+            "pdfjs/LICENSE"
+          ],
+          "AutoUpdate": false,
+          "Reason": "Complete browser/mail bundle; select the correct CPU build. Classic HTTPS needs AmiSSL v5. TLS server certificates are not verified. Review upstream layout and notices before replacement."
         }
       ]
     }

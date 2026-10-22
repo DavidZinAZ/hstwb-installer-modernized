@@ -1,6 +1,6 @@
 # Additional user packages
 
-Select these independently in **Configure user packages → Select user packages**. Point **Change user packages dir** at this installation's `user-packages` directory if settings still reference an older portable copy. Existing selections are not changed automatically.
+Select these independently in **Configure user packages â†’ Select user packages**. Point **Change user packages dir** at this installation's `user-packages` directory if settings still reference an older portable copy. Existing selections are not changed automatically.
 
 The installer uses the existing user-package assigns and destination selection. Defaults:
 
@@ -121,6 +121,76 @@ Source checks report **Compatibility review required** for these bundles.
 This does not prevent selecting the local bundle for installation; it prevents
 automatic replacement of its files with an unreviewed upstream layout.
 
+## Network and filesystem additions (1.6.20)
+
+Six independently selectable bundles use the extraction-only flow and existing-drawer protection described above. Setup remains manual on the target Amiga. Each bundle retains its original archive, SHA256, upstream readme, source links and license notices. Source updates require compatibility review.
+
+### AmiNetXDuo
+
+Default Amiga drawer: SYS:Tools/Network/AmiNetXDuo (customizable).
+
+Release candidate. OS 2.04+, 68000+, 1 MB RAM and a SANA-II network driver. Choose Full, Minimal or Micro using the upstream installer. Disable the startup of PrismNet, Roadshow, AmiTCP or another stack before activating this stack. Configure networking on the final machine. WebDAV, web server, browser Shell and remote screen services are optional; review access settings before enabling them.
+
+Run Install-AmiNetXDuo from this drawer.
+
+### AmiNFSv3
+
+Default Amiga drawer: SYS:Tools/Network/AmiNFSv3 (customizable).
+
+Beta. OS 2.04+, 68000+ and a TCP/IP stack providing bsdsocket.library V4. Configure the Linux/NAS NFSv3 export, server address, export path and UID/GID before mounting. Start with a test share and verify read/write behavior. Keep the example DOSDriver in Storage until configured. Files up to 4 GB; some AmigaDOS programs misreport sizes above 2 GB.
+
+Follow AmiNFSv3.doc to install the handler and configure NFS0.
+
+### TheWire13
+
+Default Amiga drawer: SYS:Tools/Network/TheWire13 (customizable).
+
+Specialist OS 1.3 networking option. OS 1.3+, 68000+ (68020 recommended), a SANA-II driver and RAM for network buffers. Socket compatibility is incomplete and evolving. Disable any other TCP/IP stack before activation; do not overwrite its bsdsocket.library blindly. This archive includes thewire13.conf and mini_ntp.conf, but no amitcp13.hosts despite the upstream copying instructions.
+
+Follow Upstream-README.txt for manual copying and configuration.
+
+### CFD Modern
+
+Default Amiga drawer: SYS:Tools/Hardware/CFDModern (customizable).
+
+Modern fork of CFD133. Bundle 20261007 contains compactflash.device 2.1 and ptable.library 2.2. Requires A600/A1200 PCMCIA, OS 2.0+, suitable adapter and Installer 43.3+ for the installer. Install FAT95 Modern separately for FAT media. Both modern packages include ptable.library 2.2: retain matching CPU/flavor versions. Choose either legacy CompactFlash and FAT95 setup or the modern pair; do not run both setups over one another. The upstream Expert installer can edit User-Startup/LoadModule; ROM autoboot is a separate manual operation. Do not force transfer flags without card testing.
+
+Run Install, then Setup from this drawer on the target A600/A1200.
+
+### FAT95 Modern
+
+Default Amiga drawer: SYS:Tools/Hardware/FAT95Modern (customizable).
+
+Modern fork of fat95. Bundle 20261007 contains fat95 4.1 and ptable.library 2.2. OS 1.3+ (2.0+ for full functionality), a suitable block device, and Installer 43.3+ for the installer. ptable.library is required for partition auto-detect; explicit geometry does not need it. Shared library guidance: see CFD Modern; choose matching CPU/flavor versions. Keep the legacy CompactFlash and FAT95 package as an alternative. The Expert installer can edit LoadModule startup. Raw disk tools such as dd and boot95 remain manual; use test media when evaluating read/write behavior.
+
+Run Install from this drawer; use Language to change the installed language.
+
+### ODFileSystem
+
+Default Amiga drawer: SYS:Tools/Hardware/ODFileSystem (customizable).
+
+OS3 release v0.8.0; keep the 68000 and 68020 variants and follow the upstream CPU guidance. Read-only optical filesystem, not a writable hard-disk filesystem. Configure device and unit for the actual drive. Preserve existing CD0 settings and use only one active DOSDriver per device name. No handler is copied into L: and no CD volume is mounted by HstWB. ROM/test binaries are supplied for manual use only.
+
+Follow README.md to install L:ODFileSystem and create a DOSDriver.
+
+### Amelinium (1.6.24)
+
+Amelinium 1.4.0 is independently selectable under Network & Communications.
+Default drawer: `SYS:Tools/Network/Amelinium`. The complete original archive,
+including Emalinium and all platform builds, uses the standard extraction-only
+flow, existing-drawer protection and Enter pause. No separate download is needed.
+Open the executable for your CPU after HstWB finishes. Classic builds require
+bsdsocket.library V4+ and AmiSSL v5 for HTTPS; 040/060 variants require an FPU.
+
+This release does **not verify TLS server certificates**, including mail
+connections. Avoid sensitive credentials. The package description, installation
+message and ReadMe retain this limitation. No explicit application redistribution
+license was found; LICENSE.txt records this without assigning a license and
+retains references to the bundled third-party notices. Source updates require
+compatibility review.
+
+Upstream: [Amelinium](https://aminet.net/package/comm/www/Amelinium).
+
 ## Missing drawers in Workbench
 
 The wrappers previously created an icon for the final install drawer only.
@@ -184,4 +254,4 @@ A4091 and both ZZ9000 bundles report **Compatibility review required**. A4091's 
 
 ## Validation scope
 
-Host checks cover detection of all nineteen maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
+Host checks cover detection of all twenty-six maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.

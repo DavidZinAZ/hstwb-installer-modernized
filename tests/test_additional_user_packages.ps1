@@ -5,7 +5,7 @@ Import-Module (Join-Path $repo 'modules/config.psm1') -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
 function Assert($value,$message){if(!$value){throw $message}}
-$newNames=@('NetHarness','NilBBS','AmiFM','NilTerm','AmiDT','SCSIToolbox-Amiga','NoClick','AmiTime','AmiSSL-Tunnel')
+$newNames=@('NetHarness','NilBBS','AmiFM','NilTerm','AmiDT','SCSIToolbox-Amiga','NoClick','AmiTime','AmiSSL-Tunnel','AmiNetXDuo','AmiNFSv3','TheWire13','CFD Modern','FAT95 Modern','ODFileSystem','Amelinium')
 $names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5','PrismRTG','PrismNet')+$newNames
 $catalog=GetUserPackageCatalog (Join-Path $repo 'data/user-package-updates.json')
 $detected=DetectUserPackages @{Settings=@{UserPackages=@{UserPackagesDir=(Join-Path $repo 'user-packages')}}}
@@ -50,6 +50,23 @@ foreach($name in $newNames) {
 # Exercise complete RawFile and ZipArchive updates with network calls replaced by fixtures.
 $root=Join-Path $repo ('.output/additional-updates-'+[guid]::NewGuid().ToString('N'))
 $null=New-Item -ItemType Directory $root
+# TheWire13 uses Amiga LhA filename comments after a NUL separator.
+$wireMembers=@(GetLhaArchiveMembers (Join-Path $repo 'user-packages/TheWire13/TheWire13.lha'))
+Assert ($wireMembers -contains 'TheWire13/c/TheWire13') 'LhA comment was treated as part of the filename'
+Assert (!($wireMembers | Where-Object {$_ -match "`0"})) 'LhA comments leaked into member paths'
+# Comments must not hide traversal in the actual filename.
+$unsafeLha=Join-Path $root 'unsafe-comment.lha'
+$unsafeName=[Text.Encoding]::ASCII.GetBytes("../outside`0comment")
+$header=New-Object byte[] (24+$unsafeName.Length)
+$header[0]=$header.Length-2
+[Text.Encoding]::ASCII.GetBytes('-lh0-').CopyTo($header,2)
+[BitConverter]::GetBytes([uint32]1).CopyTo($header,7)
+[BitConverter]::GetBytes([uint32]1).CopyTo($header,11)
+$header[21]=$unsafeName.Length
+$unsafeName.CopyTo($header,22)
+[IO.File]::WriteAllBytes($unsafeLha,($header+[byte[]](65,0)))
+$unsafeRejected=$false;try{GetLhaArchiveMembers $unsafeLha | Out-Null}catch{$unsafeRejected=$true}
+Assert $unsafeRejected 'LhA comment bypassed path traversal validation'
 $module=Get-Module user-package-updates
 & $module {
  function script:GetAvailableUserPackageRelease($component){return $script:FixtureRelease}
@@ -87,4 +104,4 @@ foreach($mode in @('RawFile','ZipArchive')) {
  Assert $rejected 'Malformed payload accepted'
  Assert ((Get-FileHash (Join-Path $dir 'payload')).Hash -eq $hash) 'Rejected update damaged active payload'
 }
-Write-Host 'PASS: nineteen selectable packages, payload hashes/layouts, LF scripts, extract-only behavior and pauses, retained package data, raw/ZIP updates and rejected payload preservation'
+Write-Host 'PASS: twenty-six selectable packages, payload hashes/layouts, LhA comments and traversal rejection, LF scripts, extract-only behavior and pauses, retained package data, raw/ZIP updates and rejected payload preservation'

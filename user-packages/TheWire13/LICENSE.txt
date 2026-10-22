@@ -1,0 +1,9 @@
+##License
+
+TheWire13 is freeware
+This software may be freely used, copied, and redistributed in unmodified
+form.
+The software is provided "as is" without warranty of any kind. Use at your
+own risk.
+
+Copyright (c)2026 Marcel Jähne

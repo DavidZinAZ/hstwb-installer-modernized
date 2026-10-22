@@ -1,0 +1,9 @@
+Upstream: https://github.com/tinic/AmiNetXDuo / source revision inspected: 6307d61ab63fd9d4b11ad294f2571abeda6f943c (not an assertion of binary reproducibility)
+Original archive: AmiNetXDuo-1.0.0-rc1.lha
+Download: https://se.aminet.net/comm/net/AmiNetXDuo-1.0.0-rc1.lha
+SHA256: 28dcec55023eb2807e7f2b795acaf9af00214d4db0f0d47e7a536e1784d7ab47
+Bundle/software version: 1.0.0-rc1
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

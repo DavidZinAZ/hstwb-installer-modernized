@@ -1,0 +1,9 @@
+Upstream: https://github.com/creep-ltx/AmiNFSv3 / source revision inspected: bed6185357ee8ac6c258c55a243daff122e5979c (not an assertion of binary reproducibility)
+Original archive: AmiNFSv3.lha
+Download: https://se.aminet.net/comm/net/AmiNFSv3.lha
+SHA256: 6cbcddc8ec2502ea53af0a9ce16796caf5d99bc4b25689b50d4dec141a2d111f
+Bundle/software version: 0.2b2
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

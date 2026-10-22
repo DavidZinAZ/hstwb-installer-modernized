@@ -107,21 +107,16 @@ li{margin:.4rem 0}code{font-size:.94em;background:var(--soft);padding:.1em .3em}
 <h3 id="more-extraction-only-applications">More extraction-only applications</h3>
 <p>NetHarness, NilBBS, AmiFM, NilTerm, AmiDT, SCSIToolbox-Amiga, NoClick, AmiTime and AmiSSL-Tunnel are independent selections. Each extracts its original files, shows the next steps and waits for Enter. Existing staged drawers are retained to protect settings and other data. Follow <code>ReadMe.txt</code> and <code>Upstream-README.txt</code> in each drawer after HstWB finishes; some launch directly and others need setup. The NetHarness PC tools are included as a separate ZIP to transfer to your PC; AmiSSL-Tunnel requires a separate LAN daemon. Nothing starts automatically. See <a href="../additional-user-packages.md#additional-application-bundles-1617">destinations and requirements</a>.</p>
 <p>AmiFM&#x27;s archive is supplied separately in public downloads. Obtain <code>AmiFM-1.2.lha</code> from its upstream release and place it in the Windows <code>user-packages/AmiFM</code> folder before installation. Review &amp; Install checks that the file matches the supported release. A verified local copy may already exist.</p>
-<h3 id="review-and-approval">Review and approval</h3>
-<p>Click a row and choose <strong>Review highlighted package…</strong>, or use its <strong>Review…</strong> action. The dialog shows its local version, available version, destination, PC folder, source, and notes.</p>
-<ul>
-<li><strong>Open source webpage</strong> lets you examine the original project or release.</li>
-<li><strong>Open local folder</strong> lets you inspect the local bundle.</li>
-<li><strong>Recheck source</strong> repeats its online version check.</li>
-<li><strong>Approve for installation</strong> records your choice to use the local package and checks it for the draft.</li>
-</ul>
-<p>Approval does not verify an unknown release or override update restrictions. Changes to the recorded version, source, directory, or destination invalidate the recorded approval.</p>
+<p>The <strong>Description</strong> column gives a short summary of each application. You can sort this column or search for words in its description. Hover over a description to read it in full.</p>
+<p>The <strong>Category</strong> dropdown beneath Search filters applications by purpose. <strong>All categories</strong> shows the complete library. Categories and search work together; applications can belong to more than one category. Changing the filter preserves installation selections. <strong>Select all visible</strong> and <strong>Clear visible selection</strong> affect only the displayed rows. Update and scan buttons retain their library/selection scope.</p>
+<h3 id="selection-and-update-status">Selection and update status</h3>
+<p>Use the <strong>Install</strong> checkbox to include a user package in your installation draft. Application names open source webpages; <strong>Check for updates</strong> refreshes the source status.</p>
 <div class="table-wrap"><table><thead><tr><th scope="col">Status or label</th><th scope="col">What to do</th></tr></thead><tbody>
 <tr><td>Current / Local version is newer</td><td>Keep the verified local payload; no newer download is needed.</td></tr>
 <tr><td>Local version verified</td><td>Local bytes match known metadata. Use Check for updates for an online comparison.</td></tr>
 <tr><td>Local version unverified</td><td>The payload is missing or differs from known metadata. Inspect your files or restore a known bundle before automatic replacement.</td></tr>
 <tr><td>Manual updates only</td><td>This bundle has no automatic update adapter. Follow the source&#x27;s instructions and review compatibility.</td></tr>
-<tr><td>Compatibility review required</td><td>Automatic replacement is blocked by the adapter&#x27;s compatibility rules. Installation approval does not remove that restriction.</td></tr>
+<tr><td>Compatibility review required</td><td>Automatic replacement is blocked by the adapter&#x27;s compatibility rules. Selecting the package for installation does not remove that restriction.</td></tr>
 <tr><td>Source check failed / Not verified</td><td>Read Details, inspect the source webpage, and retry the check when available.</td></tr>
 <tr><td>Not versioned</td><td>The component has no author version that the app can report. This is not proof that it is missing.</td></tr>
 </tbody></table></div>

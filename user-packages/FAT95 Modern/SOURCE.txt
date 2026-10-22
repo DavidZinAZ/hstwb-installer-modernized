@@ -1,0 +1,9 @@
+Upstream: https://github.com/pulchart/fat95; corresponding source included under fat95/src/ in the original archive
+Original archive: fat95.v20261007.lha
+Download: https://se.aminet.net/disk/misc/fat95.v20261007.lha
+SHA256: 606604c1d772660ba22a19e4ebeb7dda3595ebfc3cc4fcb9078aae82f8ef6084
+Bundle/software version: 20261007
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

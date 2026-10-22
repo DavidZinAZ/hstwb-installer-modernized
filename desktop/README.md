@@ -19,7 +19,7 @@ From a source checkout, double-click `desktop.cmd` to compile and open the app u
 
 Installer settings and assigns are backed up before application. Image creation supports HDF and directory drives, including nested template ZIPs, and checks that output paths stay inside the new image folder. A failed creation remains in its own folder for inspection; installation is not started from an incomplete creation.
 
-User-package installation approvals record a local choice; they do not bypass source, checksum, or compatibility restrictions. Component selections can map to complete installer bundles, which are listed during review. WHDLoad list generation uses the maintained builder and backs up generated lists without changing game archives.
+User packages are selected directly with their installation checkboxes. Component selections can map to complete installer bundles, which are listed in Review & Install. WHDLoad list generation uses the maintained builder and backs up generated lists without changing game archives.
 
 The optional PrismRTG and PrismNet user packages extract their original
 installation files and pause for Enter after each package. Complete setup later

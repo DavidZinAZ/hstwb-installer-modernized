@@ -1,0 +1,11 @@
+Upstream: https://github.com/reinauer/ODFileSystem; corresponding source: https://github.com/reinauer/ODFileSystem/archive/refs/tags/v0.8.0.zip
+Original archive: ODFileSystem.lha
+Download: https://github.com/reinauer/ODFileSystem/releases/download/v0.8.0/ODFileSystem.lha
+SHA256: 53a514df8cb6c3e736857a284e7f01defd430b6828728726879d2ef83c931b02
+Bundle/software version: 0.8.0
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+The standalone Upstream-README.txt replaces developer-local documentation links with public v0.8.0 source links. Original archive and its README.md remain unchanged.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

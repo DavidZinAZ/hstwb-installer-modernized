@@ -1,0 +1,9 @@
+Upstream: https://aminet.net/package/comm/tcp/TheWire13
+Original archive: TheWire13.lha
+Download: https://se.aminet.net/comm/tcp/TheWire13.lha
+SHA256: fcab251e02a15032aa6c8a53abce26d095981c47e15a1ec8c5cd2202e4d7cd64
+Bundle/software version: 1.9.0
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

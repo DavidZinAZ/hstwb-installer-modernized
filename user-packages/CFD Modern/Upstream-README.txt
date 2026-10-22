@@ -1,0 +1,424 @@
+Short:        PCMCIA CompactFlash driver A600/1200
+Author:       jaroslav.pulchart@gmail.com (Jaroslav Pulchart), based on work by Torsten Jager and Paul Carter
+Uploader:     jaroslav pulchart gmail com (Jaroslav Pulchart)
+Type:         driver/media
+Version:      20261007
+Replaces:     driver/media/cfd.v20260930.lha
+Requires:     AmigaOS 2.0+, PCMCIA slot, CF-to-PCMCIA or SD-to-CF adapter
+Architecture: m68k-amigaos
+Kurz:         PCMCIA CompactFlash-Treiber A600/1200
+
+PCMCIA CompactFlash driver and supporting tools for Amiga 600/1200. Fork of driver/media/CFD133.lha.
+
+COMPONENTS IN THIS RELEASE
+==========================
+- compactflash.device 2.1 (30.09.2026)
+- compactflash.automount 2.0 (27.08.2026)
+- ptable.library 2.2 (03.10.2026) (new)
+- CFInfo 1.40 (03.10.2026) (new)
+- pcmciaspeed 1.37 (03.10.2026) (new)
+- pcmciacheck 2.2 (03.10.2026) (new)
+- lsptres 1.2 (03.10.2026) (new)
+
+WHAT'S NEW (07.10.2026)
+=======================
+
+Install:
+
+* New Installer and Setup scripts (setup writes cfd.prefs).
+* Reworked icon positions.
+
+ptable.library 2.2, lsptres 1.2:
+
+* Synced with amigaos-ptable, ptable.library ships in small and full
+  variants.
+
+Tools 'CFInfo 1.40', 'pcmciacheck 2.2', 'pcmciaspeed 1.37':
+
+* Improved paging in CFInfo and pcmciacheck.
+* pcmciacheck -cis lists all I/O ranges of a configuration entry.
+* pcmciacheck, pcmciaspeed: output lines end in LF alone.
+
+FEATURES
+========
+* Supports CompactFlash, MicroDrive, and various adapters (SD, MemoryStick, SmartMedia)
+* TD64 and SCSI emulation support
+* Works with fat95 filesystem for FAT32 support, not excluding Amiga native
+  (ffs, sfs, pfs) filesystems
+* Scans and automounts RDB, MBR, GPT, and flat (whole-disk FAT) partition
+  tables via ptable.library
+* Serial debug output for troubleshooting (Flags = 8)
+* Transfer speeds up to 2.2 MB/s read, 1.9 MB/s write
+  (in multi-sector mode if firmware supports it or with Flags = 16 override)
+
+REQUIREMENTS
+============
+* Amiga 600 or 1200 with PCMCIA slot (A1200 tested)
+* AmigaOS 2.0 or higher (3.2.3 tested)
+* "CompactFlash to PCMCIA/ATA" adapter card (see images/cf-type-1.jpg, images/cf-type-2.jpg)
+  or SD-to-CF adapter (see images/sd-cf-adapter.jpg)
+* fat95 filesystem (disk/misc/fat95.lha) recommended
+* Installer 43.3 or newer for Install (without it, install by hand)
+
+INSTALLATION
+============
+
+* Double-click Install. It detects the CPU, copies compactflash.device
+  to DEVS: and ptable.library and compactflash.automount to LIBS:
+  (small variant, full in Expert mode), and offers the tools, the CF0
+  mountlist, the CF0 disk icon and the example cfd.prefs. fat95 is
+  installed separately.
+
+  In Expert mode it also adds a LoadModule line at the top of
+  S:User-Startup. cfd and fat95 share one LoadModule line. Adapt that
+  line to your system as needed.
+
+  I recommend putting compactflash.device, compactflash.automount and
+  ptable.library in ROM as resident modules instead of LoadModule.
+
+* Double-click Setup to configure the automount feature. It writes
+  ENVARC:cfd.prefs and, if wanted, ENV:cfd.prefs.
+
+  In Expert mode it also sets the driver flags (FLAGS) and can allow
+  mounting a partition that is already mounted.
+
+By hand:
+1. Copy the contents of <flavor>/<cpu>/ to SYS: (devs/ to DEVS:,
+   libs/ to LIBS:).
+     - 68020/ for 68020 or higher, 68000/ for 68000/68010
+     - full (serial debug output, Flags = 8), small (no debug code)
+2. Copy c/CFInfo to C: (optional).
+3. Install fat95.
+4. Optional: copy ENVARC/cfd.prefs to ENVARC: and ENV:. Automount is
+   on by default, see automount.guide for all keys.
+5. OS 3.5+: copy def_CF0.info to ENVARC:Sys and ENV:Sys.
+6. Without automount, mount with Storage/DOSDrivers/CF0.
+
+For autoboot, see AUTOBOOT/AUTOMOUNT below.
+
+AUTOBOOT/AUTOMOUNT
+==================
+
+Boot/automount is provided by ptable.library plus the optional
+compactflash.automount module (both shipped under <flavor>/<cpu>/libs/).
+The plain compactflash.device on its own is a normal mount-only device.
+
+compactflash.automount carries two parts:
+  - cold-boot autoboot: at Kickstart cold start it walks the RDB on the
+    card, loads filesystem handlers into FileSystem.resource, and
+    publishes each partition via AddBootNode (bootable) / AddDosNode.
+    This needs compactflash.device + compactflash.automount + ptable.library
+    ROM-resident; a disk-only install is silently ignored.
+  - after-DOS bringup: it opens the device once DOS is up so the
+    card-detect interrupt and the automount agent start.
+
+Automount is ON by default everywhere. Disable it with AUTOMOUNT 0 in
+ENV:cfd.prefs (copy ENVARC/cfd.prefs as shown in INSTALLATION). On
+removal all supported filesystems are fully unmounted by default;
+UNMOUNT <names> restricts this, UNMOUNT NONE keeps the handlers. The
+resident driver re-reads cfd.prefs on every card insert and removal.
+
+On disk (no ROM), you get the same run-time automount (hot-swap) by
+adding to your user-startup-sequence:
+   LoadModule LIBS:compactflash.automount LIBS:ptable.library DEVS:compactflash.device
+(plus L:fat95). LoadModule cannot provide cold-boot autoboot; that needs
+a real ROM.
+
+The per-filesystem config keys (UNMOUNT, FLAGS_<fs>, CONTROL_<fs>)
+recognise exactly five filesystem names and no others: DOS, FFS, SFS,
+PFS, FAT. Any other name is silently ignored.
+
+FAT partitions still need fat95 loaded so its filesystem code is
+registered. At cold boot an empty slot is detected by a single Gayle
+read and costs nothing; with a card present the boot stub polls up to
+5 s for a slow one.
+
+More details are in automount.guide.
+
+MOUNT FLAGS
+===========
+Set in CF0 mountlist (can be combined, e.g. Flags = 24 for debug + enforce):
+
+  Flags = 0    /* default */
+  Flags = 1    /* "cfd first" hack for PCMCIA conflicts with other drivers */
+  Flags = 2    /* unused - was "skip invalid PCMCIA signature" (v1.37+) */
+  Flags = 4    /* use CardResource API instead of direct chipset access */
+  Flags = 8    /* output init messages to serial port at 9600 baud (v1.35+ full build) */
+  Flags = 16   /* force 256 sector transfers regardless of card capability (v1.35+) */
+  Flags = 32   /* skip multi-sector override auto-detection, use firmware value (v1.37+) */
+
+SERIAL DEBUG EXAMPLE
+====================
+
+With Flags = 8, connect serial cable and monitor at 9600 baud. The first
+line is a version banner that identifies the driver version and CPU tier
+([68020] or [68000]):
+
+  [CFD] compactflash.device 2.0 (11.09.2026) [68020]
+  [CFD] Card inserted
+  [CFD] Identifying card...
+  [CFD] Reset
+  [CFD] Configuring HBA
+  [CFD] ..done
+  [CFD] Setting voltage
+  [CFD] Voltage: 5V
+  [CFD] CIS gate
+  [CFD] ..DEVICE: type=0x0D speed=720ns size=0x00000000
+  [CFD] ..FUNCEXT: link=0x02, type=0x01, ifc=0x01
+  [CFD] ..RESULT: accept
+  [CFD] ..CONFIG: addr=0x00000200
+  (or: [CFD] ..CONFIG: default (0x200))
+  [CFD] RW test
+  [CFD] ..done, transfer mode: WORD
+  [CFD] Getting IDE ID ... done (ATA)
+    Model: TS4GCF133...............................
+    Serial: G68120052383AC0700C7
+    FW: 20110407
+    Max Multi (W47): 8001
+    Capabilities (W49): 0200
+    Multi Setting (W59): 0100
+    LBA Sectors (W60-61): 00777E70
+    DMA Modes (W63): 0000
+    PIO Modes (W64): 0003
+    UDMA Modes (W88): 0000
+  [CFD] IDENTIFY (raw):
+  W0: 848A 1E59 0000 0010 0000 0240 003F 0077
+  W8: 7E70 0000 4736 3831 3230 3035 3233 3833
+  W16: 4143 3037 3030 4337 0002 0002 0004 3230
+  W24: 3131 3034 3037 5453 3447 4346 3133 3320
+  W32: 2020 2020 2020 2020 2020 2020 2020 2020
+  W40: 2020 2020 2020 2020 2020 2020 2020 8001
+  ...
+  W248: 0000 0000 0000 0000 0000 0000 0000 0000
+  [CFD] Init multi mode
+  [CFD] ..max multi: 1
+  [CFD] ..set multi: 1, OK
+  [CFD] ..override test: OK
+  [CFD] ..done, multi RW: 256
+  [CFD] Card identified OK
+  [CFD] Notify clients
+  [CFD] Card removed
+
+Serial debug output at cold boot comes from a full build only and is unconditional,
+not gated by the mountlist Flags=8 setting. Two components emit output:
+compactflash.automount uses the [CFD] boot: prefix, and ptable.library uses [PT].
+
+Note that ptable.library opens the device with Flags=0, so the per-card identify
+log ([CFD] Reset, [CFD] CIS gate, etc.) is not printed during autoboot.
+
+  [CFD] boot: open ptable.library ...
+  [CFD] boot: ptable.library not preloaded, InitResident()...
+  [CFD] boot: BootScanPartitions(compactflash.device,0)
+  [PT] cold boot: scanning for partitions
+  [PT] no partition table (not RDB/MBR/GPT/FAT)
+  [PT] cold boot done, partitions registered: 0
+
+
+ENFORCE MULTI MODE (FLAG 16)
+============================
+Forces 256 sector reads/writes per IO regardless of card firmware
+support to improve IO performance. Same behaviour as v1.33 and
+earlier versions.
+
+WARNING: Verify your card is capable before using for real data!
+Set the flag and read any text file from CF card. The content should
+not contain repeating 32-byte pattern after first 512 bytes.
+See images/multimode-issue.jpg for example of broken output.
+
+NOTE: Since v1.37, the driver auto-detects multi-sector override
+capability and enables 256 sector mode when safe. This flag is now
+only needed as a manual override if auto-detection fails.
+
+Can be combined with MaxTransfer to limit sectors per IO:
+  Flags = 16
+  MaxTransfer = 0x10000   /* 128 sectors per IO (64 KB) */
+
+Tested configurations (author's experience - your results may vary):
+  SD-to-CF adapter (SanDisk)  32GB        - Works
+  SD-to-CF adapter (Samsung)  32GB, 64GB  - Works
+  CF cards                    <=4GB       - Works
+  CF cards                    >4GB        - Not working
+
+CFINFO UTILITY
+==============
+CFInfo displays detailed information about the inserted CF card.
+Requires compactflash.device v1.36+ for IDENTIFY data, v1.37+ for driver config.
+
+  CFInfo          ; Show info for compactflash.device unit 0
+  CFInfo 1        ; Show info for unit 1
+
+Example output:
+  CFInfo 20261007 - CompactFlash Card Information
+  Device:     compactflash.device unit 0
+
+  === CompactFlash Card Information ===
+
+  Model:      TS16GCF133
+  Serial:     G64126022013C4120210
+  Firmware:   20180926
+
+  === Capacity ===
+  Size:       15.2 GB (31522736 sectors)
+  Geometry:   30401 cyl, 16 heads, 63 sectors/track
+
+  === Capabilities ===
+  LBA:        Yes
+  DMA:        No
+  PIO Modes:  0, 1, 2, 3, 4
+  Multi-sect: Max 1 sectors/interrupt
+
+  === Card Type ===
+  Removable:  Yes
+  Type:       CompactFlash
+
+  === Driver Configuration ===
+  Driver Ver:   1.37
+  Mount Flags:  0 (none)
+  Multi-sect:   FW=1, Used=256
+  R/W Mode:     WORD/WORD
+
+R/W Mode indicates how the driver accesses the PCMCIA:
+  WORD        16-bit word access (standard)
+  BYTE (...)  8-bit byte access variants (fallback)
+  MMAP        Memory mapped word access
+
+SOURCE CODE
+===========
+
+Source code available at: https://github.com/pulchart/cfd
+
+Licensed under GNU LGPL v2.1
+
+SUPPORT
+--------
+The improvements to this driver are developed in my free time.
+If you'd like to support ongoing maintenance and experimentation,
+you can do so on Ko-fi: https://ko-fi.com/jaroslavpulchart
+
+HISTORY
+--------
+See docs/changes.guide for release notes and original CFD history.
+Online version: https://github.com/pulchart/cfd/blob/master/docs/changes.md
+
+CHECKSUMS
+=========
+full/68020/devs/compactflash.device 2.1 (30.09.2026) (14684 bytes):
+  MD5:    20125fdd039c8b8db78628f9ff170d2c
+  SHA256: 8585b11e63cba39e241f7771e56a10cc3573b87a40e4744f401dbf9f9c4e5965
+
+small/68020/devs/compactflash.device 2.1 (30.09.2026) (10860 bytes):
+  MD5:    03803800d5e48d7f3ad72a10cb709762
+  SHA256: d2d721759e4757f6513cbf097dc593aad5419d9f02fbe0245e8ed7dbeddc1ed5
+
+full/68000/devs/compactflash.device 2.1 (30.09.2026) (14808 bytes):
+  MD5:    0b8a0832730f3bc6d808c190811e844d
+  SHA256: 6622f368ed63d0d8643969f90d8fa7a404c3e36226102e7ebc6882eaba1e1cd2
+
+small/68000/devs/compactflash.device 2.1 (30.09.2026) (10976 bytes):
+  MD5:    e969c73e9f59e46a0f623b1746f4937b
+  SHA256: b906a972d142baa0f445591c3aab3880ba4ab5bd80939d9d72464f4ce0126656
+
+full/68020/libs/compactflash.automount 2.0 (27.08.2026) (1064 bytes):
+  MD5:    6524f0ccbd6de6932975e7b9ff2524ca
+  SHA256: 1be8b95356803908324dc3fb90bd5ab346577db1001630ea1af9686288cf028b
+
+small/68020/libs/compactflash.automount 2.0 (27.08.2026) (628 bytes):
+  MD5:    15de2c4626035a099fc8b05545e2777a
+  SHA256: 14d9558cacec110cb79092b02c2ff5b1d929d356054dcd96569b1f92f1b61493
+
+full/68000/libs/compactflash.automount 2.0 (27.08.2026) (1064 bytes):
+  MD5:    6524f0ccbd6de6932975e7b9ff2524ca
+  SHA256: 1be8b95356803908324dc3fb90bd5ab346577db1001630ea1af9686288cf028b
+
+small/68000/libs/compactflash.automount 2.0 (27.08.2026) (628 bytes):
+  MD5:    15de2c4626035a099fc8b05545e2777a
+  SHA256: 14d9558cacec110cb79092b02c2ff5b1d929d356054dcd96569b1f92f1b61493
+
+full/68020/libs/ptable.library 2.2 (03.10.2026) (11928 bytes):
+  MD5:    ab54e49754484d0e71f7cddd511a5f3f
+  SHA256: 3bc8e42df2d787e18fc066ca1d0c4b1f8a47971a438e4c97f8a36a218326be31
+
+small/68020/libs/ptable.library 2.2 (03.10.2026) (9884 bytes):
+  MD5:    a712189c33b106c8b60067733b30dc1f
+  SHA256: bafbc3c2350a6f9afb7b5fad5e86d0105e1d44673a866a891bcf71f8e6fd5330
+
+full/68000/libs/ptable.library 2.2 (03.10.2026) (11996 bytes):
+  MD5:    7cac89d1c267c1ab6a9a32d707b090a0
+  SHA256: e73c55b304495147861b4ab27ebede5f8ac8154e763d7a42e328e5d026bf11db
+
+small/68000/libs/ptable.library 2.2 (03.10.2026) (9952 bytes):
+  MD5:    7d84ff5982336761fd77588ea1afa590
+  SHA256: f9ff4b2c94d8d210c97a99ecbd02db8976574923210b5e35885c97075ea3658f
+
+CFInfo 1.40 (03.10.2026) (18560 bytes):
+  MD5:    78da0b21de2a50c779e3c2f7cad3bf23
+  SHA256: a2a7706b37d203237550814357b844fc68b0fc1a4b7a08982ce3aa7fb5493228
+
+pcmciaspeed 1.37 (03.10.2026) (9256 bytes):
+  MD5:    3a5ad1581d6b92e74433192a4b556bed
+  SHA256: ced92c4d895b5a7b06c21048527cde2d35c4e477aaec448892e36bf91f5b754d
+
+pcmciacheck 2.2 (03.10.2026) (34704 bytes):
+  MD5:    b6be02b244207306b2bababaa79a018f
+  SHA256: 7255c56f3c072a074ee02b367ae46bd4ba3c51bf808ae356b4dd32be1ad57643
+
+lsptres 1.2 (03.10.2026) (14180 bytes):
+  MD5:    c72d743750046076d8ab56f0c104313d
+  SHA256: 4718c271ee58742627b785470546e11faaddc42468e8651dd5205ccd6fd7fd81
+
+
+
+CONTENTS
+========
+cfd/Install       - Installer script
+cfd/Setup         - Installer script: write cfd.prefs
+cfd/full/<cpu>/   - per-CPU "full" sysroot (debug-capable device + library)
+cfd/small/<cpu>/  - per-CPU "small" sysroot (no debug code/strings)
+
+compactflash.device block device driver for PCMCIA CF cards:
+cfd/full/68020/devs/compactflash.device  - 68020+, debug-capable (serial output with Flags=8)
+cfd/small/68020/devs/compactflash.device - 68020+, no debug code
+cfd/full/68000/devs/compactflash.device  - 68000+, debug-capable (serial output with Flags=8)
+cfd/small/68000/devs/compactflash.device - 68000+, no debug code
+
+ptable.library (required) - partition scanner/automounter (RDB/MBR/GPT/FAT):
+cfd/full/68020/libs/ptable.library       - 68020+, debug-capable (serial output always on at boot)
+cfd/small/68020/libs/ptable.library      - 68020+, no debug code
+cfd/full/68000/libs/ptable.library       - 68000+, debug-capable (serial output always on at boot)
+cfd/small/68000/libs/ptable.library      - 68000+, no debug code
+
+compactflash.automount (optional) - boot/automount bringup; install for autoboot (ROM)
+                                  or DOS-time automount (ROM, or on disk via LoadModule):
+cfd/full/68020/libs/compactflash.automount  - debug-capable (serial output always on at boot)
+cfd/small/68020/libs/compactflash.automount - no debug code
+cfd/full/68000/libs/compactflash.automount  - debug-capable (serial output always on at boot)
+cfd/small/68000/libs/compactflash.automount - no debug code
+
+cfd/c/CFInfo      - Card information utility (displays model, size, capabilities)
+cfd/c/pcmciacheck - PCMCIA check utility
+cfd/c/pcmciaspeed - Speed test utility
+cfd/c/lsptres     - partition.resource entry lister (from ptable.library)
+
+cfd/Storage/DOSDrivers/CF0      - Mountlist entry (with flags documentation)
+cfd/Storage/DOSDrivers/CF0.info - Mountlist Workbench icon
+cfd/ENVARC/cfd.prefs            - Example config (copy to ENVARC:cfd.prefs to automount)
+
+cfd/docs/cfd.guide         - Main documentation
+cfd/docs/automount.guide   - Autoboot, automount, and ENV:cfd.prefs configuration
+cfd/docs/automount-review.guide - Automount feature review (expected behaviour)
+cfd/docs/changes.guide     - Release notes and original CFD history
+cfd/docs/CFInfo.guide      - CFInfo utility documentation
+cfd/docs/lsptres.guide     - lsptres utility documentation
+cfd/docs/pcmciacheck.guide - pcmciacheck utility documentation
+cfd/docs/pcmciaspeed.guide - pcmciaspeed utility documentation
+
+cfd/src/ - Full source code
+
+cfd/images/cf-type-1.jpg        - CF Type 1 adapter photo
+cfd/images/cf-type-2.jpg        - CF Type 2 adapter photo (also MicroDrive)
+cfd/images/sd-cf-adapter.jpg    - SD-to-CF adapter photo
+cfd/images/multimode-issue.jpg  - Example of broken output with unsupported enforce multi mode
+
+cfd/LICENSE - GNU LGPL v2.1
+
+"CompactFlash" is (TM) by CompactFlash Association

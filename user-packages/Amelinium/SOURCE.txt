@@ -1,0 +1,12 @@
+Upstream: https://aminet.net/package/comm/www/Amelinium
+Author site: http://juen.in
+Version: 1.4.0
+Original archive: Amelinium.lha
+Download: https://se.aminet.net/comm/www/Amelinium.lha
+SHA256: 5da739c397093df705461b3089c8b032716d271402e27b865f8355d3d1040851
+
+Archive retained unmodified, including all original platform builds and third-party notices. HstWB supplies extraction and setup notes. Automatic replacement requires compatibility review.
+
+The standalone Upstream-README.txt replaces the sample credential-bearing URL with descriptive text for publication scanning. The original readme remains unchanged inside Amelinium.lha.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

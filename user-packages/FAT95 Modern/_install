@@ -1,0 +1,60 @@
+; FAT95 Modern - maintained HstWB user package
+; Upstream authors retain ownership; see LICENSE.txt and SOURCE.txt.
+Stack 65536
+MakePath >NIL: "$INSTALLDIR"
+; Give existing parent drawers icons, preserving all existing icons.
+IF EXISTS "SYSTEMDIR:Tools"
+  IF NOT EXISTS "SYSTEMDIR:Tools.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "SYSTEMDIR:Tools/Hardware"
+  IF NOT EXISTS "SYSTEMDIR:Tools/Hardware.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "SYSTEMDIR:Tools/Hardware"
+    ENDIF
+  ENDIF
+ENDIF
+IF EXISTS "$INSTALLDIR"
+  IF NOT EXISTS "$INSTALLDIR.info"
+    IF EXISTS "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+      MakeIcon >NIL: "$INSTALLDIR" FROM "SYSTEMDIR:Prefs/Env-Archive/Sys/def_drawer.info"
+    ELSE
+      MakeIcon >NIL: "$INSTALLDIR"
+    ENDIF
+  ENDIF
+ENDIF
+echo "Extracting FAT95 Modern..."
+IF EXISTS "$INSTALLDIR/Upstream-README.txt"
+  echo "Existing FAT95 Modern drawer retained; no files overwritten."
+ELSE
+  MakePath >NIL: "SYSTEMDIR:Temp/_HstWB-fat95-modern/"
+  INSTALLDIR:C/LhA -m1 x "USERPACKAGEDIR:fat95.v20261007.lha" "SYSTEMDIR:Temp/_HstWB-fat95-modern/"
+  IF WARN
+    echo "Archive extraction failed. Installation stopped."
+    Ask "Press ENTER to continue"
+    Quit 20
+  ENDIF
+  Copy >NIL: "SYSTEMDIR:Temp/_HstWB-fat95-modern/fat95/#?" "$INSTALLDIR" ALL CLONE
+  IF WARN
+    echo "Package copy failed. Installation stopped."
+    Ask "Press ENTER to continue"
+    Quit 20
+  ENDIF
+
+  Copy >NIL: "USERPACKAGEDIR:LICENSE.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:SOURCE.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:ReadMe.txt" "$INSTALLDIR" CLONE
+  Copy >NIL: "USERPACKAGEDIR:Upstream-README.txt" "$INSTALLDIR" CLONE
+ENDIF
+echo "FAT95 Modern files ready in:"
+echo "$INSTALLDIR"
+echo "Run Install from this drawer; use Language to change the installed language."
+echo "Read ReadMe.txt for requirements and Upstream-README.txt for full instructions."
+Ask "Press ENTER to continue"

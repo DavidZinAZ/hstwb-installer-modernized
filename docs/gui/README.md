@@ -142,16 +142,13 @@ AmiFM's archive is supplied separately in public downloads. Obtain
 `user-packages/AmiFM` folder before installation. Review & Install checks that
 the file matches the supported release. A verified local copy may already exist.
 
-### Review and approval
+The **Description** column gives a short summary of each application. You can sort this column or search for words in its description. Hover over a description to read it in full.
 
-Click a row and choose **Review highlighted package…**, or use its **Review…** action. The dialog shows its local version, available version, destination, PC folder, source, and notes.
+The **Category** dropdown beneath Search filters applications by purpose. **All categories** shows the complete library. Categories and search work together; applications can belong to more than one category. Changing the filter preserves installation selections. **Select all visible** and **Clear visible selection** affect only the displayed rows. Update and scan buttons retain their library/selection scope.
 
-- **Open source webpage** lets you examine the original project or release.
-- **Open local folder** lets you inspect the local bundle.
-- **Recheck source** repeats its online version check.
-- **Approve for installation** records your choice to use the local package and checks it for the draft.
+### Selection and update status
 
-Approval does not verify an unknown release or override update restrictions. Changes to the recorded version, source, directory, or destination invalidate the recorded approval.
+Use the **Install** checkbox to include a user package in your installation draft. Application names open source webpages; **Check for updates** refreshes the source status.
 
 | Status or label | What to do |
 | --- | --- |
@@ -159,7 +156,7 @@ Approval does not verify an unknown release or override update restrictions. Cha
 | Local version verified | Local bytes match known metadata. Use Check for updates for an online comparison. |
 | Local version unverified | The payload is missing or differs from known metadata. Inspect your files or restore a known bundle before automatic replacement. |
 | Manual updates only | This bundle has no automatic update adapter. Follow the source's instructions and review compatibility. |
-| Compatibility review required | Automatic replacement is blocked by the adapter's compatibility rules. Installation approval does not remove that restriction. |
+| Compatibility review required | Automatic replacement is blocked by the adapter's compatibility rules. Selecting the package for installation does not remove that restriction. |
 | Source check failed / Not verified | Read Details, inspect the source webpage, and retry the check when available. |
 | Not versioned | The component has no author version that the app can report. This is not proof that it is missing. |
 

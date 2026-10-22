@@ -1,0 +1,79 @@
+Short:        Mount Linux/NAS shares as Amiga volumes
+Author:       Tobias Karlsson
+Uploader:     tobias karlsson piratkopia se (Tobias Karlsson)
+Type:         comm/net
+Version:      0.2b2
+Requires:     a TCP/IP stack providing bsdsocket.library V4
+Architecture: m68k-amigaos >= 2.0.4
+
+================================================================
+  AmiNFSv3 - mount a Linux or NAS directory as an Amiga volume.
+================================================================
+
+
+WHAT IT IS
+
+  A mounted filesystem handler speaking NFSv3 over TCP. A directory
+  exported by a Linux machine or a NAS becomes an ordinary Amiga
+  volume: Workbench icon, device and volume name, and every program
+  simply uses it as a disk. The classic Amiga NFS clients speak
+  NFSv2 over UDP, which modern Linux servers no longer offer at
+  all; Stefan Franke's nfs3 mount utility speaks v3. AmiNFSv3 is a
+  full DOSDriver filesystem, and talks to a current kernel nfsd and
+  to a Synology NAS out of the box.
+
+
+FEATURES
+
+  - Read and write, with honest failure handling: writes are
+    committed when a file closes, and the server's write verifier
+    is tracked - a server restart mid-file fails the Close instead
+    of losing data silently
+
+  - Automount from DEVS:DOSDrivers or mount-on-demand from Storage;
+    NFSDismount stops a handler cleanly, and the next access
+    remounts it fresh (replacing the handler binary needs no
+    reboot)
+
+  - Filenames converted between Amiga Latin-1 and the server's
+    UTF-8, so accented names are right on both sides
+
+  - Mount options for the volume name, identity (UID/GID), local
+    time zone, filename charset, transfer sizes, and request
+    pipelining - the defaults are safe on any machine from a plain
+    68000 up, the options let a fast setup stretch its legs
+
+  - Fast: on an A1200 with a PiStorm, 13-14 MB/s through c:Copy in
+    both directions, and 65 MB/s reading through an application
+    with a large buffer. Case-insensitive lookups the Amiga way,
+    correct behaviour verified byte-for-byte against the server
+    throughout development
+
+  - Files up to 4 GB (above 2 GB some AmigaDOS programs display
+    sizes wrongly - a 32-bit OS limit, not the handler's)
+
+
+INSTALLATION
+
+  nfs-handler into L:, NFSDismount into C:, edit the NFS0 DOSDriver
+  (server address, export path, options) and Mount it. The full
+  manual - including the one /etc/exports line the Linux side
+  needs, the firewall ports, and per-setup tuning - is AmiNFSv3.doc.
+
+
+SOURCE
+
+  https://github.com/creep-ltx/AmiNFSv3
+
+
+HISTORY
+
+  0.2b2  Accented filenames look right on both sides: names are
+         converted between the Amiga's Latin-1 and the server's
+         UTF-8 (CHARSET= option). Contributed by Renaud
+         Schweingruber (github.com/TuKo1982).
+  0.2b1  Fixed: a few drawers deep, programs showed paths like
+         moodbox:?/BBS Style and then could not read them (every
+         drawer above the last was named "?"). The parent of a file
+         is now its own drawer, not the volume's root.
+  0.1    First release.

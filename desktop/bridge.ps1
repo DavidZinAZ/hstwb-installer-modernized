@@ -165,7 +165,7 @@ if($Action -eq 'Catalog') {
    $url=if($c.Repository){'https://github.com/'+$c.Repository}elseif($c.AminetPath){'https://aminet.net/package/'+$c.AminetPath}elseif($c.MetadataUrl){$c.MetadataUrl}else{''}
    $saved=$state.Components | Where-Object {$_.Id -eq $c.Id} | Select-Object -First 1
    $version=if($saved.Version){$saved.Version}elseif($c.Version){$c.Version}else{'Not versioned'}
-   $rows += [pscustomobject]@{Category='User Packages';Id=($p.Id+'/'+$c.Id);Name=$c.Name;Package=$p.Name;Destination=(ReadAmigaDestination $directory);Directory=$directory;Version=$version;Available='Not checked';Status=$(if(Test-Path -LiteralPath $directory){'In local library'}else{'Missing'});Url=$url;Details=[string]$c.Reason}
+   $rows += [pscustomobject]@{Category='User Packages';Id=($p.Id+'/'+$c.Id);Name=$c.Name;Categories=@($(if($c.Categories){$c.Categories}else{$p.Categories}));Description=$(if($c.Description){$c.Description}else{$p.Description});Package=$p.Name;Destination=(ReadAmigaDestination $directory);Directory=$directory;Version=$version;Available='Not checked';Status=$(if(Test-Path -LiteralPath $directory){'In local library'}else{'Missing'});Url=$url;Details=[string]$c.Reason}
   }
  }
 } elseif($Action -in @('ScanLocal','Check','Update')) {
@@ -178,7 +178,7 @@ if($Action -eq 'Catalog') {
   if($Action -eq 'Update' -and $r.Status -eq 'Update available') {
    try{$backup=InstallUserPackageSourceUpdate $r;$r.Status='Updated';$r.Message='Backup: '+$backup;$r.LocalVersion=$r.Release.Version}catch{$r.Status='Update failed';$r.Message=$_.Exception.Message}
   }
-  if($r.Component.Provider -eq 'Manual'){$r.Status='Manual updates only'}elseif($r.Status -eq 'Review required' -and !$r.Release){$r.Status='Source check failed'};$rows += [pscustomobject]@{Category='User Packages';Id=$id;Name=$r.Component.Name;Version=$(if($r.LocalVersion){$r.LocalVersion}else{'Not versioned'});Available=$(if($r.Release.Version){$r.Release.Version}else{'Not verified'});Destination=(ReadAmigaDestination $r.Directory);Directory=$r.Directory;Status=$r.Status;Details=$r.Message}
+  if($r.Component.Provider -eq 'Manual'){$r.Status='Manual updates only'}elseif($r.Status -eq 'Review required' -and !$r.Release){$r.Status='Source check failed'};$rows += [pscustomobject]@{Category='User Packages';Id=$id;Name=$r.Component.Name;Categories=@($(if($r.Component.Categories){$r.Component.Categories}else{$r.Package.Categories}));Description=$(if($r.Component.Description){$r.Component.Description}else{$r.Package.Description});Version=$(if($r.LocalVersion){$r.LocalVersion}else{'Not versioned'});Available=$(if($r.Release.Version){$r.Release.Version}else{'Not verified'});Destination=(ReadAmigaDestination $r.Directory);Directory=$r.Directory;Status=$r.Status;Details=$r.Message}
  }
 }
 ConvertTo-Json -InputObject @($rows) -Depth 6 -Compress

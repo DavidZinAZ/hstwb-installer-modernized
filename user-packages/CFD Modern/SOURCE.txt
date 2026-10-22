@@ -1,0 +1,9 @@
+Upstream: https://github.com/pulchart/cfd; corresponding source included under cfd/src/ in the original archive
+Original archive: cfd.v20261007.lha
+Download: https://se.aminet.net/driver/media/cfd.v20261007.lha
+SHA256: 1221375868be6837cd92936530c2369c0d7fc2e0e0d88e51d2b1c3476c3df7bc
+Bundle/software version: 20261007
+
+Original authors retain copyright. Archive unmodified. HstWB supplies extraction wrappers and setup guidance. Preserve all upstream notices. Automatic bundle replacement requires compatibility review.
+
+Standalone documentation whitespace and seven-character heading rules are normalized for repository checks; the original archive remains unchanged.

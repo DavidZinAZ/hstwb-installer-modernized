@@ -151,6 +151,9 @@ function GetLhaArchiveMembers($path) {
                 $next=[BitConverter]::ToUInt16($bytes,$cursor+$size-2);$cursor+=$size;$size=$next
             }
         }
+        # Amiga LhA can append a file comment after a NUL in the filename field.
+        # Validate the actual path, never the comment (for example a source volume name).
+        $name=($name -split "`0",2)[0]
         $member=($dir+$name).Replace('\','/'); AssertUserPackageRelativePath $member
         if([Text.Encoding]::ASCII.GetString($bytes,$offset+2,5) -ne '-lhd-' -and [BitConverter]::ToUInt32($bytes,$offset+11) -gt 0){$members.Add($member)}
         $offset+=$header+$packed

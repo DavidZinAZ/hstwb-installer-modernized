@@ -1,0 +1,9 @@
+Amelinium / Emalinium by Pawel Nowak (Juen/APX+NAH+R3D).
+Original archive retained unmodified. HstWB supplies the extraction wrapper.
+No explicit license grant for Amelinium itself was found in the reviewed
+1.4.0 archive or upstream readme; no open-source license is assigned here.
+
+Retain the complete archive and original notices. Bundled third-party code
+has separate terms: libavc-LICENSE.txt, mbedtls-LICENSE.txt, pdfjs/LICENSE,
+and acknowledgments in Amelinium.readme. These third-party terms do not
+constitute a license grant for the application as a whole.
