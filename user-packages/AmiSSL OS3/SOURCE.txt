@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/util/libs/AmiSSL-v5-OS3
+Download: https://se.aminet.net/util/libs/AmiSSL-v5-OS3.lha
+Source/documentation: https://github.com/jens-maus/amissl
+Application release (Aminet metadata): 5.27
+Archive: AmiSSL-v5-OS3.lha
+SHA256: 722476cfbf21c0caf6ff4a77e32ee8baf67d3045db0e9ff2ccce6c782bed5847
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.

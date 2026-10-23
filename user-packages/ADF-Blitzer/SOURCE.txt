@@ -1,0 +1,12 @@
+Upstream: https://aminet.net/package/disk/misc/adfblitzer
+Download: https://se.aminet.net/disk/misc/adfblitzer.lha
+Author: Andreas Gouders; original application by Magnus Lundin.
+Release: 3.10 (22-Nov-2024), upstream readme.
+Archive: adfblitzer.lha
+SHA256: 71b1b807015efd1b3cfc4fa6339867a6691f96d486daa0433b29778de3783939
+
+Original archive retained unmodified with original icons and readme.
+HstWB supplies a separate extraction wrapper and guidance.
+Source for the current release is not published in the supplied archive;
+upstream readme states it is not released for the time being.
+Manual compatibility review required before replacing this bundle.

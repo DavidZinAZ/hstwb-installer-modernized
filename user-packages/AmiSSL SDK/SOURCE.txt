@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/util/libs/AmiSSL-v5-SDK
+Download: https://se.aminet.net/util/libs/AmiSSL-v5-SDK.lha
+Source/documentation: https://github.com/jens-maus/amissl
+Application release (Aminet metadata): 5.27
+Archive: AmiSSL-v5-SDK.lha
+SHA256: 5003bef8c5930354d16b0ce7196d71b2811891c42fad38a9238c5ce4098ad42a
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.

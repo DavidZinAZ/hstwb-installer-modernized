@@ -77,3 +77,23 @@ method against the actual binaries. Preserve notices and supply the required
 license and corresponding source using a compliant method. For GPLv3 object-code
 distribution, see [section 6](https://www.gnu.org/licenses/gpl-3.0.html#section6).
 This project has not completed that review for every bundled binary.
+
+## Aminet additions in 1.6.31
+
+AmiSSL runtime/SDK retain Apache-2.0 legal notices; AmigaGPT retains its MIT
+license and third-party license node. A1060Diag retains GPLv3 and source links.
+AmiDock retains its shareware terms and complete archive (missing executable).
+VirusZ retains its no-modification/no-profit complete-distribution terms.
+SnoopDos retains its non-commercial complete-distribution policy. DiskFlush
+retains its non-commercial terms. Full notices are in each LICENSE.txt and
+the unmodified archives. These restricted packages are not relicensed under
+HstWB terms. No dependency license is inferred from the parent application.
+
+## ADF-Blitzer (1.6.32)
+
+ADF-Blitzer 3.10 is by Andreas Gouders, based on Magnus Lundin's original
+application. The unmodified archive and original readme are retained. Its
+terms prohibit commercial use without permission, including paid ADF toolkits,
+Workbench distributions and toolpacks; magazine cover media are permitted with
+the readme. See `user-packages/ADF-Blitzer/LICENSE.txt` for the original text.
+No open-source license or source availability is inferred.

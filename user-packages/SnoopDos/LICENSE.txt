@@ -1,0 +1,38 @@
+Freely distributable for non-commercial purposes subject to the complete upstream distribution policy below.
+
+@NODE Distribution
+@TITLE "SnoopDos Distribution"
+
+SNOOPDOS DISTRIBUTION
+
+My distribution policy for SnoopDos is simple: it may be freely distributed
+for non-commercial purposes, as long as all the files in the original
+archive are present and have not been modified in any way.
+
+No charge for SnoopDos may be made, other than a reasonable cost to cover
+the media and copying time.
+
+If you wish to include SnoopDos on a magazine cover disk, you may do so as
+long as you send a complimentary copy of the magazine issue in which it
+appears to my home address. The entire package must be included on the
+disk, not just the executable. Please @{" contact " link Author} me in advance to ensure
+you have the latest version.
+
+If you wish to supply SnoopDos as part of a commercial product, please
+contact me to discuss it -- I'm easy to please.
+
+If you wish to supply SnoopDos as part of a CD-ROM compilation of freeware,
+you may do so as long as the disc contains at least 20 Mb of other
+freeware. Otherwise, contact me first please. Explicit permission is
+granted to distribute SnoopDos on any CD-ROM produced by Fred Fish / Amiga
+Library Services, and on any officially supported Aminet compilation CD-ROM.
+
+I reserve the right to publically poke fun at anyone who fails to abide by
+these distribution rules, along with more severe action if appropriate.
+
+Note: The source code for SnoopDos is available in a separate archive. You
+should be able to find it on Aminet in the util/moni directory, along with
+the main SnoopDos archive.
+
+See also: @{" Contents " link Main}  @{" History " link History}  @{" Credits " link Credits}  @{" Author " link Author}
+@ENDNODE

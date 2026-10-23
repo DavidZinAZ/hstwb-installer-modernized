@@ -274,4 +274,80 @@ A4091 and both ZZ9000 bundles report **Compatibility review required**. A4091's 
 
 ## Validation scope
 
-Host checks cover detection of all twenty-seven maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
+Host checks cover detection of all thirty-six maintained additions, payload hashes, real LhA/ZIP layouts, LF guest scripts, catalog coverage, extract-only Prism behavior and results pauses, and raw/ZIP updater success and rejection paths. These checks do not establish native installation, launch behavior or real-hardware operation. Fresh-image Amiga testing remains required; no firmware flashing or destructive diagnostics were performed.
+
+## Approved Aminet additions (1.6.31)
+
+Eight independent selections retain complete original archives, SHA256 hashes,
+upstream readmes and notices. They use extraction-only staging, the Enter pause
+and existing-drawer protection. Libraries and startup remain manual.
+Magic Menu 2.35 is already bundled; no duplicate selection was added.
+
+### AmiSSL OS3
+
+Aminet release: 5.27. Default drawer: `SYS:Utilities/AmiSSL`.
+
+OS 3.0+, 68020+. Run AmiSSL/Install-AmiSSL on the target Amiga. Preserve older required libraries and custom certificates. AmiSSL-Tunnel replaces shared AmiSSL entry libraries: choose the intended setup explicitly; do not install both over one another.
+
+### AmiSSL SDK
+
+Aminet release: 5.27. Default drawer: `SYS:Utilities/AmiSSLSDK`.
+
+Developer files only; not a replacement for the AmiSSL OS3 runtime. Follow AmiSSL/Developer/README-SDK and select the correct target toolchain.
+
+### AmigaGPT
+
+Aminet release: 3.4.0. Default drawer: `SYS:Utilities/AmigaGPT`.
+
+OS 3.1+, 68020+, 8 MB Fast RAM minimum (16 MB recommended), TCP/IP, AmiSSL 5.27+, MUI 3 minimum (5 recommended). Requires render.library 32+, guigfx.library 20+ (choose FPU/non-FPU), codesets.library 6.22+, MCC_Guigfx, MCC_NList, MCC_TextEditor 15.56+ and PNG datatype. Run AmigaGPT/Install-AmigaGPT; bundled ActionTextEditor/AudioPlayer classes are installed by upstream. Configure your provider API key or compatible local server yourself. Preserve settings, keys and histories. Speech is optional; copyrighted narrator.device is not supplied.
+
+### A1060Diag
+
+Aminet release: 0.4. Default drawer: `SYS:Utilities/A1060Diag`.
+
+OS 1.2+. Bridgeboard diagnostics for A1060 Sidecar; other supported bridgeboards are experimental. Read upstream documentation before manually using sidediag, sidepcload, sidestart or sidestatus. Hardware resets and tests are not run during installation.
+
+### VirusZ
+
+Aminet release: 1.04ß. Default drawer: `SYS:Utilities/VirusZ`.
+
+VirusZ III 1.04 beta. OS 2.04+. Install reqtools.library v38+, xfdmaster.library v37+ and xvs.library v33+ separately; xadmaster.library v8+ is recommended for archive scanning, SegTracker recommended on classic OS, disassembler.library optional. Dependency URLs are in Upstream-README.txt. Run VirusZ/Install after reviewing VirusZ/VirusZ.doc. No scans, repairs or startup activation are performed by HstWB.
+
+### SnoopDos
+
+Aminet release: 3.11. Default drawer: `SYS:Utilities/SnoopDos`.
+
+OS 2.04+. Launch SnoopDos manually; read SnoopDos.guide. No monitoring or startup entries are enabled during installation.
+
+### DiskFlush
+
+Aminet release: 1.10. Default drawer: `SYS:Utilities/DiskFlush`.
+
+Use OS 2.04+ conservatively (Aminet architecture); upstream readme says OS 2.0+. Run DiskFlush manually to request pending disk writes. VERBOSE shows operations; LISTFAILED reports failed devices. Return codes: 0 success, 5 partial failure, 20 failure. Do not automatically reboot after failure. Filesystem/device support and physical persistence require target testing; success is not a guarantee against power-loss data loss. HstWB does not execute DiskFlush or modify reboot scripts.
+
+### AmiDock
+
+Aminet release: 1.4.7. Default drawer: `SYS:Utilities/AmiDock`.
+
+INCOMPLETE UPSTREAM ARCHIVE: the linked 1.4.7 upload has no AmiDock executable. Only documentation, icons, brushes and arp.library are staged. This selection does not provide a working launcher. Obtain an authorized complete release before use. The included ReadMe describes version 1.3 and shareware terms. No startup entry or system library is installed.
+
+Host checks verify archive integrity, member layouts, hashes, catalog detection
+and extraction-only wrappers. Native Amiga launch and filesystem/device behavior
+have not been tested. AmiDock is explicitly incomplete, not a working launcher.
+
+## ADF-Blitzer (1.6.32)
+
+Select **ADF-Blitzer** under **Files & Archives**. The original 3.10 archive
+is extracted to `SYS:Utilities/ADF-Blitzer`, with existing-drawer protection
+and an Enter pause. Open `ADF-Blitzer` manually; no external files or startup
+entries are needed. OS 2+, 68000; upstream reports testing through WB 3.2.
+
+Read a floppy into an ADF or write an ADF to DF0: through DF3:. Writing replaces
+the target floppy contents. HstWB performs no disk operations. Original readme,
+icons, author notices, archive SHA256 and non-commercial terms are retained;
+commercial use and paid distributions require author permission. Source updates
+require compatibility review. Host checks validate archive integrity, executable
+signature, members, hashes, detection and wrapper behavior; native launch and
+floppy operations remain untested.
+
+Upstream: [ADF-Blitzer](https://aminet.net/package/disk/misc/adfblitzer).

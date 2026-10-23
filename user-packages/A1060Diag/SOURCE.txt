@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/util/misc/A1060Diag
+Download: https://se.aminet.net/util/misc/A1060Diag.lha
+Source/documentation: https://codeberg.org/shred/a1060-diag
+Application release (Aminet metadata): 0.4
+Archive: A1060Diag.lha
+SHA256: 8d152686b98a30f385a1dd984f3033dbe15ca0570566bcb590493ebf64989fbc
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.

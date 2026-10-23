@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/util/virus/VirusZ
+Download: https://se.aminet.net/util/virus/VirusZ.lha
+Source/documentation: https://aminet.net/package/util/virus/VirusZ
+Application release (Aminet metadata): 1.04ß
+Archive: VirusZ.lha
+SHA256: 5f28474634348047f42cc7a8c35bde6ff11dd4482806770e17c97a5b73330779
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.

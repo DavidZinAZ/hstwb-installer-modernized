@@ -9,6 +9,22 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.32 - ADF-Blitzer user package
+
+- Add only ADF-Blitzer 3.10 from the download-ranking review.
+- Preserve the original archive, notices and non-commercial terms; extract
+  to a selectable drawer with existing-data protection and manual launch.
+- No disk writes or startup changes occur during installation.
+
+## 1.6.31 - Approved Aminet user packages
+
+- Add AmiSSL OS3 and SDK 5.27, AmigaGPT 3.4.0, A1060Diag 0.4,
+  VirusZ III 1.04 beta, SnoopDos 3.11 and DiskFlush 1.10.
+- Add the original AmiDock 1.4.7 archive as explicitly incomplete: it lacks
+  the executable. Retain the existing Magic Menu selection.
+- Preserve original archives/notices and existing staged data; setup stays
+  manual and source replacements require compatibility review.
+
 ## 1.6.30 — WHDLoad Packs assigns
 
 - Both pack builders now create the Games, GamesBeta, Demos, DemosBeta and

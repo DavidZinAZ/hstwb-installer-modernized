@@ -1,0 +1,19 @@
+Freeware with restrictions; retain the complete unmodified distribution. Full upstream legal section below.
+
+The  VirusZ software package is FREEWARE and copyright © 1991-1999/2002-2021
+by  Georg Wittmann and © 1999-2001 by Dirk Stöcker.  The installation script
+is © by David Crawford and the MorphOS icon is © by Christian Rosentreter.
+
+No parts of this package may be altered by any means (this includes editing,
+reprogramming, crunching, resourcing etc.), except archiving.  The author is
+in  no  way  liable  for  any  changes  made  to any part of the package, or
+consequences  thereof  as he is in no way liable for damages or loss of data
+directly or indirectly caused by this software.
+
+Neither  fees  may  be  charged nor profits may be made by distributing this
+software package.  Outside a single machine environment, you are not allowed
+to  reproduce  single  parts  of  the  package,  but  you  have  to  copy it
+completely.
+
+----------------------------------------------------------------------------
+                             

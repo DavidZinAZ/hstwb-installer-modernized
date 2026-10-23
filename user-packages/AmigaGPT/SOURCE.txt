@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/util/misc/AmigaGPT
+Download: https://se.aminet.net/util/misc/AmigaGPT.lha
+Source/documentation: https://github.com/sacredbanana/AmigaGPT
+Application release (Aminet metadata): 3.4.0
+Archive: AmigaGPT.lha
+SHA256: 1b4ae4d77039e7bbbbdb353fefcb153c4095727218745dfe07889f9257a73f01
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.

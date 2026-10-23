@@ -1,0 +1,10 @@
+Upstream: https://aminet.net/package/disk/misc/DiskFlush
+Download: https://se.aminet.net/disk/misc/DiskFlush.lha
+Source/documentation: https://aminet.net/package/disk/misc/DiskFlush
+Application release (Aminet metadata): 1.10
+Archive: DiskFlush.lha
+SHA256: 767750131b50bf21f44b04614a52d6cda6a7b4bbdbfaa58c4695243646c664dd
+
+Original archive retained unmodified, including all original notices.
+HstWB supplies the separate extraction wrapper and setup notes only.
+Automatic replacement requires compatibility review. See LICENSE.txt.
