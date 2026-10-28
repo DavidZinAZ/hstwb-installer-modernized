@@ -15,7 +15,7 @@ $os=Join-Path $fixture 'media/nested/os.adf';$rom=Join-Path $fixture 'media/nest
 [IO.File]::WriteAllBytes((Join-Path $fixture 'image/disk.hdf'),(New-Object byte[] 512))
 [IO.File]::WriteAllBytes((Join-Path $fixture 'winuae.exe'),[byte[]](1,2))
 @{Packages=@(@{Name='demo-package'},@{Name='helper-package'})} | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $fixture 'data/hstwb-packages.json')
-@{Packages=@(@{Id='tools';Name='Demo tools';Directory='Demo tools';Components=@(@{Id='one'},@{Id='two'})})} | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $fixture 'data/user-package-updates.json')
+@{Packages=@(@{Id='tools';SelectionId='bundle';Name='Demo tools';Directory='Demo tools';Components=@(@{Id='one'},@{Id='two'})})} | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $fixture 'data/user-package-updates.json')
 'SYS:Tools' | Set-Content (Join-Path $fixture 'user-packages/Demo tools/_installdir')
 '; synthetic installer, never executed' | Set-Content (Join-Path $fixture 'user-packages/Demo tools/_install')
 function AddPackage($name,$dependencies,$content=@()){$path=Join-Path $fixture ('packages/'+$name+'.zip');$zip=[IO.Compression.ZipFile]::Open($path,'Create');try{$entry=$zip.CreateEntry('hstwb-package.json');$writer=New-Object IO.StreamWriter($entry.Open());try{$writer.Write((@{Name=$name;Version='1.0';AmigaOsVersions=@('3.1');ContentIds=@($content);Dependencies=@($dependencies);Assigns=@(@{Name='Work';Path='DH1:Apps'})} | ConvertTo-Json -Depth 6))}finally{$writer.Dispose()}}finally{$zip.Dispose()}}
@@ -36,6 +36,11 @@ $plan=NewDesktopInstallerPlan $fixture $draft
 if(!$plan.Valid){throw ('Valid fixture failed: '+($plan.Issues | ConvertTo-Json -Compress))}
 Assert ($plan.Runtime.Packages.Count -eq 2) 'Unselected packages entered the runtime snapshot.'
 AssertDesktopRuntimeValidation $plan.Runtime
+$previousSelection=$draft.Selected
+$draft.Selected=@('package/demo-package','package/helper-package','tools/bundle')
+$bundlePlan=NewDesktopInstallerPlan $fixture $draft
+Assert ($bundlePlan.Valid -and $bundlePlan.UserPackageNames.Count -eq 1 -and $bundlePlan.UserPackageNames[0] -eq 'Demo tools') 'Single bundle selection was rejected or installed more than once.'
+$draft.Selected=$previousSelection
 # Unselected media must never be opened during selected-set validation.
 $unrelated=Join-Path $fixture 'media/other-workbench.adf'
 $otherRom=Join-Path $fixture 'media/other-kickstart.rom'

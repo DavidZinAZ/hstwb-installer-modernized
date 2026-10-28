@@ -125,6 +125,12 @@ if($Action -eq 'LoadSettings'){
 }
 Import-Module (Join-Path $root 'modules/user-package-updates.psm1') -Force
 $catalog=@(GetUserPackageCatalog (Join-Path $root 'data/user-package-updates.json'))
+# A bundle has one public selection ID; its payload IDs remain private update records.
+foreach($bundle in @($catalog | Where-Object SelectionId)){
+ $publicId=$bundle.Id+'/'+$bundle.SelectionId
+ $assetIds=@($bundle.Components | ForEach-Object {$bundle.Id+'/'+$_.Id})
+ if(@($ids | Where-Object {$_ -eq $publicId -or $_ -in $assetIds}).Count){$ids=@($ids | Where-Object {$_ -ne $publicId -and $_ -notin $assetIds})+$assetIds}
+}
 $rows=@()
 if($Action -in @('Catalog','ScanLocal','CheckPackages','DownloadPackages')) {
  $cache=Join-Path $root 'settings/desktop-package-catalog.json'
@@ -180,5 +186,17 @@ if($Action -eq 'Catalog') {
   }
   if($r.Component.Provider -eq 'Manual'){$r.Status='Manual updates only'}elseif($r.Status -eq 'Review required' -and !$r.Release){$r.Status='Source check failed'};$rows += [pscustomobject]@{Category='User Packages';Id=$id;Name=$r.Component.Name;Categories=@($(if($r.Component.Categories){$r.Component.Categories}else{$r.Package.Categories}));Description=$(if($r.Component.Description){$r.Component.Description}else{$r.Package.Description});Version=$(if($r.LocalVersion){$r.LocalVersion}else{'Not versioned'});Available=$(if($r.Release.Version){$r.Release.Version}elseif($r.Component.Provider -eq 'Manual'){'No update source'}elseif($Action -eq 'ScanLocal'){'Not checked'}elseif($r.Status -eq 'Source has no version'){'Not published'}else{'Check failed'});Destination=(ReadAmigaDestination $r.Directory);Directory=$r.Directory;Status=$r.Status;Details=$r.Message}
  }
+}
+foreach($bundle in @($catalog | Where-Object SelectionId)){
+ $assetIds=@($bundle.Components | ForEach-Object {$bundle.Id+'/'+$_.Id})
+ $assets=@($rows | Where-Object {$_.Id -in $assetIds})
+ if(!$assets.Count){continue}
+ $row=$assets[0].PSObject.Copy();$row.Id=$bundle.Id+'/'+$bundle.SelectionId;$row.Name=$bundle.Name
+ $row.Version=(@($assets.Version | Select-Object -Unique) -join ' / ')
+ $row.Available=(@($assets.Available | Select-Object -Unique) -join ' / ')
+ $states=@($assets.Status | Select-Object -Unique)
+ $row.Status=if($states.Count -eq 1){$states[0]}elseif(@($states | Where-Object {$_ -match 'failed|unverified|unavailable'}).Count){'Bundle needs attention'}elseif('Update available' -in $states){'Update available'}else{'Mixed payload versions'}
+ $row.Details=(@($assets | ForEach-Object {if($_.Details){$_.Name+': '+$_.Details}}) -join '; ')
+ $rows=@($rows | Where-Object {$_.Id -notin $assetIds})+@($row)
 }
 ConvertTo-Json -InputObject @($rows) -Depth 6 -Compress

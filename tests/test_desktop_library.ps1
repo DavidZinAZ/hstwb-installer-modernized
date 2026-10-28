@@ -103,3 +103,41 @@ Write-Host 'PASS: offline local scans verify payload hashes and never query rele
 $output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action Emulators
 if($LASTEXITCODE -ne 0){throw 'Emulator discovery failed when optional folders were absent.'}
 Write-Host 'PASS: emulator discovery tolerates missing optional directories.'
+
+# One A4091 selection must update every payload and accept saved IDs from both versions.
+$bundleDir=Join-Path $fixture 'user-packages/A4091 Tools';$null=New-Item -ItemType Directory -Path $bundleDir
+'SYS:Tools/A4091' | Set-Content (Join-Path $bundleDir '_installdir')
+'; complete bundle' | Set-Content (Join-Path $bundleDir '_install')
+$components=@();$assets=@()
+foreach($kind in @('adf','device','rom')){
+ $file='a4091.'+$kind
+ [IO.File]::WriteAllBytes((Join-Path $bundleDir $file),([byte[]](1)*64))
+ [IO.File]::WriteAllBytes((Join-Path $fixture ('sources/'+$file)),([byte[]](2)*64))
+ $components+=@{Id=('a4091-'+$kind);Name=('A4091 Tools / '+$file);Provider='GitHub';Repository='example/a4091';TagPattern='^v([0-9.]+)$';AssetPattern=('^'+[regex]::Escape($file)+'$');Version='1.0';LocalFile=$file;Mode='RawFile';BaselineSha256=(Get-FileHash (Join-Path $bundleDir $file)).Hash}
+ $assets+=@{name=$file;browser_download_url=('https://example.invalid/'+$file)}
+}
+@{FormatVersion=1;Packages=@(@{Id='a4091-tools';SelectionId='a4091';Name='A4091 Tools';Directory='A4091 Tools';PackageVersion='1.0.0';Components=$components})} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $fixture 'data/user-package-updates.json')
+ConvertTo-Json -InputObject @(@{tag_name='v2.0';draft=$false;prerelease=$false;assets=$assets}) -Depth 8 | Set-Content (Join-Path $fixture 'sources/releases.json')
+$mock=@'
+function GetUserPackageWebContent($url,[switch]$Refresh){[pscustomobject]@{Content=[IO.File]::ReadAllText((Join-Path $PSScriptRoot '../sources/releases.json'))}}
+function SaveUserPackageDownload($url,$path){Add-Content (Join-Path $PSScriptRoot '../sources/downloads.txt') $url;Copy-Item -LiteralPath (Join-Path $PSScriptRoot ('../sources/'+([uri]$url).Segments[-1])) -Destination $path}
+'@
+Add-Content (Join-Path $fixture 'modules/user-package-updates.psm1') $mock
+$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $fixture 'desktop/bridge.ps1') -Action Catalog
+if($LASTEXITCODE -ne 0){throw 'Bundle catalog failed'}
+$catalogRows=ConvertFrom-Json ($output -join "`n")
+$bundle=@($catalogRows | Where-Object Category -eq 'User Packages')
+if($bundle.Count -ne 1 -or $bundle[0].Id -ne 'a4091-tools/a4091' -or $bundle[0].Name -ne 'A4091 Tools'){throw 'A4091 was split into separate selectable rows'}
+'["a4091-tools/a4091"]' | Set-Content $request
+$updated=@(InvokeBridge Update)
+if($updated.Count -ne 1 -or $updated[0].Status -ne 'Updated' -or $updated[0].Version -ne '2.0'){throw 'Single selection did not update the complete A4091 bundle'}
+if(@(Get-Content (Join-Path $fixture 'sources/downloads.txt')).Count -ne 3){throw 'A4091 did not download all three payloads'}
+$state=Get-Content (Join-Path $bundleDir '_update-state.json') -Raw|ConvertFrom-Json
+if(@($state.Components).Count -ne 3){throw 'A4091 lost individual payload update records'}
+foreach($selection in @('a4091','a4091-adf','a4091-device','a4091-rom')){
+ ('["a4091-tools/'+$selection+'"]') | Set-Content $request
+ $current=@(InvokeBridge Update)
+ if($current.Count -ne 1 -or $current[0].Id -ne 'a4091-tools/a4091' -or $current[0].Status -ne 'Current'){throw ('Saved A4091 selection failed: '+$selection)}
+}
+if(@(Get-Content (Join-Path $fixture 'sources/downloads.txt')).Count -ne 3){throw 'Current A4091 bundle downloaded again'}
+Write-Host 'PASS: one A4091 selection updates all three files, retains payload records, accepts saved IDs and skips repeat downloads.'

@@ -963,7 +963,8 @@
         "Storage & Filesystems",
         "Hardware & Drivers",
         "Diagnostics"
-      ]
+      ],
+      "SelectionId": "a4091"
     },
     {
       "Id": "zz9000-firmware",

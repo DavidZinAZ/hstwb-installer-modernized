@@ -9,6 +9,12 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.34 - Restore the A4091 Tools package selection
+
+- Show A4091 Tools as one selectable package and restore its original saved selection ID.
+- Migrate selections from the split rows and update all three payloads through the single package selection.
+- Accept the bundle selection during installation while retaining separate internal payload version records.
+
 ## 1.6.33 - User-package library updates
 
 - Remove blanket compatibility-review blocks from PC library updates; retain archive validation and backups.

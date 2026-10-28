@@ -126,6 +126,8 @@ Both packages support newer release updates in the PC library.
 Run the upstream installers manually on the Amiga. See the
 [package notes](../additional-user-packages.md) for details.
 
+A4091 Tools is one selectable package. Updating it checks all three payloads (ADF, device and ROM); saved selections from the earlier split rows are migrated automatically.
+
 ### More extraction-only applications
 
 NetHarness, NilBBS, AmiFM, NilTerm, AmiDT, SCSIToolbox-Amiga, NoClick, AmiTime

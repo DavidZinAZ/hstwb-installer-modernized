@@ -152,7 +152,7 @@ function NewDesktopInstallerPlan($root,$draft){
     if(!$local){[void]$issues.Add(@{Area='Packages';Message=('Download the selected package: '+$entry.Name)});continue}
     $packageNames+=$local.Name;$file=Get-Item -LiteralPath $local.PackageFile;$versions+=$local.Name+'@'+$local.Version+'|'+$file.Length+'|'+$file.LastWriteTimeUtc.Ticks
    }else{
-    $entry=$users.Packages | Where-Object {$p=$_;@($p.Components | Where-Object {($p.Id+'/'+$_.Id) -eq $id}).Count} | Select-Object -First 1
+    $entry=$users.Packages | Where-Object {$p=$_;($p.SelectionId -and $id -eq ($p.Id+'/'+$p.SelectionId)) -or @($p.Components | Where-Object {($p.Id+'/'+$_.Id) -eq $id}).Count} | Select-Object -First 1
     if(!$entry){[void]$issues.Add(@{Area='User Packages';Message=('Unknown user-package selection: '+$id)});continue}
     $directory=Join-Path $userRoot $entry.Directory
     if(!(Test-Path -LiteralPath (Join-Path $directory '_installdir'))-or !(Test-Path -LiteralPath (Join-Path $directory '_install'))){[void]$issues.Add(@{Area='User Packages';Message=('Package installer files missing: '+$entry.Name)});continue}
