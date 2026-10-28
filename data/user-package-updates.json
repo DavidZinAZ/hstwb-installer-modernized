@@ -163,6 +163,23 @@
           "Mode": "Archive",
           "RequiredMembers": [],
           "Reason": "Date-based theme bundle with local presets. No verified versioned source adapter is available."
+        },
+        {
+          "Id": "titleshadow",
+          "Name": "TitleShadow",
+          "LocalFile": "titleshadow.lha",
+          "Version": "1.0b",
+          "BaselineSha256": "2daf2885c66ccfa0c25aaad69d7376935f0e95443b19fd2942075e00e444b08b",
+          "Provider": "Aminet",
+          "AminetPath": "util/boot/titleshadow",
+          "Extension": ".lha",
+          "VersionPattern": "(?im)^Short:.*\\(v([0-9]+(?:\\.[0-9]+)*[a-z]?)\\)",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "TitleShadow/TitleShadow",
+            "TitleShadow/TitleShadowPrefs"
+          ],
+          "Description": "Window title shadows used by the theme bundle."
         }
       ],
       "Description": "Window border themes for RTG Workbench screens.",
@@ -331,13 +348,31 @@
         {
           "Id": "bundle",
           "Name": "iGame",
-          "LocalFile": "",
+          "LocalFile": "iGame-1.5.lha",
           "Version": "1.6a",
-          "BaselineSha256": null,
-          "Provider": "Manual",
+          "BaselineSha256": "ad7e9933c9a60f5d2d0d8c831404dd3e382901bea9aaf0352b35e323f20af202",
           "Mode": "Archive",
-          "RequiredMembers": [],
-          "Reason": "Pinned legacy compatibility variant. Use the separately maintained iGame 2 package for current releases."
+          "Reason": "Newer iGame releases migrate the legacy installer to the maintained CPU-selectable layout. Existing library preferences are retained.",
+          "Provider": "GitHub",
+          "Repository": "MrZammler/iGame",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^iGame-v[0-9.]+-[0-9]+\\.lha$",
+          "RootTemplate": "iGame-v{version}",
+          "InstalledRoot": "iGame-v2.6.1",
+          "RequiredMembers": [
+            "{root}/iGame",
+            "{root}/iGame.030",
+            "{root}/iGame.040",
+            "{root}/iGame.060",
+            "{root}.info"
+          ],
+          "BundleMigration": "igame",
+          "InstallerReplacements": [
+            {
+              "Old": "iGame-v2.0-20201016.lha",
+              "New": "iGame-1.5.lha"
+            }
+          ]
         }
       ],
       "Description": "Browse and launch installed WHDLoad games.",
@@ -445,7 +480,8 @@
             "MagicMenu/020/MagicMenu"
           ],
           "AminetPath": "util/wb/MagicMenu_II",
-          "Extension": ".lha"
+          "Extension": ".lha",
+          "VersionPattern": "Short:.*\\(V([0-9.]+)\\)"
         },
         {
           "Id": "magicmenu235",
@@ -538,13 +574,19 @@
           "Provider": "Aminet",
           "Mode": "Archive",
           "RequiredMembers": [
-            "MCC_TextEditor/Libs/MUI/68000/TextEditor.mcc"
+            "MCC_TextEditor/Libs/MUI/AmigaOS3/TextEditor.mcc",
+            "MCC_TextEditor/Libs/MUI/AmigaOS3/TextEditor.mcp"
           ],
           "AminetPath": "dev/mui/MCC_TextEditor-15.56",
           "Extension": ".lha",
-          "AutoUpdate": false,
-          "Reason": "The newer author release requires a 68020+ and changes the MUI archive layout. Keep the legacy dependency until a CPU-specific migration is selected.",
-          "Description": "Text editor component for MUI applications."
+          "Reason": "Current TextEditor releases require a 68020 or newer CPU. Library updates do not change an existing Amiga installation.",
+          "Description": "Text editor component for MUI applications. Current upstream releases require 68020+.",
+          "InstallerReplacements": [
+            {
+              "New": "Copy >NIL: \"SYSTEMDIR:Temp/_TextEditor/MCC_TextEditor/Libs/MUI/AmigaOS3/TextEditor.#?\" \"$muilibsdir\" CLONE ALL",
+              "Old": "Copy >NIL: \"SYSTEMDIR:Temp/_TextEditor/TextEditor.#?\" \"$muilibsdir\" CLONE ALL"
+            }
+          ]
         },
         {
           "Id": "guigfxmcc",
@@ -567,11 +609,22 @@
           "LocalFile": "guigfx_render_nofpu.lha",
           "Version": "40.8",
           "BaselineSha256": "355b9957f51a82c79befa24d3249449defe8ea081b7c68d8d3d7fb1ea117bbf3",
-          "Provider": "Manual",
+          "Provider": "Aminet",
           "Mode": "Archive",
-          "RequiredMembers": [],
-          "Reason": "This is a combined no-FPU compatibility bundle. Upstream archives must be adapted and validated before replacing it.",
-          "Description": "Image rendering library used by graphics applications."
+          "RequiredMembers": [
+            "renderlib/libs/render.library"
+          ],
+          "Reason": "Updates render.library while retaining the existing no-FPU guigfx library.",
+          "Description": "Image rendering library used by graphics applications.",
+          "AminetPath": "dev/misc/renderlib",
+          "Extension": ".lha",
+          "PreserveLocalAs": "guigfx-baseline.lha",
+          "InstallerReplacements": [
+            {
+              "New": "lha -m1 -q x \"USERPACKAGEDIR:guigfx-baseline.lha\" \"$libsdir/\"\nlha -m1 -q x \"USERPACKAGEDIR:guigfx_render_nofpu.lha\" \"SYSTEMDIR:Temp/_render/\"\nCopy >NIL: \"SYSTEMDIR:Temp/_render/renderlib/libs/render.library\" \"$libsdir/render.library\" CLONE\nDelete >NIL: \"SYSTEMDIR:Temp/_render\" ALL",
+              "Old": "lha -m1 -q x \"USERPACKAGEDIR:guigfx_render_nofpu.lha\" \"$libsdir/\""
+            }
+          ]
         }
       ],
       "Description": "User interface and graphics components used by iGame.",
@@ -638,13 +691,20 @@
         {
           "Id": "bundle",
           "Name": "VisualPrefs",
-          "LocalFile": "",
+          "LocalFile": "VP-QuickFix.lha",
           "Version": "1.5n",
-          "BaselineSha256": null,
-          "Provider": "Manual",
+          "BaselineSha256": "3994b3d8f25bc2ff703a4dea9d585f6955c14281d7c15921d39954ca64c10c82",
+          "Provider": "Aminet",
           "Mode": "Archive",
-          "RequiredMembers": [],
-          "Reason": "Contains CPU-specific quick fixes and customized themes; the older Aminet base cannot replace this patched bundle."
+          "RequiredMembers": [
+            "VP-QuickFix/VisualPrefs_000",
+            "VP-QuickFix/GUI_000",
+            "VP-QuickFix/VisualPrefs_060",
+            "VP-QuickFix/GUI_060"
+          ],
+          "Reason": "Updates the patched CPU variants while retaining local themes and preferences.",
+          "AminetPath": "util/wb/VP-QuickFix",
+          "Extension": ".lha"
         }
       ],
       "Description": "Customize Workbench window borders and interface appearance.",
@@ -856,7 +916,7 @@
       "PackageVersion": "1.0.0",
       "Components": [
         {
-          "Id": "a4091",
+          "Id": "a4091-adf",
           "Name": "A4091 Tools / A4091.adf",
           "LocalFile": "A4091.adf",
           "Version": "42.39",
@@ -867,11 +927,10 @@
           "AssetPattern": "^a4091_[0-9.]+\\.adf$",
           "Mode": "RawFile",
           "RequiredMembers": [],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         },
         {
-          "Id": "a4091",
+          "Id": "a4091-device",
           "Name": "A4091 Tools / a4091.device",
           "LocalFile": "a4091.device",
           "Version": "42.39",
@@ -882,11 +941,10 @@
           "AssetPattern": "^a4091\\.device$",
           "Mode": "RawFile",
           "RequiredMembers": [],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         },
         {
-          "Id": "a4091",
+          "Id": "a4091-rom",
           "Name": "A4091 Tools / a4091.rom",
           "LocalFile": "a4091.rom",
           "Version": "42.39",
@@ -897,8 +955,7 @@
           "AssetPattern": "^a4091\\.rom$",
           "Mode": "RawFile",
           "RequiredMembers": [],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Drivers, diagnostics and ROM files for A4091 SCSI controllers.",
@@ -929,8 +986,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/a500-2mb"
         },
         {
           "Id": "a500",
@@ -947,8 +1004,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/a500"
         },
         {
           "Id": "a500plus",
@@ -965,8 +1022,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/a500plus"
         },
         {
           "Id": "zorro2-2mb",
@@ -983,8 +1040,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/zorro2-2mb"
         },
         {
           "Id": "zorro2",
@@ -1001,8 +1058,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/zorro2"
         },
         {
           "Id": "zorro3-aga",
@@ -1019,8 +1076,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/zorro3-aga"
         },
         {
           "Id": "zorro3",
@@ -1037,8 +1094,8 @@
             "*/BOOT.bin",
             "*/ZZ9000.CFG"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Variants/zorro3"
         }
       ],
       "Description": "Board-specific firmware files for ZZ9000 hardware.",
@@ -1061,14 +1118,15 @@
           "Provider": "GitHub",
           "Repository": "BlitterStudio/zz9000-drivers",
           "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
-          "AssetPattern": "^zz9000\\-drivers\\-v[0-9.]+\\.zip$",
+          "AssetPattern": "^zz9000-drivers-v[0-9.]+\\.(?:zip|lha)$",
           "Mode": "ZipArchive",
           "RequiredMembers": [
             "*/ZZ9000Installer/Install ZZ9000",
             "*/ZZ9000Installer/Libs/Picasso96/ZZ9000.card"
           ],
-          "AutoUpdate": false,
-          "Reason": "Hardware support bundle: review the matching release and regenerate the complete bundle before updating. No hardware activation or flashing is automatic."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
+          "ExtractTo": "Payload",
+          "AlternateLha": true
         }
       ],
       "Description": "Install graphics and hardware support for ZZ9000 cards.",
@@ -1127,8 +1185,7 @@
             "PrismRTG/PrismD",
             "PrismRTG/Drivers/UAEGFX.driver"
           ],
-          "AutoUpdate": false,
-          "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "RTG graphics support for compatible graphics cards.",
@@ -1158,8 +1215,7 @@
             "PrismNet/C/PrismNet",
             "PrismNet/Libs/bsdsocket.library"
           ],
-          "AutoUpdate": false,
-          "Reason": "System integration package: review upstream installer and system compatibility before replacing this bundle. HstWB extracts files; run the upstream installer manually on the Amiga."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "TCP/IP networking stack and network configuration tools.",
@@ -1185,8 +1241,7 @@
           "AssetPattern": "^NetHarness-[0-9.]+-PC\\.zip$",
           "Mode": "ZipArchive",
           "RequiredMembers": "NetHarness-PC/nhctl.py",
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Description": "PC companion tools for controlling an Amiga through NetHarness."
         },
         {
@@ -1209,8 +1264,7 @@
             "NetHarness/nhinspect.py",
             "NetHarness/README.md"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Connect an Amiga to companion remote-control tools on a PC.",
@@ -1313,8 +1367,7 @@
             "NilBBS/ReadMe.info",
             "NilBBS/WBStartup/BBSControl.info"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Host a bulletin board system on your Amiga.",
@@ -1344,7 +1397,6 @@
             "AmiFM/AmiFM.info",
             "AmiFM/README.md"
           ],
-          "AutoUpdate": false,
           "Reason": "User-supplied archive: download AmiFM-1.2.lha from upstream; no explicit redistribution license found. Automatic bundle replacement disabled.",
           "UserSupplied": true
         }
@@ -1388,8 +1440,7 @@
             "NilTerm/ReadMe",
             "NilTerm/ReadMe.info"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Terminal client for network and serial connections.",
@@ -1435,8 +1486,7 @@
             "AmiDT/ReadMe",
             "AmiDT/ReadMe.info"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Picture datatypes for displaying additional image formats.",
@@ -1473,8 +1523,7 @@
             "SCSIToolbox/SHARED.mountlist",
             "SCSIToolbox/sharedfs"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Tools for compatible BlueSCSI and ZuluSCSI devices.",
@@ -1504,8 +1553,7 @@
             "NoClick/NoClick",
             "NoClick/README.md"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Suppress idle floppy drive clicking.",
@@ -1538,8 +1586,7 @@
             "AmiTime/LICENSE",
             "AmiTime/README.md"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Synchronize the Amiga clock with a network time server.",
@@ -1573,8 +1620,7 @@
             "AmiSSL-Tunnel/README.md",
             "AmiSSL-Tunnel/tls_proxy.py"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual."
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga."
         }
       ],
       "Description": "Use a companion LAN computer for TLS connections.",
@@ -1599,8 +1645,7 @@
             "AmiNetXDuo/Install-AmiNetXDuo",
             "AmiNetXDuo/ReadMe"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "Aminet",
           "AminetPath": "comm/net/AmiNetXDuo-1.0.0-rc1",
           "Extension": ".lha"
@@ -1629,8 +1674,7 @@
             "AmiNFSv3/C/NFSDismount",
             "AmiNFSv3/Storage/DOSDrivers/NFS0"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "Aminet",
           "AminetPath": "comm/net/AmiNFSv3",
           "Extension": ".lha"
@@ -1660,8 +1704,7 @@
             "TheWire13/libs/bsdsocket.library",
             "TheWire13/s/thewire13.conf"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "Aminet",
           "AminetPath": "comm/tcp/TheWire13",
           "Extension": ".lha"
@@ -1692,8 +1735,7 @@
             "cfd/small/68020/libs/ptable.library",
             "cfd/LICENSE"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "Aminet",
           "AminetPath": "driver/media/cfd.v20261007",
           "Extension": ".lha"
@@ -1725,8 +1767,7 @@
             "fat95/l/68020/fat95",
             "fat95/LICENSE"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "Aminet",
           "AminetPath": "disk/misc/fat95.v20261007",
           "Extension": ".lha"
@@ -1755,8 +1796,7 @@
             "ODFileSystem020",
             "README.md"
           ],
-          "AutoUpdate": false,
-          "Reason": "Review the complete upstream bundle and requirements before replacement. HstWB only extracts files; setup remains manual.",
+          "Reason": "Library updates preserve backups. Run any upstream setup manually on the target Amiga.",
           "Provider": "GitHub",
           "Repository": "reinauer/ODFileSystem",
           "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
@@ -1798,7 +1838,6 @@
             "mbedtls-LICENSE.txt",
             "pdfjs/LICENSE"
           ],
-          "AutoUpdate": false,
           "Reason": "Complete browser/mail bundle; select the correct CPU build. Classic HTTPS needs AmiSSL v5. TLS server certificates are not verified. Review upstream layout and notices before replacement."
         }
       ]
@@ -1819,7 +1858,7 @@
           "LocalFile": "XPKGuide.lha",
           "Version": "1.9",
           "BaselineSha256": "6eb69884c4cf439d95db4dff3f109341827924e0bc883d605c0d08e0078eff5e",
-          "Provider": "Manual",
+          "Provider": "Aminet",
           "MetadataUrl": "https://aminet.net/package/text/hyper/XPKGuide",
           "Mode": "Archive",
           "RequiredMembers": [
@@ -1832,8 +1871,9 @@
             "XPKGuide/libs/xpkmaster.library",
             "XPKGuide/libs/xfdmaster.library"
           ],
-          "AutoUpdate": false,
-          "Reason": "Kickstart 2.04+ and amigaguide.library V34+. Original Mailware/AFD distribution. Preserve newer installed libraries; setup remains manual. Aminet readme has no Version field; source updates require manual review."
+          "Reason": "Kickstart 2.04+ and amigaguide.library V34+. Original Mailware/AFD distribution. Preserve newer installed libraries; setup remains manual. Aminet readme has no Version field; source updates require manual review.",
+          "AminetPath": "text/hyper/XPKGuide",
+          "Extension": ".lha"
         }
       ]
     },
@@ -1860,7 +1900,6 @@
           "RequiredMembers": [
             "AmiSSL/Install-AmiSSL"
           ],
-          "AutoUpdate": false,
           "Reason": "OS 3.0+, 68020+. Run AmiSSL/Install-AmiSSL on the target Amiga. Preserve older required libraries and custom certificates. AmiSSL-Tunnel replaces shared AmiSSL entry libraries: choose the intended setup explicitly; do not install both over one another."
         }
       ]
@@ -1888,7 +1927,6 @@
           "RequiredMembers": [
             "AmiSSL/Developer/README-SDK"
           ],
-          "AutoUpdate": false,
           "Reason": "Developer files only; not a replacement for the AmiSSL OS3 runtime. Follow AmiSSL/Developer/README-SDK and select the correct target toolchain."
         }
       ]
@@ -1916,7 +1954,6 @@
           "RequiredMembers": [
             "AmigaGPT/Install-AmigaGPT"
           ],
-          "AutoUpdate": false,
           "Reason": "OS 3.1+, 68020+, 8 MB Fast RAM minimum (16 MB recommended), TCP/IP, AmiSSL 5.27+, MUI 3 minimum (5 recommended). Requires render.library 32+, guigfx.library 20+ (choose FPU/non-FPU), codesets.library 6.22+, MCC_Guigfx, MCC_NList, MCC_TextEditor 15.56+ and PNG datatype. Run AmigaGPT/Install-AmigaGPT; bundled ActionTextEditor/AudioPlayer classes are installed by upstream. Configure your provider API key or compatible local server yourself. Preserve settings, keys and histories. Speech is optional; copyrighted narrator.device is not supplied."
         }
       ]
@@ -1944,7 +1981,6 @@
           "RequiredMembers": [
             "sidediag"
           ],
-          "AutoUpdate": false,
           "Reason": "OS 1.2+. Bridgeboard diagnostics for A1060 Sidecar; other supported bridgeboards are experimental. Read upstream documentation before manually using sidediag, sidepcload, sidestart or sidestatus. Hardware resets and tests are not run during installation."
         }
       ]
@@ -1963,16 +1999,15 @@
           "Id": "virusz",
           "Name": "VirusZ",
           "LocalFile": "VirusZ.lha",
-          "Version": "1.04\u00df",
+          "Version": "1.04ß",
           "BaselineSha256": "5f28474634348047f42cc7a8c35bde6ff11dd4482806770e17c97a5b73330779",
-          "Provider": "Manual",
+          "Provider": "Aminet",
           "AminetPath": "util/virus/VirusZ",
           "Extension": ".lha",
           "Mode": "Archive",
           "RequiredMembers": [
             "VirusZ/VirusZ"
           ],
-          "AutoUpdate": false,
           "Reason": "VirusZ III 1.04 beta. OS 2.04+. Install reqtools.library v38+, xfdmaster.library v37+ and xvs.library v33+ separately; xadmaster.library v8+ is recommended for archive scanning, SegTracker recommended on classic OS, disassembler.library optional. Dependency URLs are in Upstream-README.txt. Run VirusZ/Install after reviewing VirusZ/VirusZ.doc. No scans, repairs or startup activation are performed by HstWB.",
           "MetadataUrl": "https://aminet.net/package/util/virus/VirusZ"
         }
@@ -2001,7 +2036,6 @@
           "RequiredMembers": [
             "snoopdos"
           ],
-          "AutoUpdate": false,
           "Reason": "OS 2.04+. Launch SnoopDos manually; read SnoopDos.guide. No monitoring or startup entries are enabled during installation."
         }
       ]
@@ -2029,7 +2063,6 @@
           "RequiredMembers": [
             "DiskFlush"
           ],
-          "AutoUpdate": false,
           "Reason": "Use OS 2.04+ conservatively (Aminet architecture); upstream readme says OS 2.0+. Run DiskFlush manually to request pending disk writes. VERBOSE shows operations; LISTFAILED reports failed devices. Return codes: 0 success, 5 partial failure, 20 failure. Do not automatically reboot after failure. Filesystem/device support and physical persistence require target testing; success is not a guarantee against power-loss data loss. HstWB does not execute DiskFlush or modify reboot scripts."
         }
       ]
@@ -2057,7 +2090,6 @@
           "RequiredMembers": [
             "AmiDock.info"
           ],
-          "AutoUpdate": false,
           "Reason": "INCOMPLETE UPSTREAM ARCHIVE: the linked 1.4.7 upload has no AmiDock executable. Only documentation, icons, brushes and arp.library are staged. This selection does not provide a working launcher. Obtain an authorized complete release before use. The included ReadMe describes version 1.3 and shareware terms. No startup entry or system library is installed."
         }
       ]
@@ -2087,7 +2119,6 @@
             "ADF-Blitzer/ADF-Blitzer.info",
             "ADF-Blitzer/ADF-Blitzer.readme"
           ],
-          "AutoUpdate": false,
           "Reason": "OS 2+, 68000. Standalone application; no disk operations during installation. Non-commercial terms: paid distribution requires author permission. Review upstream layout and terms before replacement."
         }
       ]

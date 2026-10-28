@@ -34,7 +34,7 @@ foreach($name in $names) {
 foreach($name in @('PrismRTG','PrismNet')) {
  $entry=$catalog | Where-Object Directory -eq $name
  $script=[IO.File]::ReadAllText((Join-Path $repo ('user-packages/'+$name+'/_install')))
- Assert ($entry.Components[0].AutoUpdate -eq $false) ('System package update must require review: '+$name)
+ Assert ($entry.Components[0].AutoUpdate -ne $false) ('Library updates must be enabled: '+$name)
  Assert (!$script.Contains('PrismInstaller') -and !$script.Contains('MINUSER')) ('Package must only extract files: '+$name)
  Assert ($script.Contains('Run Install_'+$name+' from its drawer')) ('Manual setup guidance missing: '+$name)
  Assert ($script.IndexOf('Ask "Press ENTER to continue"') -gt $script.IndexOf('files installed successfully.')) ('Results must pause for Enter: '+$name)
@@ -45,7 +45,7 @@ foreach($name in $newNames) {
  Assert ($script.Contains('IF EXISTS "$INSTALLDIR/Upstream-README.txt"')) ('Existing package data must be retained: '+$name)
  Assert ($script.LastIndexOf('Ask "Press ENTER to continue"') -gt $script.IndexOf('files ready in:')) ('Package results must pause: '+$name)
  Assert (!$script.Contains('MINUSER') -and !$script.Contains('PrismInstaller') -and $script -notmatch '(?im)^\s*(Run |Execute |Mount |Installer |Copy.*"(?:LIBS|C|L|DEVS):)') ('Package must not activate components: '+$name)
- foreach($component in $entry.Components){Assert ($component.AutoUpdate -eq $false) ('Bundle replacement needs review: '+$name)}
+ foreach($component in $entry.Components){Assert ($component.AutoUpdate -ne $false) ('Library updates must be enabled: '+$name)}
 }
 # The linked AmiDock upload is incomplete; do not imply it supplies a launcher.
 $dock=$catalog | Where-Object Directory -eq 'AmiDock'
@@ -92,13 +92,14 @@ foreach($mode in @('RawFile','ZipArchive')) {
   try{$w=New-Object IO.StreamWriter(($z.CreateEntry('Bundle/Tool')).Open());$w.Write('tool');$w.Dispose()}finally{$z.Dispose()}
  }
  Copy-Item $download (Join-Path $dir 'payload')
- $c=[pscustomobject]@{Id='test';Mode=$mode;LocalFile='payload';BaselineSha256=(Get-FileHash $download).Hash;RequiredMembers=@('Bundle/Tool');MagicHex=if($mode -eq 'RawFile'){'000003F3'}else{''}}
+ $c=[pscustomobject]@{Id='test';Version='1.0';Mode=$mode;LocalFile='payload';BaselineSha256=(Get-FileHash $download).Hash;RequiredMembers=@('Bundle/Tool');MagicHex=if($mode -eq 'RawFile'){'000003F3'}else{''};ExtractTo=if($mode -eq 'ZipArchive'){'Extracted'}else{''}}
  $release=@{Version='2.0';Url='https://example.invalid/payload';Sha256=(Get-FileHash $download).Hash}
  & $module {param($r,$p) $script:FixtureRelease=$r;$script:FixtureDownload=$p} $release $download
  $result=@{Status='Update available';Directory=$dir;Component=$c;Release=$release;Package=@{Directory=$mode;PackageVersion='1.0.0'}}
  $backup=InstallUserPackageSourceUpdate $result
  Assert (Test-Path $backup) 'Update backup missing'
  Assert ((GetUserPackageLocalState $dir).Components[0].Version -eq '2.0') 'Update state missing'
+ if($mode -eq 'ZipArchive'){Assert ((Get-Content (Join-Path $dir 'Extracted/Tool')) -eq 'tool') 'Extracted installation payload was not refreshed'}
  $hash=(Get-FileHash (Join-Path $dir 'payload')).Hash
  # Bad file signatures and archive traversal must preserve the active package.
  $release.Version='3.0'

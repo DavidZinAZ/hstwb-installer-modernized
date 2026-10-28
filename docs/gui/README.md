@@ -104,7 +104,7 @@ The **Destination Amiga folder** column shows where the bundle intends to instal
 
 Search and heading sorting work as in Packages. **Select all** checks every entry in this tab, including entries hidden by a search filter. **Clear selection** clears the whole tab. Neither action downloads or deletes files.
 
-**Scan local versions** reads local metadata and checks supported payload hashes without contacting release providers. **Check for updates** contacts sources for checked components, or all components when none are checked. **Update selected** checks and updates supported newer releases. **Update all in library** checks entries whose local bundle directory exists. Current or locally newer verified versions are not downloaded again.
+**Scan local versions** reads local metadata and checks supported payload hashes without contacting release providers. **Check for updates** contacts sources for checked components, or all components when none are checked. **Update selected** checks and updates supported newer releases. **Update all in library** checks entries whose local bundle directory exists. Current or locally newer verified versions are not downloaded again. Compatibility notices do not block PC library updates; archive layout checks still apply. ZIP and LhA updates refresh the extracted ZZ9000 payloads too. Current TextEditor MCC releases require a 68020 or newer CPU.
 
 Some bundles contain several components. Choosing a component can map to installation of the complete bundle. Review & Install lists the resulting bundles before running.
 
@@ -122,8 +122,8 @@ Picasso96 setup. PrismNet requires AmigaOS 3.1+, a 68000+ and a suitable network
 driver; disable an existing TCP/IP stack's startup before activating it. Complete
 hardware setup on the final machine when preparing an image in an emulator.
 
-Both packages report **Compatibility review required** for source updates.
-Their inclusion does not enable automatic bundle replacement. See the
+Both packages support newer release updates in the PC library.
+Run the upstream installers manually on the Amiga. See the
 [package notes](../additional-user-packages.md) for details.
 
 ### More extraction-only applications
@@ -156,8 +156,10 @@ Use the **Install** checkbox to include a user package in your installation draf
 | Local version verified | Local bytes match known metadata. Use Check for updates for an online comparison. |
 | Local version unverified | The payload is missing or differs from known metadata. Inspect your files or restore a known bundle before automatic replacement. |
 | Manual updates only | This bundle has no automatic update adapter. Follow the source's instructions and review compatibility. |
-| Compatibility review required | Automatic replacement is blocked by the adapter's compatibility rules. Selecting the package for installation does not remove that restriction. |
-| Source check failed / Not verified | Read Details, inspect the source webpage, and retry the check when available. |
+| Update failed | The download, hash, or required archive layout could not be validated. The previous library bundle is preserved. See Details. |
+| Source check failed / Check failed | The source request or release asset lookup failed. Details gives the reason. Retry Check for updates after resolving it. |
+| Source has no version / Not published | The source does not publish a usable version. No newer software version can be determined. |
+| Manual updates only / No update source | This custom bundle or user-supplied media has no automatic source adapter. Details explains the missing source. |
 | Not versioned | The component has no author version that the app can report. This is not proof that it is missing. |
 
 Supported updates retain backups beneath the user-package library's **.updates** directory. Review any failure message before retrying; the app does not silently approve an unverified payload.

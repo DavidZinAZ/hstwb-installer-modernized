@@ -36,19 +36,15 @@ Aminet readmes and official GitHub releases/websites supply available versions. 
 
 Before replacement, the updater rechecks the source and local identity, downloads to staging, verifies an upstream SHA256 when published, checks archive structure and required members, and records the downloaded payload hash. Whole previous packages are retained in `user-packages/.updates/backups`. Incompatible or failed updates leave the active package unchanged. Staging files are retained locally for diagnosis. Backups and staging directories are not selectable packages.
 
-Custom/patched bundles, ROM-derived or licensed components, ambiguous versions, CPU-incompatible releases, and unavailable sources show their specific review reason. For example, the newer TextEditor requires a 68020+ and a changed archive layout; it is not automatically substituted into the legacy dependency bundle. An unavailable WBDock author site is reported, not treated as proof that the local version is current. Unknown custom packages are shown as unmanaged until source metadata is added.
+Library updates no longer stop at blanket compatibility-review flags. Every configured versioned source is checked, and verified newer releases can update the PC library. Current and locally newer versions are skipped. TextEditor updates migrate the class-copy paths to the current AmigaOS3 archive layout; these upstream releases require a 68020 or newer CPU.
 
-PrismRTG and PrismNet are optional bundles with automatic replacement disabled;
-source checks report **Compatibility review required**. Their extraction wrappers
-show results and pause for Enter. Complete their application setup manually on
-the Amiga using the original installers. Updating the Windows bundle does not
-install or reconfigure either application in an existing Amiga image. See
-[Prism package setup](additional-user-packages.md#prismrtg-and-prismnet-setup-1615).
+ZZ9000 firmware updates refresh both the archive and its extracted board variant. ZZ9000 driver updates accept ZIP or LhA releases and refresh the extracted installation payload. Each A4091 asset has its own component ID so version records cannot collide. Source responses are reused within a bulk operation to avoid repeated GitHub requests.
 
-The nine application bundles added in 1.6.17 also require compatibility review
-before source replacement. Their host payload versions and package revisions are
-tracked independently. An extraction run retains an existing staged drawer;
-use the upstream update instructions to change the installed application.
+Custom bundles and user-supplied media without an automatic source adapter show **No update source**. Sources without a software version show **Not published**; request or asset lookup errors show **Check failed**, with the reason in Details. An unavailable author site is not treated as proof that a package is current. Unknown custom packages remain unmanaged until source metadata is added.
+
+PrismRTG, PrismNet and the additional application bundles support PC library updates. Their extraction wrappers still leave setup to the original upstream installers on the Amiga. Updating the Windows library does not install or reconfigure an application in an existing Amiga image. Existing staged application drawers retain their data; follow the upstream update instructions when changing the installed application.
+
+On October 27, 2026, isolated library updates were validated against all 18 detected newer releases, including ZZ9000 2.9.0, TextEditor 15.56, and legacy iGame migration to 2.6.1. Original user libraries were preserved.
 
 ## Validation on October 16, 2026
 

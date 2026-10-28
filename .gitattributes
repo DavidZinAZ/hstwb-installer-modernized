@@ -5,6 +5,7 @@
 /amiga/** text=auto eol=lf
 /user-packages/** text=auto eol=lf
 /user-packages/**/_install text eol=lf
+/modules/user-package-templates/**/_install text eol=lf
 /data/package-adapters/**/Install text eol=lf
 /data/package-adapters/**/*.txt text eol=lf
 /support/Repair-* text eol=lf

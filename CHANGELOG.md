@@ -9,6 +9,15 @@ upstream development and consolidation commits. Earlier upstream history remains
 in Git and the original repository. Versions below describe development states;
 the local tags stop at 1.6.3, so they are not all published tagged releases.
 
+## 1.6.33 - User-package library updates
+
+- Remove blanket compatibility-review blocks from PC library updates; retain archive validation and backups.
+- Skip current and locally newer versions, including compound versions and upstream beta labels.
+- Give A4091 payloads distinct component IDs and reuse source responses during a bulk check.
+- Refresh extracted ZZ9000 payloads and support the driver's switch from ZIP to LhA releases.
+- Migrate legacy iGame to maintained releases and add source adapters for VisualPrefs, render.library, TitleShadow and VirusZ, preserving preferences and bundled dependencies.
+- Distinguish missing update sources, unpublished versions and failed source checks in the desktop table.
+
 ## 1.6.32 - ADF-Blitzer user package
 
 - Add only ADF-Blitzer 3.10 from the download-ranking review.

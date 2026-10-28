@@ -1,19 +1,40 @@
 # User-package source updates. Archive payloads remain local; no downloaded code runs on the host.
 function GetUserPackageCatalog($path) {
-    $catalog = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json -ErrorAction Stop
+    $catalog = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
     if ($catalog.FormatVersion -ne 1) { throw 'Unsupported user-package catalog format.' }
+    foreach($package in $catalog.Packages){
+        if(@($package.Components | Group-Object Id | Where-Object Count -gt 1).Count){throw ('Duplicate component IDs in '+$package.Name)}
+    }
     return $catalog.Packages
 }
 
-function GetUserPackageWebContent($url) {
+function GetUserPackageWebContent($url,[switch]$Refresh) {
     if (([uri]$url).Scheme -ne 'https') { throw 'Update sources must use HTTPS.' }
     [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-    return Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 30 -Headers @{'User-Agent'='hstwb-updated'} -ErrorAction Stop
+    if(!$script:SourceResponses){$script:SourceResponses=@{}}
+    if(!$Refresh -and $script:SourceResponses.ContainsKey($url)){return $script:SourceResponses[$url]}
+    if(!$script:SourceFailures){$script:SourceFailures=@{}}
+    if(!$Refresh -and $script:SourceFailures.ContainsKey($url)){throw $script:SourceFailures[$url]}
+    try{$response=Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 30 -Headers @{'User-Agent'='hstwb-updated'} -ErrorAction Stop}
+    catch{$script:SourceFailures[$url]=$_.Exception;throw}
+    $script:SourceResponses[$url]=$response
+    return $response
 }
 
 function CompareSoftwareVersion($left, $right) {
+    $left=([string]$left).Trim() -replace '\u00df','beta1'
+    $right=([string]$right).Trim() -replace '\u00df','beta1'
+    if($left -eq $right -and $left){return 0}
+    if($left -match '/' -and $right -match '/'){
+        $a=$left -split '\s*/\s*';$b=$right -split '\s*/\s*'
+        if($a.Count -ne $b.Count){throw 'Upstream version needs manual comparison.'}
+        for($i=0;$i -lt $a.Count;$i++){$comparison=CompareSoftwareVersion $a[$i] $b[$i];if($comparison){return $comparison}}
+        return 0
+    }
+    $left=$left -replace '(?<=\d)b(?=\d+$)','beta'
+    $right=$right -replace '(?<=\d)b(?=\d+$)','beta'
     # Preserve upstream labels; compare numeric segments and documented suffixes.
-    $pattern = '^v?(\d+(?:\.\d+)*)(?:(pre|beta|rc)(\d+)|([a-z]))?$'
+    $pattern = '^v?(\d+(?:\.\d+)*)(?:[-\s]?(pre|beta|rc)[-\s]?(\d+)|([a-z]))?$'
     $a = [regex]::Match([string]$left,$pattern,'IgnoreCase'); $b = [regex]::Match([string]$right,$pattern,'IgnoreCase')
     if (!$a.Success -or !$b.Success) { throw 'Upstream version needs manual comparison.' }
     $av=@($a.Groups[1].Value.Split('.') | ForEach-Object {[int]$_}); $bv=@($b.Groups[1].Value.Split('.') | ForEach-Object {[int]$_})
@@ -28,10 +49,10 @@ function CompareSoftwareVersion($left, $right) {
     return [Math]::Sign([string]::Compare($a.Groups[4].Value,$b.Groups[4].Value,$true))
 }
 
-function GetAvailableUserPackageRelease($component) {
+function GetAvailableUserPackageRelease($component,[switch]$Refresh) {
     if($component.Provider -eq 'Manual'){throw $component.Reason}
     if($component.Provider -eq 'GitHub') {
-        $releases=(GetUserPackageWebContent ('https://api.github.com/repos/'+$component.Repository+'/releases')).Content | ConvertFrom-Json
+        $releases=(GetUserPackageWebContent ('https://api.github.com/repos/'+$component.Repository+'/releases') -Refresh:$Refresh).Content | ConvertFrom-Json
         $release=$releases | Where-Object {!$_.draft -and !$_.prerelease -and $_.tag_name -match $component.TagPattern} | Select-Object -First 1
         if(!$release){throw 'No compatible stable release found.'}
         $version=[regex]::Match($release.tag_name,$component.TagPattern).Groups[1].Value
@@ -43,16 +64,17 @@ function GetAvailableUserPackageRelease($component) {
     if($component.Provider -eq 'Aminet') {
         $response=$null;$usedUrl=$null
         foreach($base in @('https://aminet.net/','https://de.aminet.net/aminet/')) {
-            try {$usedUrl=$base+$component.AminetPath+'.readme';$response=GetUserPackageWebContent $usedUrl;break}catch{}
+            try {$usedUrl=$base+$component.AminetPath+'.readme';$response=GetUserPackageWebContent $usedUrl -Refresh:$Refresh;break}catch{}
         }
         if(!$response){throw 'Aminet metadata is unavailable; no local files were changed.'}
         $match=[regex]::Match($response.Content,'(?im)^Version:\s*([^\r\n]+)')
+        if(!$match.Success -and $component.VersionPattern){$match=[regex]::Match($response.Content,$component.VersionPattern,'IgnoreCase')}
         if(!$match.Success){throw 'The author supplies no software version; manual review is required.'}
         if($response.Content -match '(?im)^Architecture:' -and $response.Content -notmatch '(?im)^Architecture:.*m68k-amigaos'){throw 'Source does not advertise an Amiga 68k build.'}
         return @{Version=$match.Groups[1].Value.Trim();ReleaseDate=$null;Url=($usedUrl -replace '\.readme$',$component.Extension);Sha256=$null;MetadataUrl=$usedUrl}
     }
     if($component.Provider -eq 'Web') {
-        $response=GetUserPackageWebContent $component.MetadataUrl
+        $response=GetUserPackageWebContent $component.MetadataUrl -Refresh:$Refresh
         $match=[regex]::Match($response.Content,$component.VersionPattern,'IgnoreCase')
         if(!$match.Success){throw 'The official source version could not be verified.'}
         return @{Version=$match.Groups[1].Value;ReleaseDate=$null;Url=$component.DownloadUrl;Sha256=$null;MetadataUrl=$component.MetadataUrl}
@@ -62,11 +84,14 @@ function GetAvailableUserPackageRelease($component) {
 
 function GetUserPackageLocalState($directory) {
     $path=Join-Path $directory '_update-state.json'
-    if(Test-Path -LiteralPath $path){return Get-Content -LiteralPath $path -Raw | ConvertFrom-Json -ErrorAction Stop}
+    if(Test-Path -LiteralPath $path){return Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop}
     return $null
 }
 
 function GetUserPackageUpdateResults($packagesRoot, $catalog, [switch]$LocalOnly) {
+    $script:SourceResponses=@{}
+    $script:SourceFailures=@{}
+    $script:InstallSourceChecks=@{}
     if(!$packagesRoot -or !(Test-Path -LiteralPath $packagesRoot -PathType Container)){return}
     foreach($package in $catalog) {
         $directory=Join-Path $packagesRoot $package.Directory
@@ -74,6 +99,7 @@ function GetUserPackageUpdateResults($packagesRoot, $catalog, [switch]$LocalOnly
         $state=$null;$stateError=$null
         try{$state=GetUserPackageLocalState $directory}catch{$stateError=$_.Exception.Message}
         foreach($component in $package.Components) {
+            Write-Progress -Activity 'Checking user-package versions' -Status ('Source: '+$component.Name)
             $result=@{Package=$package;Component=$component;Directory=$directory;LocalVersion=$component.Version;Release=$null;Status='Review required';Message=''}
             if($stateError){$result.Message='Unreadable local update metadata: '+$stateError;[pscustomobject]$result;continue}
             $saved=$state.Components | Where-Object {$_.Id -eq $component.Id} | Select-Object -First 1
@@ -95,14 +121,13 @@ function GetUserPackageUpdateResults($packagesRoot, $catalog, [switch]$LocalOnly
                     [pscustomobject]$result;continue
                 }
                 $result.Release=GetAvailableUserPackageRelease $component
-                if($component.AutoUpdate -eq $false){$result.Status='Compatibility review required';$result.Message=$component.Reason}
-                elseif(!$localKnown){$result.Status='Local version unverified';$result.Message='Local payload differs from known metadata; review before replacing.'}
-                elseif(!$result.LocalVersion){$result.Status='Date-only release';$result.Message='No author version is available; package revision is tracked separately.'}
+                if(!$localKnown){$result.Status='Local version unverified';$result.Message='Local payload differs from known metadata; review before replacing.'}
+                elseif(!$result.LocalVersion){$result.Status='Version comparison unavailable';$result.Message='No local software version is recorded.'}
                 else {
                     $comparison=CompareSoftwareVersion $result.Release.Version $result.LocalVersion
                     $result.Status=if($comparison -gt 0){'Update available'}elseif($comparison -eq 0){'Current'}else{'Local version is newer'}
                 }
-            } catch {$result.Message=$_.Exception.Message}
+            } catch {$result.Message=$_.Exception.Message;$result.Status=if($result.Release){'Version comparison unavailable'}elseif($result.Message -like 'The author supplies no software version*'){'Source has no version'}else{'Source check failed'}}
             [pscustomobject]$result
         }
     }
@@ -193,10 +218,15 @@ function InstallUserPackageSourceUpdate($result) {
     AssertUserPackageRelativePath $component.LocalFile
     if((Get-Item -LiteralPath $original).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Updating linked package directories is not supported.'}
     # Recheck after selection, including source version and local file identity.
-    $fresh=GetAvailableUserPackageRelease $component
+    if(!$script:InstallSourceChecks){$script:InstallSourceChecks=@{}}
+    $sourceKey=$component.Provider+'|'+$component.Repository+'|'+$component.AminetPath+'|'+$component.MetadataUrl
+    $fresh=GetAvailableUserPackageRelease $component -Refresh:(!$script:InstallSourceChecks.ContainsKey($sourceKey))
+    $script:InstallSourceChecks[$sourceKey]=$true
     if($fresh.Version -ne $release.Version -or $fresh.Url -ne $release.Url){throw 'Source changed since the check. Check for updates again.'}
     $currentState=GetUserPackageLocalState $original
     $saved=$currentState.Components | Where-Object {$_.Id -eq $component.Id} | Select-Object -First 1
+    $localVersion=if($saved){$saved.Version}elseif($result.LocalVersion){$result.LocalVersion}else{$component.Version}
+    if((CompareSoftwareVersion $release.Version $localVersion) -le 0){throw 'The local version is already current or newer.'}
     $expected=if($saved){$saved.Sha256}else{$component.BaselineSha256}
     if((Get-FileHash -LiteralPath (Join-Path $original $component.LocalFile) -Algorithm SHA256).Hash -ne $expected){throw 'Local package changed since the check.'}
     $id=[guid]::NewGuid().ToString('N')
@@ -204,6 +234,10 @@ function InstallUserPackageSourceUpdate($result) {
     $null=New-Item -ItemType Directory -Path $work -Force
     $stage=Join-Path $work 'package'
     Copy-Item -LiteralPath $original -Destination $stage -Recurse -ErrorAction Stop
+    if($component.PreserveLocalAs -and !$saved){
+        AssertUserPackageRelativePath $component.PreserveLocalAs
+        Copy-Item -LiteralPath (Join-Path $original $component.LocalFile) -Destination (Join-Path $stage $component.PreserveLocalAs) -ErrorAction Stop
+    }
     $download=Join-Path $work 'download'
     SaveUserPackageDownload $release.Url $download
     if((Get-Item -LiteralPath $download).Length -eq 0){throw 'Downloaded payload is empty.'}
@@ -231,7 +265,8 @@ function InstallUserPackageSourceUpdate($result) {
         }
         Copy-Item -LiteralPath $download -Destination (Join-Path $stage $component.LocalFile) -Force
     } else {
-        if ($component.Mode -eq 'ZipArchive') {
+        $archiveMode=if($component.AlternateLha -and $release.Url -match '\.lha(?:\?.*)?$'){'Archive'}else{$component.Mode}
+        if ($archiveMode -eq 'ZipArchive') {
             Add-Type -AssemblyName System.IO.Compression.FileSystem
             $archive=[IO.Compression.ZipFile]::OpenRead($download)
             try {
@@ -245,7 +280,55 @@ function InstallUserPackageSourceUpdate($result) {
             $pattern=$required.Replace('{root}',$newRoot)
             if(!@($members | Where-Object {$_ -like $pattern}).Count){throw ('New archive is incompatible with the installer: missing '+$pattern)}
         }
+        if($component.ExtractTo) {
+            AssertUserPackageRelativePath $component.ExtractTo
+            $destination=Join-Path $stage $component.ExtractTo
+            $null=New-Item -ItemType Directory -Path $destination -Force
+            $roots=@($members | ForEach-Object {($_ -split '/')[0]} | Select-Object -Unique)
+            if($roots.Count -ne 1 -or @($members | Where-Object {$_ -notmatch '/'}).Count){throw 'Extracted payload requires one archive root folder.'}
+            if($archiveMode -ne 'ZipArchive'){
+                $tar=Join-Path $env:WINDIR 'System32/tar.exe'
+                if(!(Test-Path -LiteralPath $tar)){throw 'Windows tar.exe is required to refresh extracted LhA payloads.'}
+                foreach($member in $members){
+                    if($member.Contains('"')){throw 'Unsupported archive filename.'}
+                    $relative=$member -replace '^[^/]+/','';AssertUserPackageRelativePath $relative
+                    $target=Join-Path $destination $relative
+                    $null=[IO.Directory]::CreateDirectory((Split-Path $target -Parent))
+                    $info=New-Object Diagnostics.ProcessStartInfo
+                    $info.FileName=$tar;$info.Arguments='-xOf "'+$download+'" -- "'+$member+'"'
+                    $info.UseShellExecute=$false;$info.CreateNoWindow=$true;$info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
+                    $process=[Diagnostics.Process]::Start($info);$errors=$process.StandardError.ReadToEndAsync()
+                    $output=[IO.File]::Create($target)
+                    try{$process.StandardOutput.BaseStream.CopyTo($output);$process.WaitForExit();if($process.ExitCode -ne 0){throw ('LhA extraction failed: '+$errors.Result)}}finally{$output.Dispose();$process.Dispose()}
+                }
+            }else{
+            $archive=[IO.Compression.ZipFile]::OpenRead($download)
+            try {
+                $roots=@($archive.Entries | Where-Object Name | ForEach-Object {($_.FullName -split '/')[0]} | Select-Object -Unique)
+                if($roots.Count -ne 1 -or @($archive.Entries | Where-Object {$_.Name -and $_.FullName -notmatch '/'}).Count){throw 'Extracted payload requires one archive root folder.'}
+                foreach($entry in $archive.Entries) {
+                    if(!$entry.Name){continue}
+                    $relative=$entry.FullName -replace '^[^/]+/',''
+                    AssertUserPackageRelativePath $relative
+                    $target=Join-Path $destination $relative
+                    $null=New-Item -ItemType Directory -Path (Split-Path $target -Parent) -Force
+                    $inputStream=$entry.Open();$output=[IO.File]::Create($target)
+                    try{$inputStream.CopyTo($output)}finally{$inputStream.Dispose();$output.Dispose()}
+                }
+            }finally{$archive.Dispose()}
+            }
+        }
         Copy-Item -LiteralPath $download -Destination (Join-Path $stage $component.LocalFile) -Force
+        if($component.BundleMigration -and !$saved){
+            if($component.BundleMigration -ne 'igame'){throw 'Unknown bundle migration.'}
+            $template=Join-Path $PSScriptRoot 'user-package-templates/igame'
+            foreach($name in @('_install','IGAME.1.cfg','IGAME.1.prefs','iGame.info.000')){
+                $target=Join-Path $stage $name
+                if($name -eq '_install' -or !(Test-Path -LiteralPath $target)){
+                    Copy-Item -LiteralPath (Join-Path $template $name) -Destination $target -Force -ErrorAction Stop
+                }
+            }
+        }
         foreach($replacement in $component.InstallerReplacements) {
             $script=Join-Path $stage '_install';$text=[IO.File]::ReadAllText($script)
             if($text.Contains($replacement.Old)){$text=$text.Replace($replacement.Old,$replacement.New)}
