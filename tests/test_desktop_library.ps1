@@ -140,4 +140,9 @@ foreach($selection in @('a4091','a4091-adf','a4091-device','a4091-rom')){
  if($current.Count -ne 1 -or $current[0].Id -ne 'a4091-tools/a4091' -or $current[0].Status -ne 'Current'){throw ('Saved A4091 selection failed: '+$selection)}
 }
 if(@(Get-Content (Join-Path $fixture 'sources/downloads.txt')).Count -ne 3){throw 'Current A4091 bundle downloaded again'}
+$romFile=Join-Path $bundleDir 'a4091.rom';[IO.File]::WriteAllBytes($romFile,([byte[]](1)*64))
+$romState=$state.Components | Where-Object Id -eq 'a4091-rom';$romState.Version='1.0';$romState.Sha256=(Get-FileHash $romFile).Hash
+$state | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $bundleDir '_update-state.json')
+$repaired=@(InvokeBridge Update)
+if($repaired[0].Status -ne 'Updated' -or $repaired[0].Version -ne '2.0' -or @(Get-Content (Join-Path $fixture 'sources/downloads.txt')).Count -ne 4){throw ('Partial bundle update failed: '+($repaired | ConvertTo-Json -Compress))}
 Write-Host 'PASS: one A4091 selection updates all three files, retains payload records, accepts saved IDs and skips repeat downloads.'

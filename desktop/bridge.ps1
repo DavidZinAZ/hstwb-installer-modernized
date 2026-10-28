@@ -195,7 +195,7 @@ foreach($bundle in @($catalog | Where-Object SelectionId)){
  $row.Version=(@($assets.Version | Select-Object -Unique) -join ' / ')
  $row.Available=(@($assets.Available | Select-Object -Unique) -join ' / ')
  $states=@($assets.Status | Select-Object -Unique)
- $row.Status=if($states.Count -eq 1){$states[0]}elseif(@($states | Where-Object {$_ -match 'failed|unverified|unavailable'}).Count){'Bundle needs attention'}elseif('Update available' -in $states){'Update available'}else{'Mixed payload versions'}
+ $row.Status=if($states.Count -eq 1){$states[0]}elseif(@($states | Where-Object {$_ -match 'failed|unverified|unavailable'}).Count){'Bundle needs attention'}elseif('Update available' -in $states){'Update available'}elseif('Updated' -in $states -and @($assets.Version | Select-Object -Unique).Count -eq 1){'Updated'}else{'Mixed payload versions'}
  $row.Details=(@($assets | ForEach-Object {if($_.Details){$_.Name+': '+$_.Details}}) -join '; ')
  $rows=@($rows | Where-Object {$_.Id -notin $assetIds})+@($row)
 }
