@@ -1,0 +1,13 @@
+Upstream: https://github.com/ChuckyGang/AmiPart
+Author: John Hertell
+Release: https://github.com/ChuckyGang/AmiPart/releases/tag/proto-20261018-ee4c8f7
+Commit: ee4c8f74500eb8d1b81b7eb7f2ab76a85ca8ebde
+Corresponding source: https://github.com/ChuckyGang/AmiPart/archive/ee4c8f74500eb8d1b81b7eb7f2ab76a85ca8ebde.zip
+Original archive: AmiPart-20261018-PROTO.lha (unmodified)
+Download: https://github.com/ChuckyGang/AmiPart/releases/download/proto-20261018-ee4c8f7/AmiPart-20261018-PROTO.lha
+SHA256: 9646727a061233bc196f28cf98d33c98b709568cb61b9b15503df3813b749b4c
+
+MIT License copied from the matching upstream README.md License section.
+Upstream-README.txt is the full README.md at the pinned commit.
+HstWB supplies the extraction wrapper and setup notes.
+Prototype builds require manual review before replacing this bundle.

@@ -1,0 +1,131 @@
+# AmiPart
+
+A native AmigaOS 2.x hard disk partition editor with full RDB (Rigid Disk Block) support.
+
+> **Note:** AmiPart is the software formerly known as **DiskPart** — renamed to avoid confusion with the unrelated Microsoft Windows tool of the same name. Same program, same author, new name.
+
+## Download
+
+**[Latest build](https://github.com/ChuckyGang/AmiPart/releases/latest)** — including the executable, an autoboot ADF, and a native Linux CLI binary. Click **Assets** on that page to see the downloadable files.
+
+## Linux CLI
+
+AmiPart also builds as a **native Linux command-line tool** from the same
+source — the full CLI and script engine, operating on disk image files
+(`.hdf`), with backups made on the Amiga verifiable on Linux and vice
+versa:
+
+```
+make linux                          # builds host/amipart (plain gcc, no deps)
+./host/amipart IMAGE=disk.hdf INFO
+./host/amipart SCRIPT prep.script FORCE
+./host/amipart ?
+```
+
+Same commands and syntax as the Amiga version (see `cmdline.txt`).
+Raw devices work too — `sudo ./host/amipart DEV=/dev/sdb INFO` — with
+the disk opened exclusively (mounted disks are refused by the kernel).
+Quick-format works here too: AmiPart's internal formatter writes FFS/OFS,
+PFS3 and SFS volumes itself, byte-identical to the real handlers.
+See `host/README.txt` for details.
+
+---
+
+## About
+
+AmiPart is a partition management tool for the Amiga, built as a clean GadTools application that runs directly on Kickstart 2.x with no external library dependencies beyond the ROM. It was created out of a simple conviction: the Amiga deserves a good, modern partition editor — and it is better to have one now than never.
+
+> *"Vibecoded software might be argued with, but this is an experiment in what AI-assisted development can produce when given a clear goal and a demanding user."*
+
+**Director:** John Hertell — john(at)hertell.nu  
+**Code:** Claude Code (Anthropic)
+
+---
+
+
+## Requirements
+
+- AmigaOS 2.x (Kickstart 2.04 or later)
+- Intuition, GadTools, DOS libraries (all standard ROM)
+- ASL library optional (enables the Browse file requester in the filesystem driver dialog)
+
+---
+
+## Usage
+
+Run `AmiPart` from the Shell or double-click from Workbench.
+
+1. A device selector appears listing all detected disk controllers.
+   Use **Filter / Show All** to toggle between storage-only and full device lists.
+2. Select a device and click **Select** — a progress window shows each unit being probed.
+3. Select a unit and click **Select** to open the partition editor.
+4. Use the buttons along the bottom to manage partitions and filesystem drivers.
+5. Click **Write** when satisfied to commit changes to disk.
+
+### Workbench icon tooltypes
+
+When launched by double-clicking its icon, AmiPart reads these tooltypes from the icon (set them via the icon's **Information** window, or `NOWARNING` on the CLI):
+
+- `NOWARNING` — suppresses the startup disclaimer.
+- `LOWCHIP` — keep windows SIMPLE_REFRESH (no chip-RAM backing bitmap); uncovered window areas are then repainted only after the dialog on top closes. Default is SMART_REFRESH.
+- `WINDOW=left/top/width/height` — restores the partition editor window to this position and size on open, e.g. `WINDOW=50/30/640/400`. Ignored (falls back to the default centered size) if the saved geometry no longer fits the current screen — for example after switching to a smaller resolution. Not read when AmiPart is run from the Shell.
+
+---
+
+## Building
+
+Supports two m68k toolchains, auto-detected by `make`:
+
+- **Bebbo** (`m68k-amigaos-gcc`, default `/opt/amiga`)
+- **Bartman/Abyss** (`m68k-amiga-elf-gcc`)
+
+```sh
+make                       # auto-detect (prefers Bartman when its VS Code extension is installed, else Bebbo)
+make TOOLCHAIN=bebbo       # force Bebbo
+make TOOLCHAIN=bartman     # force Bartman
+```
+
+Or build with the Bebbo toolchain via Docker (no host install required):
+
+```sh
+./docker.sh
+```
+
+`make adf` builds `out/AmiPart.adf`, an autoboot floppy image that boots
+straight into AmiPart (no Workbench needed). Requires amitools
+(`pip install amitools`) for its xdftool.
+
+Output: `out/AmiPart`
+
+---
+
+## A Note on Vibecoding
+
+This project was developed through AI-assisted ("vibecoded") collaboration — the architecture, decisions, and direction came from a human; the implementation was written by an AI. Whether that makes the software more or less trustworthy is a fair question. The answer offered here is: judge it by what it does, read the source if you want, and always keep a backup before touching partition tables.
+
+---
+
+
+## License
+
+MIT License
+
+Copyright (c) 2026 John Hertell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

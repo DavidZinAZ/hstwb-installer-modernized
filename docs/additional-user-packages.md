@@ -351,3 +351,35 @@ signature, members, hashes, detection and wrapper behavior; native launch and
 floppy operations remain untested.
 
 Upstream: [ADF-Blitzer](https://aminet.net/package/disk/misc/adfblitzer).
+
+### ZZPlug (1.6.35)
+
+ZZPlug 0.8 is selectable under Hardware & Drivers. Default drawer:
+`SYS:Tools/Hardware/ZZPlug`. Requires AmigaOS 3.1+, 68020+ and MNT ZZ9000
+firmware 2.8+. Use a USB 2.0 hub for mice, keyboards and game pads.
+Game pads need lowlevel.library; USB sticks need CrossDOS or fat95.
+
+HstWB extracts the release and pauses. Run `Install_ZZPlug` manually on
+the target Amiga; upstream setup copies system files, edits User-Startup
+and starts the stack. Existing package drawers are retained. Read the
+included upstream documentation for setup and known limits.
+
+Upstream: [ZZPlug](https://github.com/lainejones/ZZPlug), GPL-3.0-or-later.
+Original release, SHA256, source link and full license are included.
+
+### AmiPart (1.6.38)
+
+AmiPart prototype 20261018 (commit ee4c8f7) is selectable under Storage &
+Filesystems. Default drawer: `SYS:Utilities/AmiPart`. Requires AmigaOS 2.x /
+Kickstart 2.04+ and standard ROM libraries; ASL is optional for Browse.
+
+HstWB extracts the original Amiga archive and pauses. Launch `AmiPart`
+manually using its icon or the Shell. This is an RDB partition editor:
+back up data and partition information, and verify device/unit before
+writing. Partition changes and formatting can destroy existing data.
+HstWB performs no disk operations. Existing package drawers are retained.
+
+Pinned archived prototype; updates require manual review. The separate
+Linux executable and autoboot ADF are not bundled. Full upstream readme,
+MIT license, source commit and archive SHA256 are included.
+Upstream: [AmiPart](https://github.com/ChuckyGang/AmiPart) by John Hertell.

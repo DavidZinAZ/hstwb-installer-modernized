@@ -5,7 +5,7 @@ Import-Module (Join-Path $repo 'modules/config.psm1') -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.IO.Compression
 function Assert($value,$message){if(!$value){throw $message}}
-$newNames=@('NetHarness','NilBBS','AmiFM','NilTerm','AmiDT','SCSIToolbox-Amiga','NoClick','AmiTime','AmiSSL-Tunnel','AmiNetXDuo','AmiNFSv3','TheWire13','CFD Modern','FAT95 Modern','ODFileSystem','Amelinium','XPKGuide','AmiSSL OS3','AmiSSL SDK','AmigaGPT','A1060Diag','VirusZ','SnoopDos','DiskFlush','AmiDock','ADF-Blitzer')
+$newNames=@('NetHarness','NilBBS','AmiFM','NilTerm','AmiDT','SCSIToolbox-Amiga','NoClick','AmiTime','AmiSSL-Tunnel','AmiNetXDuo','AmiNFSv3','TheWire13','CFD Modern','FAT95 Modern','ODFileSystem','Amelinium','XPKGuide','AmiSSL OS3','AmiSSL SDK','AmigaGPT','A1060Diag','VirusZ','SnoopDos','DiskFlush','AmiDock','ADF-Blitzer','ZZPlug','AmiPart')
 $names=@('xSysInfo','KickSmash','DevTest','SDMAC','A4091 Tools','ZZ9000 Firmware','ZZ9000 Drivers','DOpus5','PrismRTG','PrismNet')+$newNames
 $catalog=GetUserPackageCatalog (Join-Path $repo 'data/user-package-updates.json')
 $detected=DetectUserPackages @{Settings=@{UserPackages=@{UserPackagesDir=(Join-Path $repo 'user-packages')}}}
@@ -114,4 +114,4 @@ foreach($mode in @('RawFile','ZipArchive')) {
  Assert $rejected 'Malformed payload accepted'
  Assert ((Get-FileHash (Join-Path $dir 'payload')).Hash -eq $hash) 'Rejected update damaged active payload'
 }
-Write-Host 'PASS: 36 selectable packages, payload hashes/layouts, explicit incomplete AmiDock notice, LhA comments and traversal rejection, LF scripts, extract-only behavior and pauses, retained package data, raw/ZIP updates and rejected payload preservation'
+Write-Host ('PASS: '+$names.Count+' selectable packages, payload hashes/layouts, explicit incomplete AmiDock notice, LhA comments and traversal rejection, LF scripts, extract-only behavior and pauses, retained package data, raw/ZIP updates and rejected payload preservation')

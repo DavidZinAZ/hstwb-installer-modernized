@@ -12,7 +12,7 @@ From a source checkout, double-click `desktop.cmd` to compile and open the app u
 
 - Separate Packages, User Packages, and Games & Demos libraries, source links, versions, sorting, local scans, online update checks, and download progress. Verified current versions are reused.
 - Media & ROMs discovery with AmigaOS target and Kickstart selection, present/missing entries, and a compatible installer boot-ROM explanation.
-- Workbench 1.3 and AmigaOS 3.2 inspired light/dark themes.
+- MagicWB, Workbench 1.3, Workbench 2.0, Workbench 3.2 and Workbench 3.9 inspired light/dark themes.
 - A Settings tab for saving/loading profiles and opening the original setup when needed.
 - Persistent scan results with timestamps, scoped to the selected folders. Saved results are informational; installation rescans before running.
 - Review & Install validates media, package dependencies and conflicts, then creates a **fresh image from the selected template for every run**. Each image goes into a separate `Install-...` subfolder. Existing images are preserved. The app launches the emulator and reports completion or failure with a log path.

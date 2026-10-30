@@ -1,0 +1,11 @@
+Upstream: https://github.com/lainejones/ZZPlug
+Release: https://github.com/lainejones/ZZPlug/releases/tag/v0.8
+Corresponding source: https://github.com/lainejones/ZZPlug/archive/refs/tags/v0.8.zip
+Original archive: ZZPlug-0.8.lha (unmodified)
+Download: https://github.com/lainejones/ZZPlug/releases/download/v0.8/ZZPlug-0.8.lha
+SHA256: 45bfc31ca321d6aa46d48a6781d4f9c8f47de50d9a7a47723d2e5ad7e1faac55
+
+GPL-3.0-or-later. See LICENSE.txt and the archive's original notices.
+Matching upstream README and license are from tag v0.8.
+HstWB supplies the extraction wrapper and setup notes.
+Review upstream compatibility and startup behavior before updating.

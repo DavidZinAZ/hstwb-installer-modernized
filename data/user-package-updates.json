@@ -2123,6 +2123,73 @@
           "Reason": "OS 2+, 68000. Standalone application; no disk operations during installation. Non-commercial terms: paid distribution requires author permission. Review upstream layout and terms before replacement."
         }
       ]
+    },
+    {
+      "Id": "zzplug",
+      "Directory": "ZZPlug",
+      "Name": "ZZPlug",
+      "PackageVersion": "1.0.0",
+      "Description": "USB mice, keyboards, game pads and storage for ZZ9000; run upstream setup manually on the target Amiga.",
+      "Categories": [
+        "Hardware & Drivers"
+      ],
+      "Components": [
+        {
+          "Id": "zzplug",
+          "Name": "ZZPlug",
+          "LocalFile": "ZZPlug-0.8.lha",
+          "Version": "0.8",
+          "BaselineSha256": "45bfc31ca321d6aa46d48a6781d4f9c8f47de50d9a7a47723d2e5ad7e1faac55",
+          "Provider": "GitHub",
+          "Repository": "lainejones/ZZPlug",
+          "TagPattern": "^v([0-9]+(?:\\.[0-9]+)+)$",
+          "AssetPattern": "^ZZPlug-[0-9.]+\\.lha$",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "ZZPlug/C/ZZPlug",
+            "ZZPlug/Prefs/ZZPlugPrefs",
+            "ZZPlug/Prefs/ZZPlugPrefs.info",
+            "ZZPlug/Install_ZZPlug",
+            "ZZPlug/Install_ZZPlug.info",
+            "ZZPlug/README",
+            "ZZPlug/LICENSE",
+            "ZZPlug/Tools/JoyTest",
+            "ZZPlug/Tools/KeyTest"
+          ],
+          "Reason": "Requires OS 3.1+, 68020+ and ZZ9000 firmware 2.8+. Run Install_ZZPlug manually on the target Amiga; upstream setup edits startup and starts the stack. Review compatibility before replacement."
+        }
+      ]
+    },
+    {
+      "Id": "amipart",
+      "Directory": "AmiPart",
+      "Name": "AmiPart",
+      "PackageVersion": "1.0.0",
+      "Description": "Prototype RDB partition editor for AmigaOS 2.04+. Manual use; back up disks before partition changes or formatting.",
+      "Categories": [
+        "Storage & Filesystems"
+      ],
+      "Components": [
+        {
+          "Id": "amipart",
+          "Name": "AmiPart",
+          "LocalFile": "AmiPart-20261018-PROTO.lha",
+          "Version": "20261018-PROTO",
+          "BaselineSha256": "9646727a061233bc196f28cf98d33c98b709568cb61b9b15503df3813b749b4c",
+          "Provider": "Manual",
+          "Repository": "ChuckyGang/AmiPart",
+          "Mode": "Archive",
+          "RequiredMembers": [
+            "AmiPart",
+            "AmiPart.info",
+            "README.md",
+            "Catalogs/AmiPart.cd",
+            "Catalogs/README.txt",
+            "support/gencat.py"
+          ],
+          "Reason": "Pinned prototype build 20261018, commit ee4c8f7. Upstream publishes rolling prereleases without stable version numbering; updates require manual compatibility review. Partition editing and formatting remain manual on the target Amiga. Back up disks first."
+        }
+      ]
     }
   ]
 }

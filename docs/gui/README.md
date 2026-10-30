@@ -191,7 +191,7 @@ A desktop profile contains choices and paths, not OS media, archives, downloaded
 
 **Existing installer setup** is a separate section in Settings. Its button opens the original configuration interface for advanced legacy options. It is optional for the GUI installation workflow; Run installation is available directly in Review & Install.
 
-Use **Amiga theme** and **Brightness** at the top to select Workbench 1.3 or AmigaOS 3.2 inspired colors in light or dark mode. The theme does not change the OS being installed.
+Use **Amiga theme** and **Brightness** at the top to select MagicWB, Workbench 1.3, Workbench 2.0, Workbench 3.2 or Workbench 3.9 inspired colors in light or dark mode. The theme does not change the OS being installed.
 
 ### Remembered scan results
 
